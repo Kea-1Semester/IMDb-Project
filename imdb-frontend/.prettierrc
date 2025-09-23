@@ -1,0 +1,12 @@
+{
+  "arrowParens": "always",
+  "printWidth": 120,
+  "endOfLine": "auto",
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "importOrder": ["^react$", "<THIRD_PARTY_MODULES>", "^@/"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
