@@ -31,11 +31,11 @@ namespace SeedData.Handlers
 
                 foreach (var nconst in directors.Concat(writers))
                 {
-                    titleCrews.Add(new TitleCrew
-                    {
-                        Tconst = tconst,
-                        Nconst = nconst
-                    });
+                    // titleCrews.Add(new TitleCrew
+                    // {
+                    //     Tconst = tconst,
+                    //     Nconst = nconst
+                    // });
                 };
             }
 
