@@ -1,47 +1,25 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using SeedData.Models;
-using System.Collections.Generic;
+﻿using SeedData.Models;
 using DotNetEnv;
-using System.Globalization;
+using SeedData.Handlers;
 
-class Program
+namespace SeedData
 {
-    static void Main(string[] args)
+    static class Program
     {
-        Env.TraversePath().Load();
-
-        string? projectRoot = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
-        string dataFolder = Path.Combine(projectRoot!, "data");
-        string titleBasicPath = Path.Combine(dataFolder, "title.basics.tsv");
-
-        var titleBasics = new List<TitleBasic>();
-        var titleGenres = new List<TitleGenre>();
-
-        // Seed TitleBasic
-        foreach (var line in File.ReadLines(titleBasicPath).Skip(1).Take(50000))
+        static void Main(string[] args)
         {
-            var columns = line.Split('\t');
-            var titleBasic = new TitleBasic
+            Env.TraversePath().Load();
+
+            string? projectRoot = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
+            string dataFolder = Path.Combine(projectRoot!, "data");
+            string titleBasicPath = Path.Combine(dataFolder, "title.basics.tsv");
+
+            using (var context = new ImdbContext())
             {
-                Tconst = columns[0],
-                TitleType = columns[1],
-                PrimaryTitle = columns[2],
-                OriginalTitle = columns[3],
-                IsAdult = sbyte.TryParse(columns[4], out var isAdult) ? isAdult : (sbyte)0,
-                StartYear = int.TryParse(columns[5], out var startYear) ? startYear : default,
-                EndYear = int.TryParse(columns[6], out var endYear) ? endYear : null,
-                RuntimeMinutes = int.TryParse(columns[7], out var runtime) ? runtime : null
-            };
-            titleBasics.Add(titleBasic);
+                TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath);
+            }
+
+            Console.WriteLine("Data seeding completed.");
         }
-
-        using var context = new ImdbContext();
-        context.TitleBasics.AddRange(titleBasics);
-        //context.TitleGenres.AddRange(titleGenres);
-        context.SaveChanges();
-
-        Console.WriteLine("Seeded first 50,000 TitleBasic and TitleGenre records.");
     }
 }
