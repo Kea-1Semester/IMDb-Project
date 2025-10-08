@@ -21,6 +21,7 @@ namespace SeedData
             using (var context = new ImdbContext(dbContextOptions))
             {
                 TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath);
+                TitleRatingsHandler.SeedTitleRatings(context, titleRatingsPath);
             }
 
             Console.WriteLine("Data seeding completed.");
