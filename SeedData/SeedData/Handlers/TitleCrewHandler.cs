@@ -6,7 +6,7 @@ namespace SeedData.Handlers
     {
         public static void SeedTitleCrew(ImdbContext context, string titleCrewPath)
         {
-            var titleCrews = new List<TitleCrew>();
+            //var titleCrews = new List<TitleCrew>();
             int lineCount = 0;
 
             // Seed TitleCrew

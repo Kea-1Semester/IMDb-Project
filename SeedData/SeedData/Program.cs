@@ -25,7 +25,7 @@ namespace SeedData
                 TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath);
                 TitleRatingsHandler.SeedTitleRatings(context, titleRatingsPath);
                 NameBasicsHandler.SeedNameBasics(context, nameBasicPath);
-                TitleCrewHandler.SeedTitleCrew(context, titleCrewPath);
+                //TitleCrewHandler.SeedTitleCrew(context, titleCrewPath);
             }
 
             Console.WriteLine("Data seeding completed.");
