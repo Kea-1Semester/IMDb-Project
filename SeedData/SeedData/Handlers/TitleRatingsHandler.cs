@@ -9,19 +9,22 @@ namespace SeedData.Handlers
             try
             {
                 var titleRatings = new List<TitleRating>();
-                var titleBasics = context.TitleBasics.ToList();
 
                 // Seed titleRating
                 foreach (var line in File.ReadLines(titleRatingsPath).Skip(1).Take(50000))
                 {
                     var columns = line.Split('\t');
-                    var titleRating = new TitleRating
+                    var existing = context.TitleBasics.FirstOrDefault(basic => basic.Tconst == columns[0]);
+                    if (existing is not null)
                     {
-                        AverageRating = double.TryParse(columns[1], out var rating) ? rating : 0,
-                        NumVotes = int.TryParse(columns[2], out var vote) ? vote : 0,
-                        TconstNavigation = titleBasics.FirstOrDefault(basic => basic.Tconst == columns[0])
-                    };
-                    if (titleRating.TconstNavigation is not null) titleRatings.Add(titleRating);
+                        var titleRating = new TitleRating
+                        {
+                            AverageRating = double.TryParse(columns[1], out var rating) ? rating : 0,
+                            NumVotes = int.TryParse(columns[2], out var vote) ? vote : 0,
+                            TconstNavigation = existing
+                        };
+                        titleRatings.Add(titleRating);
+                    }
                 }
 
                 context.TitleRatings.AddRange(titleRatings);

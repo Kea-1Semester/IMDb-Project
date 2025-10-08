@@ -15,6 +15,8 @@ namespace SeedData
             string dataFolder = Path.Combine(projectRoot!, "data");
             string titleBasicPath = Path.Combine(dataFolder, "title.basics.tsv");
             string titleRatingsPath = Path.Combine(dataFolder, "title.ratings.tsv");
+            string nameBasicPath = Path.Combine(dataFolder, "name.basics.tsv");
+            string titleCrewPath = Path.Combine(dataFolder, "title.crew.tsv");
 
             var dbContextOptions = new DbContextOptionsBuilder<ImdbContext>().UseMySql(Env.GetString("ConnectionString"), ServerVersion.AutoDetect(Env.GetString("ConnectionString"))).Options;
 
@@ -22,6 +24,8 @@ namespace SeedData
             {
                 TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath);
                 TitleRatingsHandler.SeedTitleRatings(context, titleRatingsPath);
+                NameBasicsHandler.SeedNameBasics(context, nameBasicPath);
+                //TitleCrewHandler.SeedTitleCrew(context, titleCrewPath);
             }
 
             Console.WriteLine("Data seeding completed.");
