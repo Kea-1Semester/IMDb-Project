@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-public partial class imdbContext : DbContext
+public partial class ImdbContext : DbContext
 {
-    public imdbContext(DbContextOptions<imdbContext> options)
+    public ImdbContext(DbContextOptions<ImdbContext> options)
         : base(options)
     {
     }
