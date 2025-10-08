@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace SeedData.Models;
 
@@ -35,8 +33,7 @@ public partial class ImdbContext : DbContext
     public virtual DbSet<TitleType> TitleTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=localhost;port=3307;database=imdb;user=root;password=admin", Microsoft.EntityFrameworkCore.ServerVersion.Parse("9.4.0-mysql"));
+        => optionsBuilder.UseMySql(Env.GetString("ConnectionString"), ServerVersion.AutoDetect(Env.GetString("ConnectionString")));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

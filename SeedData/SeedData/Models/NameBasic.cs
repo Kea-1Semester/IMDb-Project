@@ -9,7 +9,7 @@ public partial class NameBasic
 
     public string? PrimaryName { get; set; }
 
-    public double? BirthYear { get; set; }
+    public int? BirthYear { get; set; }
 
-    public double? DeathYear { get; set; }
+    public int? DeathYear { get; set; }
 }

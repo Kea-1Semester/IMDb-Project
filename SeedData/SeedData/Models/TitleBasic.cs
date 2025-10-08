@@ -15,9 +15,9 @@ public partial class TitleBasic
 
     public sbyte IsAdult { get; set; }
 
-    public DateOnly StartYear { get; set; }
+    public int StartYear { get; set; }
 
-    public DateOnly? EndYear { get; set; }
+    public int? EndYear { get; set; }
 
     public int? RuntimeMinutes { get; set; }
 
