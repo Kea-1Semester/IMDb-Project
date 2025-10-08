@@ -1,0 +1,102 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "imdbContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "MinimumProductVersion": "2.6.1130",
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "SeedData",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "name_basics",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_akas",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_akas_attributes",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_akas_types",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_attributes",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_basics",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_basics_genres",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_comments",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_crew",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_episodes",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_genres",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_principals",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_ratings",
+         "ObjectType": 0
+      },
+      {
+         "Name": "title_types",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false
+}
