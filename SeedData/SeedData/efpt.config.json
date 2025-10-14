@@ -1,10 +1,10 @@
 ﻿{
-   "CodeGenerationMode": 4,
-   "ContextClassName": "imdbContext",
+   "CodeGenerationMode": 5,
+   "ContextClassName": "ImdbContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
-   "MinimumProductVersion": "2.6.1130",
+   "MinimumProductVersion": "2.6.1186",
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",
@@ -16,59 +16,75 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "name_basics",
+         "Name": "Actors",
          "ObjectType": 0
       },
       {
-         "Name": "title_akas",
+         "Name": "Aliases",
          "ObjectType": 0
       },
       {
-         "Name": "title_akas_attributes",
+         "Name": "Aliases_has_Attributes",
          "ObjectType": 0
       },
       {
-         "Name": "title_akas_types",
+         "Name": "Aliases_has_Types",
          "ObjectType": 0
       },
       {
-         "Name": "title_attributes",
+         "Name": "Attributes",
          "ObjectType": 0
       },
       {
-         "Name": "title_basics",
+         "Name": "Comments",
          "ObjectType": 0
       },
       {
-         "Name": "title_basics_genres",
+         "Name": "Directors",
          "ObjectType": 0
       },
       {
-         "Name": "title_comments",
+         "Name": "Episodes",
          "ObjectType": 0
       },
       {
-         "Name": "title_crew",
+         "Name": "Genres",
          "ObjectType": 0
       },
       {
-         "Name": "title_episodes",
+         "Name": "Known_for",
          "ObjectType": 0
       },
       {
-         "Name": "title_genres",
+         "Name": "Loggings",
          "ObjectType": 0
       },
       {
-         "Name": "title_principals",
+         "Name": "Persons",
          "ObjectType": 0
       },
       {
-         "Name": "title_ratings",
+         "Name": "Professions",
          "ObjectType": 0
       },
       {
-         "Name": "title_types",
+         "Name": "Ratings",
+         "ObjectType": 0
+      },
+      {
+         "Name": "Titles",
+         "ObjectType": 0
+      },
+      {
+         "Name": "Titles_has_Genres",
+         "ObjectType": 0
+      },
+      {
+         "Name": "Types",
+         "ObjectType": 0
+      },
+      {
+         "Name": "Writers",
          "ObjectType": 0
       }
    ],
@@ -76,7 +92,7 @@
    "UncountableWords": null,
    "UseAsyncStoredProcedureCalls": true,
    "UseBoolPropertiesWithoutDefaultSql": false,
-   "UseDatabaseNames": false,
+   "UseDatabaseNames": true,
    "UseDatabaseNamesForRoutines": true,
    "UseDateOnlyTimeOnly": true,
    "UseDbContextSplitting": false,
@@ -87,7 +103,7 @@
    "UseInflector": true,
    "UseInternalAccessModifiersForSprocsAndFunctions": false,
    "UseLegacyPluralizer": false,
-   "UseManyToManyEntity": false,
+   "UseManyToManyEntity": true,
    "UseNoDefaultConstructor": false,
    "UseNoNavigations": false,
    "UseNoObjectFilter": false,

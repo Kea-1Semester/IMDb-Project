@@ -8,19 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Table("title_attributes")]
-public partial class TitleAttribute
+[Index("genre", Name = "genre_UNIQUE", IsUnique = true)]
+public partial class Genre
 {
     [Key]
-    [Column("id_attribute")]
-    public int IdAttribute { get; set; }
+    public Guid genre_id { get; set; }
 
     [Required]
-    [Column("attribute")]
     [StringLength(100)]
-    public string Attribute { get; set; }
+    public string genre { get; set; }
 
-    [ForeignKey("IdAttribute")]
-    [InverseProperty("IdAttributes")]
-    public virtual ICollection<TitleAka> IdAkas { get; set; } = new List<TitleAka>();
+    [InverseProperty("Genres_genre")]
+    public virtual ICollection<Titles_has_Genre> Titles_has_Genres { get; set; } = new List<Titles_has_Genre>();
 }

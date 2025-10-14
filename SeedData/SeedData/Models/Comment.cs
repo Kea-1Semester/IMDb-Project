@@ -8,19 +8,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Table("title_genres")]
-public partial class TitleGenre
+[Index("title_id", Name = "fk_title_comments_title_basics1_idx")]
+public partial class Comment
 {
     [Key]
-    [Column("id_genre")]
-    public int IdGenre { get; set; }
+    public Guid comment_id { get; set; }
+
+    public Guid title_id { get; set; }
 
     [Required]
-    [Column("genre")]
-    [StringLength(100)]
-    public string Genre { get; set; }
+    [StringLength(255)]
+    public string comment { get; set; }
 
-    [ForeignKey("IdGenre")]
-    [InverseProperty("IdGenres")]
-    public virtual ICollection<TitleBasic> Tconsts { get; set; } = new List<TitleBasic>();
+    [ForeignKey("title_id")]
+    [InverseProperty("Comments")]
+    public virtual Title title { get; set; }
 }
