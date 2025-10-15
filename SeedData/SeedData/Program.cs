@@ -11,17 +11,16 @@ namespace SeedData
         {
             Env.TraversePath().Load();
 
-            var dbContextOptions = new DbContextOptionsBuilder<ImdbContext>()
+            var optionsBuilder = new DbContextOptionsBuilder<ImdbContext>()
                 .UseMySql(
                     Env.GetString("ConnectionString"), 
                     ServerVersion.AutoDetect(Env.GetString("ConnectionString"))
                 )
                 .LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableDetailedErrors()
-                .EnableSensitiveDataLogging()
-                .Options;
+                .EnableSensitiveDataLogging();
 
-            using (var context = new ImdbContext(dbContextOptions))
+            using (var context = new ImdbContext(optionsBuilder.Options))
             {
             }
 
