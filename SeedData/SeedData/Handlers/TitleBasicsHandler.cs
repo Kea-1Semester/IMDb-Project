@@ -6,60 +6,57 @@ namespace SeedData.Handlers
     {
         public static void SeedTitleBasics(ImdbContext context, string titleBasicPath)
         {
-            var titleBasics = new List<TitleBasic>();
-            var genreSet = new HashSet<string>();
+            var titleBasics = new List<Title>();
+            var genreDict = context.Genres.ToDictionary(g => g.Genre1, g => g); // Cache existing genres
 
             // Seed TitleBasic
             foreach (var line in File.ReadLines(titleBasicPath).Skip(1).Take(50000))
             {
                 var columns = line.Split('\t');
-                var titleBasic = new TitleBasic
+                var title = new Title
                 {
-                    Tconst = columns[0],
+                    TitleId = Guid.NewGuid(),
                     TitleType = columns[1],
                     PrimaryTitle = columns[2],
                     OriginalTitle = columns[3],
-                    IsAdult = sbyte.TryParse(columns[4], out var isAdult) ? isAdult : (sbyte)0,
-                    StartYear = int.TryParse(columns[5], out var startYear) ? startYear : default,
-                    EndYear = int.TryParse(columns[6], out var endYear) ? endYear : null,
+                    IsAdult = sbyte.TryParse(columns[4], out var isAdult) ? isAdult == 1 : false,
+                    StartYear = ParseYear( columns[5]),
+                    EndYear = ParseYear( columns[6]),
                     RuntimeMinutes = int.TryParse(columns[7], out var runtime) ? runtime : null
                 };
 
-                var genres = columns[8].Split(',', '|');
+                var genres = columns[8].Split(',', '|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                 foreach (var genre in genres)
                 {
-                    if (genreSet.Add(genre))
+                    if (string.IsNullOrWhiteSpace(genre))
+                        continue;
+
+                    if (!genreDict.TryGetValue(genre, out var genreEntity))
                     {
-                        /*var titleGenre = new TitleGenre { Genre = genre };
-                        context.TitleGenres.Add(titleGenre);
-                        context.SaveChanges();
-                        titleBasic.IdGenres.Add(titleGenre);*/
-                        SeedGenres(genre, context, titleBasic);
+                        genreEntity = new Genre { GenreId = Guid.NewGuid(), Genre1 = genre };
+                        context.Genres.Add(genreEntity);
+                        genreDict[genre] = genreEntity;
                     }
-                    else
-                    {
-                        var existingGenre = context.TitleGenres.First(g => g.Genre == genre);
-                        titleBasic.IdGenres.Add(existingGenre);
-                    }
+                    title.GenresGenres.Add(genreEntity);
                 }
 
-                titleBasics.Add(titleBasic);
-
+                titleBasics.Add(title);
             }
 
-            context.TitleBasics.AddRange(titleBasics);
+            context.Titles.AddRange(titleBasics);
             context.SaveChanges();
 
             Console.WriteLine("Seeded first 50,000 TitleBasic records.");
         }
 
-        private static void SeedGenres(string genre, ImdbContext context, TitleBasic titleBasic)
+        static short? ParseYear(string value)
         {
-            var titleGenre = new TitleGenre { Genre = genre };
-            context.TitleGenres.Add(titleGenre);
-            context.SaveChanges();
-            titleBasic.IdGenres.Add(titleGenre);
+            if (value == "\\N") return 0;
+            if (short.TryParse(value, out var year) && (year == 0 || (year >= 1901 && year <= 2155)))
+                return year;
+            // cant be null represented in db so return 9999
+            return 0;
         }
     }
 }

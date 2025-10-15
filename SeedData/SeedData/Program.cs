@@ -1,7 +1,7 @@
 ﻿using SeedData.Models;
 using DotNetEnv;
-using SeedData.Handlers;
 using Microsoft.EntityFrameworkCore;
+using SeedData.Handlers;
 
 namespace SeedData
 {
@@ -23,8 +23,8 @@ namespace SeedData
             using (var context = new ImdbContext(dbContextOptions))
             {
                 TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath);
-                TitleRatingsHandler.SeedTitleRatings(context, titleRatingsPath);
-                NameBasicsHandler.SeedNameBasics(context, nameBasicPath);
+                //TitleRatingsHandler.SeedTitleRatings(context, titleRatingsPath);
+                //NameBasicsHandler.SeedNameBasics(context, nameBasicPath);
                 //TitleCrewHandler.SeedTitleCrew(context, titleCrewPath);
             }
 

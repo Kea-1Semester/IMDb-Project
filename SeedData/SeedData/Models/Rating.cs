@@ -8,18 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Table("title_ratings")]
-[Index("Tconst", Name = "fk_title_ratings_title_basics1")]
-public partial class TitleRating
+[Index("TitleId", Name = "fk_title_ratings_title_basics1")]
+public partial class Rating
 {
     [Key]
-    [Column("id_rating")]
-    public int IdRating { get; set; }
+    [Column("rating_id")]
+    public Guid RatingId { get; set; }
 
-    [Required]
-    [Column("tconst")]
-    [StringLength(100)]
-    public string Tconst { get; set; }
+    [Column("title_id")]
+    public Guid TitleId { get; set; }
 
     [Column("average_rating")]
     public double AverageRating { get; set; }
@@ -27,7 +24,7 @@ public partial class TitleRating
     [Column("num_votes")]
     public int NumVotes { get; set; }
 
-    [ForeignKey("Tconst")]
-    [InverseProperty("TitleRatings")]
-    public virtual TitleBasic TconstNavigation { get; set; }
+    [ForeignKey("TitleId")]
+    [InverseProperty("Ratings")]
+    public virtual Title Title { get; set; }
 }
