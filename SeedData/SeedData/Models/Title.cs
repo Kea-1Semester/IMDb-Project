@@ -8,61 +8,67 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Index("original_title", Name = "original_title_index")]
-[Index("primary_title", Name = "primary_title_index")]
-[Index("title_type", Name = "title_type_index")]
+[Index("OriginalTitle", Name = "original_title_index")]
+[Index("PrimaryTitle", Name = "primary_title_index")]
+[Index("TitleType", Name = "title_type_index")]
 public partial class Title
 {
     [Key]
-    public Guid title_id { get; set; }
+    [Column("title_id")]
+    public Guid TitleId { get; set; }
 
     [Required]
+    [Column("title_type")]
     [StringLength(100)]
-    public string title_type { get; set; }
+    public string TitleType { get; set; }
 
     [Required]
-    public string primary_title { get; set; }
+    [Column("primary_title")]
+    public string PrimaryTitle { get; set; }
 
     [Required]
-    public string original_title { get; set; }
+    [Column("original_title")]
+    public string OriginalTitle { get; set; }
 
-    public bool is_adult { get; set; }
+    [Column("is_adult")]
+    public bool IsAdult { get; set; }
 
-    [Column(TypeName = "year")]
-    public short start_year { get; set; }
+    [Column("start_year", TypeName = "year")]
+    public short StartYear { get; set; }
 
-    [Column(TypeName = "year")]
-    public short? end_year { get; set; }
+    [Column("end_year", TypeName = "year")]
+    public short? EndYear { get; set; }
 
-    public int? runtime_minutes { get; set; }
+    [Column("runtime_minutes")]
+    public int? RuntimeMinutes { get; set; }
 
-    [InverseProperty("Persons_person")]
+    [InverseProperty("PersonsPerson")]
     public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
-    [InverseProperty("titleNavigation")]
+    [InverseProperty("TitleNavigation")]
     public virtual ICollection<Alias> Aliases { get; set; } = new List<Alias>();
 
-    [InverseProperty("title")]
+    [InverseProperty("Title")]
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    [InverseProperty("Titles_title")]
+    [InverseProperty("TitlesTitle")]
     public virtual ICollection<Director> Directors { get; set; } = new List<Director>();
 
-    [InverseProperty("title_id_childNavigation")]
-    public virtual ICollection<Episode> Episodetitle_id_childNavigations { get; set; } = new List<Episode>();
+    [InverseProperty("TitleIdChildNavigation")]
+    public virtual ICollection<Episode> EpisodeTitleIdChildNavigations { get; set; } = new List<Episode>();
 
-    [InverseProperty("title_id_parentNavigation")]
-    public virtual ICollection<Episode> Episodetitle_id_parentNavigations { get; set; } = new List<Episode>();
+    [InverseProperty("TitleIdParentNavigation")]
+    public virtual ICollection<Episode> EpisodeTitleIdParentNavigations { get; set; } = new List<Episode>();
 
-    [InverseProperty("Titles_title")]
-    public virtual ICollection<Known_for> Known_fors { get; set; } = new List<Known_for>();
+    [InverseProperty("TitlesTitle")]
+    public virtual ICollection<KnownFor> KnownFors { get; set; } = new List<KnownFor>();
 
-    [InverseProperty("title")]
+    [InverseProperty("Title")]
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 
-    [InverseProperty("Titles_title")]
-    public virtual ICollection<Titles_has_Genre> Titles_has_Genres { get; set; } = new List<Titles_has_Genre>();
+    [InverseProperty("TitlesTitle")]
+    public virtual ICollection<TitlesHasGenre> TitlesHasGenres { get; set; } = new List<TitlesHasGenre>();
 
-    [InverseProperty("Titles_title")]
+    [InverseProperty("TitlesTitle")]
     public virtual ICollection<Writer> Writers { get; set; } = new List<Writer>();
 }

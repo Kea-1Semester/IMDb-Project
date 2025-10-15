@@ -8,26 +8,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Index("title_id_parent", Name = "fk_title_episodes_title_basics1")]
-[Index("title_id_child", Name = "fk_title_episodes_title_basics2_idx")]
+[Index("TitleIdParent", Name = "fk_title_episodes_title_basics1")]
+[Index("TitleIdChild", Name = "fk_title_episodes_title_basics2_idx")]
 public partial class Episode
 {
     [Key]
-    public Guid episode_id { get; set; }
+    [Column("episode_id")]
+    public Guid EpisodeId { get; set; }
 
-    public Guid? title_id_parent { get; set; }
+    [Column("title_id_parent")]
+    public Guid? TitleIdParent { get; set; }
 
-    public Guid? title_id_child { get; set; }
+    [Column("title_id_child")]
+    public Guid? TitleIdChild { get; set; }
 
-    public int season_number { get; set; }
+    [Column("season_number")]
+    public int SeasonNumber { get; set; }
 
-    public int episode_number { get; set; }
+    [Column("episode_number")]
+    public int EpisodeNumber { get; set; }
 
-    [ForeignKey("title_id_child")]
-    [InverseProperty("Episodetitle_id_childNavigations")]
-    public virtual Title title_id_childNavigation { get; set; }
+    [ForeignKey("TitleIdChild")]
+    [InverseProperty("EpisodeTitleIdChildNavigations")]
+    public virtual Title TitleIdChildNavigation { get; set; }
 
-    [ForeignKey("title_id_parent")]
-    [InverseProperty("Episodetitle_id_parentNavigations")]
-    public virtual Title title_id_parentNavigation { get; set; }
+    [ForeignKey("TitleIdParent")]
+    [InverseProperty("EpisodeTitleIdParentNavigations")]
+    public virtual Title TitleIdParentNavigation { get; set; }
 }

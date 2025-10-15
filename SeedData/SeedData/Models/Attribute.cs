@@ -8,16 +8,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Index("attribute", Name = "attribute_UNIQUE", IsUnique = true)]
+[Index("Attribute1", Name = "attribute_UNIQUE", IsUnique = true)]
 public partial class Attribute
 {
     [Key]
-    public Guid attribute_id { get; set; }
+    [Column("attribute_id")]
+    public Guid AttributeId { get; set; }
 
     [Required]
+    [Column("attribute")]
     [StringLength(100)]
-    public string attribute { get; set; }
+    public string Attribute1 { get; set; }
 
-    [InverseProperty("Attributes_attribute")]
-    public virtual ICollection<Aliases_has_Attribute> Aliases_has_Attributes { get; set; } = new List<Aliases_has_Attribute>();
+    [InverseProperty("AttributesAttribute")]
+    public virtual ICollection<AliasesHasAttribute> AliasesHasAttributes { get; set; } = new List<AliasesHasAttribute>();
 }

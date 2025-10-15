@@ -8,35 +8,41 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Index("title_id", Name = "fk_title_akas_title_basics_idx")]
-[Index("title", Name = "title_index")]
+[Index("TitleId", Name = "fk_title_akas_title_basics_idx")]
+[Index("Title", Name = "title_index")]
 public partial class Alias
 {
     [Key]
-    public Guid alias_id { get; set; }
+    [Column("alias_id")]
+    public Guid AliasId { get; set; }
 
-    public Guid title_id { get; set; }
+    [Column("title_id")]
+    public Guid TitleId { get; set; }
 
     [Required]
+    [Column("region")]
     [StringLength(100)]
-    public string region { get; set; }
+    public string Region { get; set; }
 
     [Required]
+    [Column("language")]
     [StringLength(100)]
-    public string language { get; set; }
+    public string Language { get; set; }
 
-    public bool is_original_title { get; set; }
+    [Column("is_original_title")]
+    public bool IsOriginalTitle { get; set; }
 
     [Required]
-    public string title { get; set; }
+    [Column("title")]
+    public string Title { get; set; }
 
-    [InverseProperty("Aliases_alias")]
-    public virtual ICollection<Aliases_has_Attribute> Aliases_has_Attributes { get; set; } = new List<Aliases_has_Attribute>();
+    [InverseProperty("AliasesAlias")]
+    public virtual ICollection<AliasesHasAttribute> AliasesHasAttributes { get; set; } = new List<AliasesHasAttribute>();
 
-    [InverseProperty("Aliases_alias")]
-    public virtual ICollection<Aliases_has_Type> Aliases_has_Types { get; set; } = new List<Aliases_has_Type>();
+    [InverseProperty("AliasesAlias")]
+    public virtual ICollection<AliasesHasType> AliasesHasTypes { get; set; } = new List<AliasesHasType>();
 
-    [ForeignKey("title_id")]
+    [ForeignKey("TitleId")]
     [InverseProperty("Aliases")]
-    public virtual Title titleNavigation { get; set; }
+    public virtual Title TitleNavigation { get; set; }
 }

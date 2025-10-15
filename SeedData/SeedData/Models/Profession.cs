@@ -8,20 +8,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Index("person_id", Name = "fk_Professions_Persons1_idx")]
-[Index("profession", Name = "profession_UNIQUE", IsUnique = true)]
+[Index("PersonId", Name = "fk_Professions_Persons1_idx")]
+[Index("Profession1", Name = "profession_UNIQUE", IsUnique = true)]
 public partial class Profession
 {
     [Key]
-    public Guid profession_id { get; set; }
+    [Column("profession_id")]
+    public Guid ProfessionId { get; set; }
 
-    public Guid person_id { get; set; }
+    [Column("person_id")]
+    public Guid PersonId { get; set; }
 
     [Required]
+    [Column("profession")]
     [StringLength(45)]
-    public string profession { get; set; }
+    public string Profession1 { get; set; }
 
-    [ForeignKey("person_id")]
+    [ForeignKey("PersonId")]
     [InverseProperty("Professions")]
-    public virtual Person person { get; set; }
+    public virtual Person Person { get; set; }
 }

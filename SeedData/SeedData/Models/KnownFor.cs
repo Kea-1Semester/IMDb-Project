@@ -9,9 +9,10 @@ using Microsoft.EntityFrameworkCore;
 namespace SeedData.Models;
 
 [PrimaryKey("TitlesTitleId", "PersonsPersonId")]
-[Index("PersonsPersonId", Name = "fk_Titles_has_Persons_Persons3_idx")]
-[Index("TitlesTitleId", Name = "fk_Titles_has_Persons_Titles3_idx")]
-public partial class Actor
+[Table("Known_for")]
+[Index("PersonsPersonId", Name = "fk_Titles_has_Persons_Persons2_idx")]
+[Index("TitlesTitleId", Name = "fk_Titles_has_Persons_Titles2_idx")]
+public partial class KnownFor
 {
     [Key]
     [Column("Titles_title_id")]
@@ -21,15 +22,11 @@ public partial class Actor
     [Column("Persons_person_id")]
     public Guid PersonsPersonId { get; set; }
 
-    [Required]
-    [StringLength(100)]
-    public string Role { get; set; }
-
     [ForeignKey("PersonsPersonId")]
-    [InverseProperty("Actors")]
-    public virtual Title PersonsPerson { get; set; }
+    [InverseProperty("KnownFors")]
+    public virtual Person PersonsPerson { get; set; }
 
     [ForeignKey("TitlesTitleId")]
-    [InverseProperty("Actors")]
-    public virtual Person TitlesTitle { get; set; }
+    [InverseProperty("KnownFors")]
+    public virtual Title TitlesTitle { get; set; }
 }

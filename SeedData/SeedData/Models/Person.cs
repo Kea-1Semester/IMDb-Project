@@ -11,30 +11,32 @@ namespace SeedData.Models;
 public partial class Person
 {
     [Key]
-    public Guid person_id { get; set; }
+    [Column("person_id")]
+    public Guid PersonId { get; set; }
 
     [Required]
+    [Column("name")]
     [StringLength(255)]
-    public string name { get; set; }
+    public string Name { get; set; }
 
-    [Column(TypeName = "year")]
-    public short birth_year { get; set; }
+    [Column("birth_year", TypeName = "year")]
+    public short BirthYear { get; set; }
 
-    [Column(TypeName = "year")]
-    public short? end_year { get; set; }
+    [Column("end_year", TypeName = "year")]
+    public short? EndYear { get; set; }
 
-    [InverseProperty("Titles_title")]
+    [InverseProperty("TitlesTitle")]
     public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
-    [InverseProperty("Persons_person")]
+    [InverseProperty("PersonsPerson")]
     public virtual ICollection<Director> Directors { get; set; } = new List<Director>();
 
-    [InverseProperty("Persons_person")]
-    public virtual ICollection<Known_for> Known_fors { get; set; } = new List<Known_for>();
+    [InverseProperty("PersonsPerson")]
+    public virtual ICollection<KnownFor> KnownFors { get; set; } = new List<KnownFor>();
 
-    [InverseProperty("person")]
+    [InverseProperty("Person")]
     public virtual ICollection<Profession> Professions { get; set; } = new List<Profession>();
 
-    [InverseProperty("Persons_person")]
+    [InverseProperty("PersonsPerson")]
     public virtual ICollection<Writer> Writers { get; set; } = new List<Writer>();
 }

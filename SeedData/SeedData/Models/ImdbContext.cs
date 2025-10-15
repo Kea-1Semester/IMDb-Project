@@ -17,9 +17,9 @@ public partial class ImdbContext : DbContext
 
     public virtual DbSet<Alias> Aliases { get; set; }
 
-    public virtual DbSet<Aliases_has_Attribute> Aliases_has_Attributes { get; set; }
+    public virtual DbSet<AliasesHasAttribute> AliasesHasAttributes { get; set; }
 
-    public virtual DbSet<Aliases_has_Type> Aliases_has_Types { get; set; }
+    public virtual DbSet<AliasesHasType> AliasesHasTypes { get; set; }
 
     public virtual DbSet<Attribute> Attributes { get; set; }
 
@@ -31,7 +31,7 @@ public partial class ImdbContext : DbContext
 
     public virtual DbSet<Genre> Genres { get; set; }
 
-    public virtual DbSet<Known_for> Known_fors { get; set; }
+    public virtual DbSet<KnownFor> KnownFors { get; set; }
 
     public virtual DbSet<Logging> Loggings { get; set; }
 
@@ -43,7 +43,7 @@ public partial class ImdbContext : DbContext
 
     public virtual DbSet<Title> Titles { get; set; }
 
-    public virtual DbSet<Titles_has_Genre> Titles_has_Genres { get; set; }
+    public virtual DbSet<TitlesHasGenre> TitlesHasGenres { get; set; }
 
     public virtual DbSet<Type> Types { get; set; }
 
@@ -57,203 +57,203 @@ public partial class ImdbContext : DbContext
 
         modelBuilder.Entity<Actor>(entity =>
         {
-            entity.HasKey(e => new { e.Titles_title_id, e.Persons_person_id })
+            entity.HasKey(e => new { e.TitlesTitleId, e.PersonsPersonId })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
-            entity.HasOne(d => d.Persons_person).WithMany(p => p.Actors)
+            entity.HasOne(d => d.PersonsPerson).WithMany(p => p.Actors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Titles_has_Persons_Persons3");
 
-            entity.HasOne(d => d.Titles_title).WithMany(p => p.Actors)
+            entity.HasOne(d => d.TitlesTitle).WithMany(p => p.Actors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Titles_has_Persons_Titles3");
         });
 
         modelBuilder.Entity<Alias>(entity =>
         {
-            entity.HasKey(e => e.alias_id).HasName("PRIMARY");
+            entity.HasKey(e => e.AliasId).HasName("PRIMARY");
 
-            entity.Property(e => e.alias_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.AliasId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
 
-            entity.HasOne(d => d.titleNavigation).WithMany(p => p.Aliases)
+            entity.HasOne(d => d.TitleNavigation).WithMany(p => p.Aliases)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_title_akas_title_basics");
         });
 
-        modelBuilder.Entity<Aliases_has_Attribute>(entity =>
+        modelBuilder.Entity<AliasesHasAttribute>(entity =>
         {
-            entity.HasKey(e => new { e.Aliases_alias_id, e.Attributes_attribute_id })
+            entity.HasKey(e => new { e.AliasesAliasId, e.AttributesAttributeId })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
-            entity.HasOne(d => d.Aliases_alias).WithMany(p => p.Aliases_has_Attributes)
+            entity.HasOne(d => d.AliasesAlias).WithMany(p => p.AliasesHasAttributes)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Aliases_has_Attributes_Aliases1");
 
-            entity.HasOne(d => d.Attributes_attribute).WithMany(p => p.Aliases_has_Attributes)
+            entity.HasOne(d => d.AttributesAttribute).WithMany(p => p.AliasesHasAttributes)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Aliases_has_Attributes_Attributes1");
         });
 
-        modelBuilder.Entity<Aliases_has_Type>(entity =>
+        modelBuilder.Entity<AliasesHasType>(entity =>
         {
-            entity.HasKey(e => new { e.Aliases_alias_id, e.Types_type_id })
+            entity.HasKey(e => new { e.AliasesAliasId, e.TypesTypeId })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
-            entity.HasOne(d => d.Aliases_alias).WithMany(p => p.Aliases_has_Types)
+            entity.HasOne(d => d.AliasesAlias).WithMany(p => p.AliasesHasTypes)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Aliases_has_Types_Aliases1");
 
-            entity.HasOne(d => d.Types_type).WithMany(p => p.Aliases_has_Types)
+            entity.HasOne(d => d.TypesType).WithMany(p => p.AliasesHasTypes)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Aliases_has_Types_Types1");
         });
 
         modelBuilder.Entity<Attribute>(entity =>
         {
-            entity.HasKey(e => e.attribute_id).HasName("PRIMARY");
+            entity.HasKey(e => e.AttributeId).HasName("PRIMARY");
 
-            entity.Property(e => e.attribute_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.AttributeId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
         });
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.comment_id).HasName("PRIMARY");
+            entity.HasKey(e => e.CommentId).HasName("PRIMARY");
 
-            entity.Property(e => e.comment_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.CommentId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
 
-            entity.HasOne(d => d.title).WithMany(p => p.Comments)
+            entity.HasOne(d => d.Title).WithMany(p => p.Comments)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_title_comments_title_basics1");
         });
 
         modelBuilder.Entity<Director>(entity =>
         {
-            entity.HasKey(e => new { e.Titles_title_id, e.Persons_person_id })
+            entity.HasKey(e => new { e.TitlesTitleId, e.PersonsPersonId })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
-            entity.HasOne(d => d.Persons_person).WithMany(p => p.Directors)
+            entity.HasOne(d => d.PersonsPerson).WithMany(p => p.Directors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Titles_has_Persons_Persons1");
 
-            entity.HasOne(d => d.Titles_title).WithMany(p => p.Directors)
+            entity.HasOne(d => d.TitlesTitle).WithMany(p => p.Directors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Titles_has_Persons_Titles1");
         });
 
         modelBuilder.Entity<Episode>(entity =>
         {
-            entity.HasKey(e => e.episode_id).HasName("PRIMARY");
+            entity.HasKey(e => e.EpisodeId).HasName("PRIMARY");
 
-            entity.Property(e => e.episode_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.EpisodeId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
 
-            entity.HasOne(d => d.title_id_childNavigation).WithMany(p => p.Episodetitle_id_childNavigations).HasConstraintName("fk_title_episodes_title_basics2");
+            entity.HasOne(d => d.TitleIdChildNavigation).WithMany(p => p.EpisodeTitleIdChildNavigations).HasConstraintName("fk_title_episodes_title_basics2");
 
-            entity.HasOne(d => d.title_id_parentNavigation).WithMany(p => p.Episodetitle_id_parentNavigations).HasConstraintName("fk_title_episodes_title_basics1");
+            entity.HasOne(d => d.TitleIdParentNavigation).WithMany(p => p.EpisodeTitleIdParentNavigations).HasConstraintName("fk_title_episodes_title_basics1");
         });
 
         modelBuilder.Entity<Genre>(entity =>
         {
-            entity.HasKey(e => e.genre_id).HasName("PRIMARY");
+            entity.HasKey(e => e.GenreId).HasName("PRIMARY");
 
-            entity.Property(e => e.genre_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.GenreId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
         });
 
-        modelBuilder.Entity<Known_for>(entity =>
+        modelBuilder.Entity<KnownFor>(entity =>
         {
-            entity.HasKey(e => new { e.Titles_title_id, e.Persons_person_id })
+            entity.HasKey(e => new { e.TitlesTitleId, e.PersonsPersonId })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
-            entity.HasOne(d => d.Persons_person).WithMany(p => p.Known_fors)
+            entity.HasOne(d => d.PersonsPerson).WithMany(p => p.KnownFors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Titles_has_Persons_Persons2");
 
-            entity.HasOne(d => d.Titles_title).WithMany(p => p.Known_fors)
+            entity.HasOne(d => d.TitlesTitle).WithMany(p => p.KnownFors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Titles_has_Persons_Titles2");
         });
 
         modelBuilder.Entity<Logging>(entity =>
         {
-            entity.HasKey(e => e.logging_id).HasName("PRIMARY");
+            entity.HasKey(e => e.LoggingId).HasName("PRIMARY");
 
-            entity.Property(e => e.logging_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
-            entity.Property(e => e.executed_at).HasDefaultValueSql("now(6)");
+            entity.Property(e => e.LoggingId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.ExecutedAt).HasDefaultValueSql("now(6)");
         });
 
         modelBuilder.Entity<Person>(entity =>
         {
-            entity.HasKey(e => e.person_id).HasName("PRIMARY");
+            entity.HasKey(e => e.PersonId).HasName("PRIMARY");
 
-            entity.Property(e => e.person_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.PersonId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
         });
 
         modelBuilder.Entity<Profession>(entity =>
         {
-            entity.HasKey(e => e.profession_id).HasName("PRIMARY");
+            entity.HasKey(e => e.ProfessionId).HasName("PRIMARY");
 
-            entity.Property(e => e.profession_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.ProfessionId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
 
-            entity.HasOne(d => d.person).WithMany(p => p.Professions)
+            entity.HasOne(d => d.Person).WithMany(p => p.Professions)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Professions_Persons1");
         });
 
         modelBuilder.Entity<Rating>(entity =>
         {
-            entity.HasKey(e => e.rating_id).HasName("PRIMARY");
+            entity.HasKey(e => e.RatingId).HasName("PRIMARY");
 
-            entity.Property(e => e.rating_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.RatingId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
 
-            entity.HasOne(d => d.title).WithMany(p => p.Ratings)
+            entity.HasOne(d => d.Title).WithMany(p => p.Ratings)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_title_ratings_title_basics1");
         });
 
         modelBuilder.Entity<Title>(entity =>
         {
-            entity.HasKey(e => e.title_id).HasName("PRIMARY");
+            entity.HasKey(e => e.TitleId).HasName("PRIMARY");
 
-            entity.Property(e => e.title_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.TitleId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
         });
 
-        modelBuilder.Entity<Titles_has_Genre>(entity =>
+        modelBuilder.Entity<TitlesHasGenre>(entity =>
         {
-            entity.HasKey(e => new { e.Titles_title_id, e.Genres_genre_id })
+            entity.HasKey(e => new { e.TitlesTitleId, e.GenresGenreId })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
-            entity.HasOne(d => d.Genres_genre).WithMany(p => p.Titles_has_Genres)
+            entity.HasOne(d => d.GenresGenre).WithMany(p => p.TitlesHasGenres)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Titles_has_Genres_Genres1");
 
-            entity.HasOne(d => d.Titles_title).WithMany(p => p.Titles_has_Genres)
+            entity.HasOne(d => d.TitlesTitle).WithMany(p => p.TitlesHasGenres)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Titles_has_Genres_Titles1");
         });
 
         modelBuilder.Entity<Type>(entity =>
         {
-            entity.HasKey(e => e.type_id).HasName("PRIMARY");
+            entity.HasKey(e => e.TypeId).HasName("PRIMARY");
 
-            entity.Property(e => e.type_id).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.TypeId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
         });
 
         modelBuilder.Entity<Writer>(entity =>
         {
-            entity.HasKey(e => new { e.Titles_title_id, e.Persons_person_id })
+            entity.HasKey(e => new { e.TitlesTitleId, e.PersonsPersonId })
                 .HasName("PRIMARY")
                 .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
-            entity.HasOne(d => d.Persons_person).WithMany(p => p.Writers)
+            entity.HasOne(d => d.PersonsPerson).WithMany(p => p.Writers)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Titles_has_Persons_Persons4");
 
-            entity.HasOne(d => d.Titles_title).WithMany(p => p.Writers)
+            entity.HasOne(d => d.TitlesTitle).WithMany(p => p.Writers)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Titles_has_Persons_Titles4");
         });

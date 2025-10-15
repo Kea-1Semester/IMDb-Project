@@ -8,30 +8,34 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Index("executed_at", Name = "executed_at_index")]
-[Index("table_name", Name = "table_name_index")]
+[Index("ExecutedAt", Name = "executed_at_index")]
+[Index("TableName", Name = "table_name_index")]
 public partial class Logging
 {
     [Key]
-    public Guid logging_id { get; set; }
+    [Column("logging_id")]
+    public Guid LoggingId { get; set; }
 
     [Required]
+    [Column("table_name")]
     [StringLength(100)]
-    public string table_name { get; set; }
+    public string TableName { get; set; }
 
     [Required]
-    [Column(TypeName = "enum('INSERT','UPDATE','DELETE')")]
-    public string command { get; set; }
+    [Column("command", TypeName = "enum('INSERT','UPDATE','DELETE')")]
+    public string Command { get; set; }
 
-    [Column(TypeName = "json")]
-    public string new_value { get; set; }
+    [Column("new_value", TypeName = "json")]
+    public string NewValue { get; set; }
 
-    [Column(TypeName = "json")]
-    public string old_value { get; set; }
+    [Column("old_value", TypeName = "json")]
+    public string OldValue { get; set; }
 
+    [Column("executed_by")]
     [StringLength(100)]
-    public string executed_by { get; set; }
+    public string ExecutedBy { get; set; }
 
+    [Column("executed_at")]
     [MaxLength(6)]
-    public DateTime executed_at { get; set; }
+    public DateTime ExecutedAt { get; set; }
 }

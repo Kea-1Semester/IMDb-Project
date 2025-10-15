@@ -8,19 +8,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Index("title_id", Name = "fk_title_ratings_title_basics1")]
+[Index("TitleId", Name = "fk_title_ratings_title_basics1")]
 public partial class Rating
 {
     [Key]
-    public Guid rating_id { get; set; }
+    [Column("rating_id")]
+    public Guid RatingId { get; set; }
 
-    public Guid title_id { get; set; }
+    [Column("title_id")]
+    public Guid TitleId { get; set; }
 
-    public double average_rating { get; set; }
+    [Column("average_rating")]
+    public double AverageRating { get; set; }
 
-    public int num_votes { get; set; }
+    [Column("num_votes")]
+    public int NumVotes { get; set; }
 
-    [ForeignKey("title_id")]
+    [ForeignKey("TitleId")]
     [InverseProperty("Ratings")]
-    public virtual Title title { get; set; }
+    public virtual Title Title { get; set; }
 }

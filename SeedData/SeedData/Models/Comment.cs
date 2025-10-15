@@ -8,19 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[Index("title_id", Name = "fk_title_comments_title_basics1_idx")]
+[Index("TitleId", Name = "fk_title_comments_title_basics1_idx")]
 public partial class Comment
 {
     [Key]
-    public Guid comment_id { get; set; }
+    [Column("comment_id")]
+    public Guid CommentId { get; set; }
 
-    public Guid title_id { get; set; }
+    [Column("title_id")]
+    public Guid TitleId { get; set; }
 
     [Required]
+    [Column("comment")]
     [StringLength(255)]
-    public string comment { get; set; }
+    public string Comment1 { get; set; }
 
-    [ForeignKey("title_id")]
+    [ForeignKey("TitleId")]
     [InverseProperty("Comments")]
-    public virtual Title title { get; set; }
+    public virtual Title Title { get; set; }
 }

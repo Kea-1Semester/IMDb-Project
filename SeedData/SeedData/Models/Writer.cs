@@ -8,22 +8,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[PrimaryKey("Titles_title_id", "Persons_person_id")]
-[Index("Persons_person_id", Name = "fk_Titles_has_Persons_Persons4_idx")]
-[Index("Titles_title_id", Name = "fk_Titles_has_Persons_Titles4_idx")]
+[PrimaryKey("TitlesTitleId", "PersonsPersonId")]
+[Index("PersonsPersonId", Name = "fk_Titles_has_Persons_Persons4_idx")]
+[Index("TitlesTitleId", Name = "fk_Titles_has_Persons_Titles4_idx")]
 public partial class Writer
 {
     [Key]
-    public Guid Titles_title_id { get; set; }
+    [Column("Titles_title_id")]
+    public Guid TitlesTitleId { get; set; }
 
     [Key]
-    public Guid Persons_person_id { get; set; }
+    [Column("Persons_person_id")]
+    public Guid PersonsPersonId { get; set; }
 
-    [ForeignKey("Persons_person_id")]
+    [ForeignKey("PersonsPersonId")]
     [InverseProperty("Writers")]
-    public virtual Person Persons_person { get; set; }
+    public virtual Person PersonsPerson { get; set; }
 
-    [ForeignKey("Titles_title_id")]
+    [ForeignKey("TitlesTitleId")]
     [InverseProperty("Writers")]
-    public virtual Title Titles_title { get; set; }
+    public virtual Title TitlesTitle { get; set; }
 }

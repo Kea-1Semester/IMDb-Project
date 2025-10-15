@@ -8,24 +8,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[PrimaryKey("TitlesTitleId", "PersonsPersonId")]
-[Index("PersonsPersonId", Name = "fk_Titles_has_Persons_Persons1_idx")]
-[Index("TitlesTitleId", Name = "fk_Titles_has_Persons_Titles1_idx")]
-public partial class Director
+[PrimaryKey("TitlesTitleId", "GenresGenreId")]
+[Table("Titles_has_Genres")]
+[Index("GenresGenreId", Name = "fk_Titles_has_Genres_Genres1_idx")]
+[Index("TitlesTitleId", Name = "fk_Titles_has_Genres_Titles1_idx")]
+public partial class TitlesHasGenre
 {
     [Key]
     [Column("Titles_title_id")]
     public Guid TitlesTitleId { get; set; }
 
     [Key]
-    [Column("Persons_person_id")]
-    public Guid PersonsPersonId { get; set; }
+    [Column("Genres_genre_id")]
+    public Guid GenresGenreId { get; set; }
 
-    [ForeignKey("PersonsPersonId")]
-    [InverseProperty("Directors")]
-    public virtual Person PersonsPerson { get; set; }
+    [ForeignKey("GenresGenreId")]
+    [InverseProperty("TitlesHasGenres")]
+    public virtual Genre GenresGenre { get; set; }
 
     [ForeignKey("TitlesTitleId")]
-    [InverseProperty("Directors")]
+    [InverseProperty("TitlesHasGenres")]
     public virtual Title TitlesTitle { get; set; }
 }
