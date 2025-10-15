@@ -140,7 +140,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("alias_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<bool>("IsOriginalTitle")
                         .HasColumnType("tinyint(1)")
@@ -184,7 +184,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("attribute_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<string>("Attribute1")
                         .IsRequired()
@@ -207,7 +207,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("comment_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<string>("Comment1")
                         .IsRequired()
@@ -234,7 +234,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("episode_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<int>("EpisodeNumber")
                         .HasColumnType("int")
@@ -270,7 +270,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("genre_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<string>("Genre1")
                         .IsRequired()
@@ -293,7 +293,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("logging_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<string>("Command")
                         .IsRequired()
@@ -342,7 +342,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("person_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<short>("BirthYear")
                         .HasColumnType("year")
@@ -370,7 +370,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("profession_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<byte[]>("PersonId")
                         .IsRequired()
@@ -400,7 +400,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("rating_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<double>("AverageRating")
                         .HasColumnType("double")
@@ -429,7 +429,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("title_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<short?>("EndYear")
                         .HasColumnType("year")
@@ -481,7 +481,7 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BINARY(16)")
                         .HasColumnName("type_id")
-                        .HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
                     b.Property<string>("Type1")
                         .IsRequired()
