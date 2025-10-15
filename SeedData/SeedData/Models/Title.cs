@@ -34,7 +34,7 @@ public partial class Title
     public bool IsAdult { get; set; }
 
     [Column("start_year", TypeName = "year")]
-    public short StartYear { get; set; }
+    public short? StartYear { get; set; }
 
     [Column("end_year", TypeName = "year")]
     public short? EndYear { get; set; }
