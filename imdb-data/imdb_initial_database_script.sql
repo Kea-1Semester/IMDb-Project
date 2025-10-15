@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Titles` (
   `title_type` VARCHAR(100) NOT NULL,
   `primary_title` VARCHAR(255) NOT NULL,
   `original_title` VARCHAR(255) NOT NULL,
-  `is_adult` BIT(1) NOT NULL DEFAULT (0),
+  `is_adult` TINYINT(1) NOT NULL DEFAULT (0),
   `start_year` YEAR NOT NULL,
   `end_year` YEAR NULL,
   `runtime_minutes` INT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Aliases` (
   `title_id` BINARY(16) NOT NULL,
   `region` VARCHAR(100) NOT NULL,
   `language` VARCHAR(100) NOT NULL,
-  `is_original_title` BIT(1) NOT NULL DEFAULT (0),
+  `is_original_title` TINYINT(1) NOT NULL DEFAULT (0),
   `title` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`alias_id`),
   INDEX `fk_title_akas_title_basics_idx` (`title_id` ASC) VISIBLE,
@@ -127,8 +127,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `imdb`.`Episodes` (
   `episode_id` BINARY(16) NOT NULL DEFAULT (UUID_TO_BIN(UUID(), 1)),
-  `title_id_parent` BINARY(16) NOT NULL,
-  `title_id_child` BINARY(16) NOT NULL,
+  `title_id_parent` BINARY(16) NULL,
+  `title_id_child` BINARY(16) NULL,
   `season_number` INT NOT NULL,
   `episode_number` INT NOT NULL,
   PRIMARY KEY (`episode_id`),
