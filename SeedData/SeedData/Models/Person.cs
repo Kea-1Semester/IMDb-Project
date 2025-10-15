@@ -28,15 +28,18 @@ public partial class Person
     [InverseProperty("TitlesTitle")]
     public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
-    [InverseProperty("PersonsPerson")]
-    public virtual ICollection<Director> Directors { get; set; } = new List<Director>();
-
-    [InverseProperty("PersonsPerson")]
-    public virtual ICollection<KnownFor> KnownFors { get; set; } = new List<KnownFor>();
-
     [InverseProperty("Person")]
     public virtual ICollection<Profession> Professions { get; set; } = new List<Profession>();
 
-    [InverseProperty("PersonsPerson")]
-    public virtual ICollection<Writer> Writers { get; set; } = new List<Writer>();
+    [ForeignKey("PersonsPersonId")]
+    [InverseProperty("PersonsPeople")]
+    public virtual ICollection<Title> TitlesTitles { get; set; } = new List<Title>();
+
+    [ForeignKey("PersonsPersonId")]
+    [InverseProperty("PersonsPeople1")]
+    public virtual ICollection<Title> TitlesTitles1 { get; set; } = new List<Title>();
+
+    [ForeignKey("PersonsPersonId")]
+    [InverseProperty("PersonsPeopleNavigation")]
+    public virtual ICollection<Title> TitlesTitlesNavigation { get; set; } = new List<Title>();
 }

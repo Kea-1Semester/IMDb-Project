@@ -20,6 +20,7 @@ public partial class Type
     [StringLength(100)]
     public string Type1 { get; set; }
 
-    [InverseProperty("TypesType")]
-    public virtual ICollection<AliasesHasType> AliasesHasTypes { get; set; } = new List<AliasesHasType>();
+    [ForeignKey("TypesTypeId")]
+    [InverseProperty("TypesTypes")]
+    public virtual ICollection<Alias> AliasesAliases { get; set; } = new List<Alias>();
 }

@@ -20,6 +20,7 @@ public partial class Genre
     [StringLength(100)]
     public string Genre1 { get; set; }
 
-    [InverseProperty("GenresGenre")]
-    public virtual ICollection<TitlesHasGenre> TitlesHasGenres { get; set; } = new List<TitlesHasGenre>();
+    [ForeignKey("GenresGenreId")]
+    [InverseProperty("GenresGenres")]
+    public virtual ICollection<Title> TitlesTitles { get; set; } = new List<Title>();
 }

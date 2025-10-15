@@ -51,24 +51,28 @@ public partial class Title
     [InverseProperty("Title")]
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    [InverseProperty("TitlesTitle")]
-    public virtual ICollection<Director> Directors { get; set; } = new List<Director>();
-
     [InverseProperty("TitleIdChildNavigation")]
     public virtual ICollection<Episode> EpisodeTitleIdChildNavigations { get; set; } = new List<Episode>();
 
     [InverseProperty("TitleIdParentNavigation")]
     public virtual ICollection<Episode> EpisodeTitleIdParentNavigations { get; set; } = new List<Episode>();
 
-    [InverseProperty("TitlesTitle")]
-    public virtual ICollection<KnownFor> KnownFors { get; set; } = new List<KnownFor>();
-
     [InverseProperty("Title")]
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 
-    [InverseProperty("TitlesTitle")]
-    public virtual ICollection<TitlesHasGenre> TitlesHasGenres { get; set; } = new List<TitlesHasGenre>();
+    [ForeignKey("TitlesTitleId")]
+    [InverseProperty("TitlesTitles")]
+    public virtual ICollection<Genre> GenresGenres { get; set; } = new List<Genre>();
 
-    [InverseProperty("TitlesTitle")]
-    public virtual ICollection<Writer> Writers { get; set; } = new List<Writer>();
+    [ForeignKey("TitlesTitleId")]
+    [InverseProperty("TitlesTitles")]
+    public virtual ICollection<Person> PersonsPeople { get; set; } = new List<Person>();
+
+    [ForeignKey("TitlesTitleId")]
+    [InverseProperty("TitlesTitles1")]
+    public virtual ICollection<Person> PersonsPeople1 { get; set; } = new List<Person>();
+
+    [ForeignKey("TitlesTitleId")]
+    [InverseProperty("TitlesTitlesNavigation")]
+    public virtual ICollection<Person> PersonsPeopleNavigation { get; set; } = new List<Person>();
 }

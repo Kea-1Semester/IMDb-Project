@@ -20,6 +20,7 @@ public partial class Attribute
     [StringLength(100)]
     public string Attribute1 { get; set; }
 
-    [InverseProperty("AttributesAttribute")]
-    public virtual ICollection<AliasesHasAttribute> AliasesHasAttributes { get; set; } = new List<AliasesHasAttribute>();
+    [ForeignKey("AttributesAttributeId")]
+    [InverseProperty("AttributesAttributes")]
+    public virtual ICollection<Alias> AliasesAliases { get; set; } = new List<Alias>();
 }

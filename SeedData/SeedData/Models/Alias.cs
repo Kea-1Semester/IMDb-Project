@@ -36,13 +36,15 @@ public partial class Alias
     [Column("title")]
     public string Title { get; set; }
 
-    [InverseProperty("AliasesAlias")]
-    public virtual ICollection<AliasesHasAttribute> AliasesHasAttributes { get; set; } = new List<AliasesHasAttribute>();
-
-    [InverseProperty("AliasesAlias")]
-    public virtual ICollection<AliasesHasType> AliasesHasTypes { get; set; } = new List<AliasesHasType>();
-
     [ForeignKey("TitleId")]
     [InverseProperty("Aliases")]
     public virtual Title TitleNavigation { get; set; }
+
+    [ForeignKey("AliasesAliasId")]
+    [InverseProperty("AliasesAliases")]
+    public virtual ICollection<Attribute> AttributesAttributes { get; set; } = new List<Attribute>();
+
+    [ForeignKey("AliasesAliasId")]
+    [InverseProperty("AliasesAliases")]
+    public virtual ICollection<Type> TypesTypes { get; set; } = new List<Type>();
 }
