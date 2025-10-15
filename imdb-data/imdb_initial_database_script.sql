@@ -27,11 +27,14 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Titles` (
   `start_year` YEAR NOT NULL,
   `end_year` YEAR NULL,
   `runtime_minutes` INT NULL,
-  PRIMARY KEY (`title_id`),
-  INDEX `title_type_index` (`title_type` ASC) VISIBLE,
-  INDEX `primary_title_index` (`primary_title` ASC) INVISIBLE,
-  INDEX `original_title_index` (`original_title` ASC) VISIBLE)
+  PRIMARY KEY (`title_id`))
 ENGINE = InnoDB;
+
+CREATE INDEX `title_type_index` ON `imdb`.`Titles` (`title_type` ASC) VISIBLE;
+
+CREATE INDEX `primary_title_index` ON `imdb`.`Titles` (`primary_title` ASC) INVISIBLE;
+
+CREATE INDEX `original_title_index` ON `imdb`.`Titles` (`original_title` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
@@ -45,14 +48,16 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Aliases` (
   `is_original_title` TINYINT(1) NOT NULL DEFAULT (0),
   `title` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`alias_id`),
-  INDEX `fk_title_akas_title_basics_idx` (`title_id` ASC) VISIBLE,
-  INDEX `title_index` (`title` ASC) VISIBLE,
   CONSTRAINT `fk_title_akas_title_basics`
     FOREIGN KEY (`title_id`)
     REFERENCES `imdb`.`Titles` (`title_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `fk_title_akas_title_basics_idx` ON `imdb`.`Aliases` (`title_id` ASC) VISIBLE;
+
+CREATE INDEX `title_index` ON `imdb`.`Aliases` (`title` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
@@ -61,9 +66,10 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `imdb`.`Attributes` (
   `attribute_id` BINARY(16) NOT NULL DEFAULT (UUID_TO_BIN(UUID(), 1)),
   `attribute` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`attribute_id`),
-  UNIQUE INDEX `attribute_UNIQUE` (`attribute` ASC) VISIBLE)
+  PRIMARY KEY (`attribute_id`))
 ENGINE = InnoDB;
+
+CREATE UNIQUE INDEX `attribute_UNIQUE` ON `imdb`.`Attributes` (`attribute` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
@@ -72,9 +78,10 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `imdb`.`Types` (
   `type_id` BINARY(16) NOT NULL DEFAULT (UUID_TO_BIN(UUID(), 1)),
   `type` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`type_id`),
-  UNIQUE INDEX `type_UNIQUE` (`type` ASC) VISIBLE)
+  PRIMARY KEY (`type_id`))
 ENGINE = InnoDB;
+
+CREATE UNIQUE INDEX `type_UNIQUE` ON `imdb`.`Types` (`type` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
@@ -83,9 +90,10 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `imdb`.`Genres` (
   `genre_id` BINARY(16) NOT NULL DEFAULT (UUID_TO_BIN(UUID(), 1)),
   `genre` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`genre_id`),
-  UNIQUE INDEX `genre_UNIQUE` (`genre` ASC) VISIBLE)
+  PRIMARY KEY (`genre_id`))
 ENGINE = InnoDB;
+
+CREATE UNIQUE INDEX `genre_UNIQUE` ON `imdb`.`Genres` (`genre` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
@@ -113,7 +121,6 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Comments` (
   `title_id` BINARY(16) NOT NULL,
   `comment` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`comment_id`),
-  INDEX `fk_title_comments_title_basics1_idx` (`title_id` ASC) VISIBLE,
   CONSTRAINT `fk_title_comments_title_basics1`
     FOREIGN KEY (`title_id`)
     REFERENCES `imdb`.`Titles` (`title_id`)
@@ -121,18 +128,19 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Comments` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_title_comments_title_basics1_idx` ON `imdb`.`Comments` (`title_id` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
 -- Table `imdb`.`Episodes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `imdb`.`Episodes` (
   `episode_id` BINARY(16) NOT NULL DEFAULT (UUID_TO_BIN(UUID(), 1)),
-  `title_id_parent` BINARY(16) NULL,
-  `title_id_child` BINARY(16) NULL,
+  `title_id_parent` BINARY(16) NOT NULL,
+  `title_id_child` BINARY(16) NOT NULL,
   `season_number` INT NOT NULL,
   `episode_number` INT NOT NULL,
   PRIMARY KEY (`episode_id`),
-  INDEX `fk_title_episodes_title_basics2_idx` (`title_id_child` ASC) VISIBLE,
   CONSTRAINT `fk_title_episodes_title_basics1`
     FOREIGN KEY (`title_id_parent`)
     REFERENCES `imdb`.`Titles` (`title_id`)
@@ -144,6 +152,8 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Episodes` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `fk_title_episodes_title_basics2_idx` ON `imdb`.`Episodes` (`title_id_child` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
@@ -166,8 +176,6 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Actors` (
   `Persons_person_id` BINARY(16) NOT NULL,
   `Role` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`Titles_title_id`, `Persons_person_id`),
-  INDEX `fk_Titles_has_Persons_Persons3_idx` (`Persons_person_id` ASC) VISIBLE,
-  INDEX `fk_Titles_has_Persons_Titles3_idx` (`Titles_title_id` ASC) VISIBLE,
   CONSTRAINT `fk_Titles_has_Persons_Titles3`
     FOREIGN KEY (`Titles_title_id`)
     REFERENCES `imdb`.`Persons` (`person_id`)
@@ -180,6 +188,10 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Actors` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_Titles_has_Persons_Persons3_idx` ON `imdb`.`Actors` (`Persons_person_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Titles_has_Persons_Titles3_idx` ON `imdb`.`Actors` (`Titles_title_id` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
 -- Table `imdb`.`Aliases_has_Attributes`
@@ -188,8 +200,6 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Aliases_has_Attributes` (
   `Aliases_alias_id` BINARY(16) NOT NULL,
   `Attributes_attribute_id` BINARY(16) NOT NULL,
   PRIMARY KEY (`Aliases_alias_id`, `Attributes_attribute_id`),
-  INDEX `fk_Aliases_has_Attributes_Attributes1_idx` (`Attributes_attribute_id` ASC) VISIBLE,
-  INDEX `fk_Aliases_has_Attributes_Aliases1_idx` (`Aliases_alias_id` ASC) VISIBLE,
   CONSTRAINT `fk_Aliases_has_Attributes_Aliases1`
     FOREIGN KEY (`Aliases_alias_id`)
     REFERENCES `imdb`.`Aliases` (`alias_id`)
@@ -202,6 +212,10 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Aliases_has_Attributes` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_Aliases_has_Attributes_Attributes1_idx` ON `imdb`.`Aliases_has_Attributes` (`Attributes_attribute_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Aliases_has_Attributes_Aliases1_idx` ON `imdb`.`Aliases_has_Attributes` (`Aliases_alias_id` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
 -- Table `imdb`.`Aliases_has_Types`
@@ -210,8 +224,6 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Aliases_has_Types` (
   `Aliases_alias_id` BINARY(16) NOT NULL,
   `Types_type_id` BINARY(16) NOT NULL,
   PRIMARY KEY (`Aliases_alias_id`, `Types_type_id`),
-  INDEX `fk_Aliases_has_Types_Types1_idx` (`Types_type_id` ASC) VISIBLE,
-  INDEX `fk_Aliases_has_Types_Aliases1_idx` (`Aliases_alias_id` ASC) VISIBLE,
   CONSTRAINT `fk_Aliases_has_Types_Aliases1`
     FOREIGN KEY (`Aliases_alias_id`)
     REFERENCES `imdb`.`Aliases` (`alias_id`)
@@ -224,6 +236,10 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Aliases_has_Types` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_Aliases_has_Types_Types1_idx` ON `imdb`.`Aliases_has_Types` (`Types_type_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Aliases_has_Types_Aliases1_idx` ON `imdb`.`Aliases_has_Types` (`Aliases_alias_id` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
 -- Table `imdb`.`Titles_has_Genres`
@@ -232,8 +248,6 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Titles_has_Genres` (
   `Titles_title_id` BINARY(16) NOT NULL,
   `Genres_genre_id` BINARY(16) NOT NULL,
   PRIMARY KEY (`Titles_title_id`, `Genres_genre_id`),
-  INDEX `fk_Titles_has_Genres_Genres1_idx` (`Genres_genre_id` ASC) VISIBLE,
-  INDEX `fk_Titles_has_Genres_Titles1_idx` (`Titles_title_id` ASC) VISIBLE,
   CONSTRAINT `fk_Titles_has_Genres_Titles1`
     FOREIGN KEY (`Titles_title_id`)
     REFERENCES `imdb`.`Titles` (`title_id`)
@@ -246,6 +260,10 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Titles_has_Genres` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_Titles_has_Genres_Genres1_idx` ON `imdb`.`Titles_has_Genres` (`Genres_genre_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Titles_has_Genres_Titles1_idx` ON `imdb`.`Titles_has_Genres` (`Titles_title_id` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
 -- Table `imdb`.`Directors`
@@ -254,8 +272,6 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Directors` (
   `Titles_title_id` BINARY(16) NOT NULL,
   `Persons_person_id` BINARY(16) NOT NULL,
   PRIMARY KEY (`Titles_title_id`, `Persons_person_id`),
-  INDEX `fk_Titles_has_Persons_Persons1_idx` (`Persons_person_id` ASC) VISIBLE,
-  INDEX `fk_Titles_has_Persons_Titles1_idx` (`Titles_title_id` ASC) VISIBLE,
   CONSTRAINT `fk_Titles_has_Persons_Titles1`
     FOREIGN KEY (`Titles_title_id`)
     REFERENCES `imdb`.`Titles` (`title_id`)
@@ -268,6 +284,10 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Directors` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_Titles_has_Persons_Persons1_idx` ON `imdb`.`Directors` (`Persons_person_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Titles_has_Persons_Titles1_idx` ON `imdb`.`Directors` (`Titles_title_id` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
 -- Table `imdb`.`Known_for`
@@ -276,8 +296,6 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Known_for` (
   `Titles_title_id` BINARY(16) NOT NULL,
   `Persons_person_id` BINARY(16) NOT NULL,
   PRIMARY KEY (`Titles_title_id`, `Persons_person_id`),
-  INDEX `fk_Titles_has_Persons_Persons2_idx` (`Persons_person_id` ASC) VISIBLE,
-  INDEX `fk_Titles_has_Persons_Titles2_idx` (`Titles_title_id` ASC) VISIBLE,
   CONSTRAINT `fk_Titles_has_Persons_Titles2`
     FOREIGN KEY (`Titles_title_id`)
     REFERENCES `imdb`.`Titles` (`title_id`)
@@ -290,6 +308,10 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Known_for` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_Titles_has_Persons_Persons2_idx` ON `imdb`.`Known_for` (`Persons_person_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Titles_has_Persons_Titles2_idx` ON `imdb`.`Known_for` (`Titles_title_id` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
 -- Table `imdb`.`Writers`
@@ -298,8 +320,6 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Writers` (
   `Titles_title_id` BINARY(16) NOT NULL,
   `Persons_person_id` BINARY(16) NOT NULL,
   PRIMARY KEY (`Titles_title_id`, `Persons_person_id`),
-  INDEX `fk_Titles_has_Persons_Persons4_idx` (`Persons_person_id` ASC) VISIBLE,
-  INDEX `fk_Titles_has_Persons_Titles4_idx` (`Titles_title_id` ASC) VISIBLE,
   CONSTRAINT `fk_Titles_has_Persons_Titles4`
     FOREIGN KEY (`Titles_title_id`)
     REFERENCES `imdb`.`Titles` (`title_id`)
@@ -312,6 +332,10 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Writers` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_Titles_has_Persons_Persons4_idx` ON `imdb`.`Writers` (`Persons_person_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Titles_has_Persons_Titles4_idx` ON `imdb`.`Writers` (`Titles_title_id` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
 -- Table `imdb`.`Professions`
@@ -321,14 +345,16 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Professions` (
   `person_id` BINARY(16) NOT NULL,
   `profession` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`profession_id`),
-  INDEX `fk_Professions_Persons1_idx` (`person_id` ASC) VISIBLE,
-  UNIQUE INDEX `profession_UNIQUE` (`profession` ASC) VISIBLE,
   CONSTRAINT `fk_Professions_Persons1`
     FOREIGN KEY (`person_id`)
     REFERENCES `imdb`.`Persons` (`person_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `fk_Professions_Persons1_idx` ON `imdb`.`Professions` (`person_id` ASC) VISIBLE;
+
+CREATE UNIQUE INDEX `profession_UNIQUE` ON `imdb`.`Professions` (`profession` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
@@ -342,10 +368,12 @@ CREATE TABLE IF NOT EXISTS `imdb`.`Loggings` (
   `old_value` JSON NULL,
   `executed_by` VARCHAR(100) NULL,
   `executed_at` DATETIME(6) NOT NULL DEFAULT (CURRENT_TIMESTAMP(6)),
-  PRIMARY KEY (`logging_id`),
-  INDEX `table_name_index` (`table_name` ASC) INVISIBLE,
-  INDEX `executed_at_index` (`executed_at` ASC) VISIBLE)
+  PRIMARY KEY (`logging_id`))
 ENGINE = InnoDB;
+
+CREATE INDEX `table_name_index` ON `imdb`.`Loggings` (`table_name` ASC) INVISIBLE;
+
+CREATE INDEX `executed_at_index` ON `imdb`.`Loggings` (`executed_at` ASC) VISIBLE;
 
 USE `imdb`;
 
