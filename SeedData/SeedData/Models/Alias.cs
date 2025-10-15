@@ -13,11 +13,11 @@ namespace SeedData.Models;
 public partial class Alias
 {
     [Key]
-    [Column("alias_id")]
-    public Guid AliasId { get; set; }
+    [Column("alias_id", TypeName = "BINARY(16)")]
+    public Guid AliasId { get; set; } = new Guid();
 
-    [Column("title_id")]
-    public Guid TitleId { get; set; }
+    [Column("title_id", TypeName = "BINARY(16)")]
+    public Guid TitleId { get; set; } = new Guid();
 
     [Required]
     [Column("region")]

@@ -14,12 +14,12 @@ namespace SeedData.Models;
 public partial class Actor
 {
     [Key]
-    [Column("Titles_title_id")]
-    public Guid TitlesTitleId { get; set; }
+    [Column("Titles_title_id", TypeName = "BINARY(16)")]
+    public Guid TitlesTitleId { get; set; } = new Guid();
 
     [Key]
-    [Column("Persons_person_id")]
-    public Guid PersonsPersonId { get; set; }
+    [Column("Persons_person_id", TypeName = "BINARY(16)")]
+    public Guid PersonsPersonId { get; set; } = new Guid();
 
     [Required]
     [StringLength(100)]

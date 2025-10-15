@@ -13,14 +13,14 @@ namespace SeedData.Models;
 public partial class Episode
 {
     [Key]
-    [Column("episode_id")]
-    public Guid EpisodeId { get; set; }
+    [Column("episode_id",TypeName = "BINARY(16)")]
+    public Guid EpisodeId { get; set; } = new Guid();
 
-    [Column("title_id_parent")]
-    public Guid? TitleIdParent { get; set; }
+    [Column("title_id_parent", TypeName = "BINARY(16)")]
+    public Guid TitleIdParent { get; set; } = new Guid();
 
-    [Column("title_id_child")]
-    public Guid? TitleIdChild { get; set; }
+    [Column("title_id_child", TypeName = "BINARY(16)")]
+    public Guid TitleIdChild { get; set; } = new Guid();
 
     [Column("season_number")]
     public int SeasonNumber { get; set; }

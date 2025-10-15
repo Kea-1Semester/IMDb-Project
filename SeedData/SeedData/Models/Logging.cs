@@ -13,11 +13,11 @@ namespace SeedData.Models;
 public partial class Logging
 {
     [Key]
-    [Column("logging_id")]
-    public Guid LoggingId { get; set; }
+    [Column("logging_id", TypeName = "BINARY(16)")]
+    public Guid LoggingId { get; set; } = new Guid();
 
     [Required]
-    [Column("table_name")]
+    [Column("table_name", TypeName = "BINARY(16)")]
     [StringLength(100)]
     public string TableName { get; set; }
 

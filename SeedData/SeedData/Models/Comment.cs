@@ -12,11 +12,11 @@ namespace SeedData.Models;
 public partial class Comment
 {
     [Key]
-    [Column("comment_id")]
-    public Guid CommentId { get; set; }
+    [Column("comment_id", TypeName = "BINARY(16)")]
+    public Guid CommentId { get; set; } = new Guid();
 
-    [Column("title_id")]
-    public Guid TitleId { get; set; }
+    [Column("title_id", TypeName = "BINARY(16)")]
+    public Guid TitleId { get; set; } = new Guid();
 
     [Required]
     [Column("comment")]

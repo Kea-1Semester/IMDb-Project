@@ -14,8 +14,8 @@ namespace SeedData.Models;
 public partial class Title
 {
     [Key]
-    [Column("title_id")]
-    public Guid TitleId { get; set; }
+    [Column("title_id", TypeName = "BINARY(16)")]
+    public Guid TitleId { get; set; } = new Guid();
 
     [Required]
     [Column("title_type")]
@@ -34,7 +34,7 @@ public partial class Title
     public bool IsAdult { get; set; }
 
     [Column("start_year", TypeName = "year")]
-    public short? StartYear { get; set; }
+    public short StartYear { get; set; }
 
     [Column("end_year", TypeName = "year")]
     public short? EndYear { get; set; }
