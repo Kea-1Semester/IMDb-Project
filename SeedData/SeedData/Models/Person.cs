@@ -19,11 +19,11 @@ public partial class Person
     [StringLength(255)]
     public string Name { get; set; }
 
-    [Column("birth_year", TypeName = "year")]
-    public short BirthYear { get; set; }
+    [Column("birth_year", TypeName = "smallint")]
+    public int BirthYear { get; set; }
 
-    [Column("end_year", TypeName = "year")]
-    public short? EndYear { get; set; }
+    [Column("end_year", TypeName = "smallint")]
+    public int? EndYear { get; set; }
 
     [InverseProperty("TitlesTitle")]
     public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();

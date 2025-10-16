@@ -33,11 +33,11 @@ public partial class Title
     [Column("is_adult")]
     public bool IsAdult { get; set; }
 
-    [Column("start_year", TypeName = "year")]
-    public short StartYear { get; set; }
+    [Column("start_year", TypeName = "smallint")]
+    public int StartYear { get; set; }
 
-    [Column("end_year", TypeName = "year")]
-    public short? EndYear { get; set; }
+    [Column("end_year", TypeName = "smallint")]
+    public int? EndYear { get; set; }
 
     [Column("runtime_minutes")]
     public int? RuntimeMinutes { get; set; }
