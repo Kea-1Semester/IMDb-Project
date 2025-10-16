@@ -2,12 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SeedData.Handlers;
 using SeedData.Models;
 
 namespace SeedData
 {
     static class Program
     {
+        private const int seed = 123456;
+
         static async Task Main(string[] args)
         {
             Env.TraversePath().Load();
@@ -16,7 +19,18 @@ namespace SeedData
                 .UseMySql(
                     Env.GetString("ConnectionString"),
                     ServerVersion.AutoDetect(Env.GetString("ConnectionString"))
-                );
+                )
+                .UseAsyncSeeding(async (dbContext, _, cancellationToken) =>
+                {
+                    Console.WriteLine("Initializing seeding of data");
+                    
+                    await SeedDataHandler.SeedAsync(dbContext, cancellationToken, seed);
+                    
+                    Console.WriteLine("Finished seeding");
+                })
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors();
 
             using (var _context = new ImdbContext(optionsBuilder.Options))
             {
@@ -25,11 +39,6 @@ namespace SeedData
                 var exists = await _context.Database.EnsureCreatedAsync();
 
                 Console.WriteLine(exists ? "Created the database" : "Database already exists");
-                Console.WriteLine("Running migration for database...");
-
-                await _context.Database.MigrateAsync();
-
-                Console.WriteLine("Finished trying to migrate");
             }
 
             Console.WriteLine("Program Completed");
