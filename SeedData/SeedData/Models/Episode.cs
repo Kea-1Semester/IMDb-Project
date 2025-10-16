@@ -17,10 +17,10 @@ public partial class Episode
     public Guid EpisodeId { get; set; }
 
     [Column("title_id_parent")]
-    public Guid? TitleIdParent { get; set; }
+    public Guid TitleIdParent { get; set; }
 
     [Column("title_id_child")]
-    public Guid? TitleIdChild { get; set; }
+    public Guid TitleIdChild { get; set; }
 
     [Column("season_number")]
     public int SeasonNumber { get; set; }

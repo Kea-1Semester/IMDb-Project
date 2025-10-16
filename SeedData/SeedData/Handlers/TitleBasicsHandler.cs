@@ -50,7 +50,7 @@ namespace SeedData.Handlers
             Console.WriteLine("Seeded first 50,000 TitleBasic records.");
         }
 
-        static short? ParseYear(string value)
+        static short ParseYear(string value)
         {
             if (value == "\\N") return 0;
             if (short.TryParse(value, out var year) && (year == 0 || (year >= 1901 && year <= 2155)))

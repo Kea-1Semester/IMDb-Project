@@ -1,7 +1,7 @@
-﻿using SeedData.Models;
-using DotNetEnv;
+﻿using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using SeedData.Handlers;
+using SeedData.Models;
 
 namespace SeedData
 {
@@ -19,16 +19,32 @@ namespace SeedData
             string titleCrewPath = Path.Combine(dataFolder, "title.crew.tsv");
 
             var dbContextOptions = new DbContextOptionsBuilder<ImdbContext>().UseMySql(Env.GetString("ConnectionString"), ServerVersion.AutoDetect(Env.GetString("ConnectionString"))).Options;
+            Console.WriteLine("Starting data seeding...");
+
+            var titleBasics = new List<Title>();
 
             using (var context = new ImdbContext(dbContextOptions))
             {
+
                 TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath);
-                //TitleRatingsHandler.SeedTitleRatings(context, titleRatingsPath);
-                //NameBasicsHandler.SeedNameBasics(context, nameBasicPath);
-                //TitleCrewHandler.SeedTitleCrew(context, titleCrewPath);
+                AddPersonToDb.AddPerson(context, nameBasicPath);
+
+
+
+
             }
 
             Console.WriteLine("Data seeding completed.");
+
         }
+        //static short ParseYear(string value)
+        //{
+        //    if (value == "\\N") return 0;
+        //    if (short.TryParse(value, out var year) && (year == 0 || (year >= 1901 && year <= 2155)))
+        //        return year;
+        //    // cant be null represented in db so return 9999
+        //    return 0;
+        //}
+
     }
 }

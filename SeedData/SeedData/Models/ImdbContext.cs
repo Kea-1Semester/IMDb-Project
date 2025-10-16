@@ -139,9 +139,13 @@ public partial class ImdbContext : DbContext
 
             entity.Property(e => e.EpisodeId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
 
-            entity.HasOne(d => d.TitleIdChildNavigation).WithMany(p => p.EpisodeTitleIdChildNavigations).HasConstraintName("fk_title_episodes_title_basics2");
+            entity.HasOne(d => d.TitleIdChildNavigation).WithMany(p => p.EpisodeTitleIdChildNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_title_episodes_title_basics2");
 
-            entity.HasOne(d => d.TitleIdParentNavigation).WithMany(p => p.EpisodeTitleIdParentNavigations).HasConstraintName("fk_title_episodes_title_basics1");
+            entity.HasOne(d => d.TitleIdParentNavigation).WithMany(p => p.EpisodeTitleIdParentNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_title_episodes_title_basics1");
         });
 
         modelBuilder.Entity<Genre>(entity =>
