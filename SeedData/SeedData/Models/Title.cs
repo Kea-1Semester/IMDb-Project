@@ -15,7 +15,8 @@ public partial class Title
 {
     [Key]
     [Column("title_id")]
-    public Guid TitleId { get; set; }
+    [StringLength(50)]
+    public string TitleId { get; set; }
 
     [Required]
     [Column("title_type")]
@@ -42,7 +43,7 @@ public partial class Title
     [Column("runtime_minutes")]
     public int? RuntimeMinutes { get; set; }
 
-    [InverseProperty("PersonsPerson")]
+    [InverseProperty("TitlesTitle")]
     public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
     [InverseProperty("TitleNavigation")]

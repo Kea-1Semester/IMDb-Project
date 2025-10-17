@@ -15,8 +15,10 @@ public partial class Comment
     [Column("comment_id")]
     public Guid CommentId { get; set; }
 
+    [Required]
     [Column("title_id")]
-    public Guid TitleId { get; set; }
+    [StringLength(50)]
+    public string TitleId { get; set; }
 
     [Required]
     [Column("comment")]

@@ -8,28 +8,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Models;
 
-[PrimaryKey("TitlesTitleId", "PersonsPersonId")]
 [Index("PersonsPersonId", Name = "fk_Titles_has_Persons_Persons3_idx")]
 [Index("TitlesTitleId", Name = "fk_Titles_has_Persons_Titles3_idx")]
 public partial class Actor
 {
     [Key]
-    [Column("Titles_title_id")]
-    public Guid TitlesTitleId { get; set; }
-
-    [Key]
-    [Column("Persons_person_id")]
-    public Guid PersonsPersonId { get; set; }
+    public int Id { get; set; }
 
     [Required]
+    [Column("Titles_title_id")]
+    [StringLength(50)]
+    public string TitlesTitleId { get; set; }
+
+    [Required]
+    [Column("Persons_person_id")]
+    [StringLength(50)]
+    public string PersonsPersonId { get; set; }
+
     [StringLength(100)]
     public string Role { get; set; }
 
     [ForeignKey("PersonsPersonId")]
     [InverseProperty("Actors")]
-    public virtual Title PersonsPerson { get; set; }
+    public virtual Person PersonsPerson { get; set; }
 
     [ForeignKey("TitlesTitleId")]
     [InverseProperty("Actors")]
-    public virtual Person TitlesTitle { get; set; }
+    public virtual Title TitlesTitle { get; set; }
 }

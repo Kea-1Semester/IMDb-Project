@@ -1,6 +1,7 @@
 ﻿using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using SeedData.Handlers;
+//using SeedData.Handlers;
 using SeedData.Models;
 
 namespace SeedData
@@ -17,17 +18,52 @@ namespace SeedData
             string titleRatingsPath = Path.Combine(dataFolder, "title.ratings.tsv");
             string nameBasicPath = Path.Combine(dataFolder, "name.basics.tsv");
             string titleCrewPath = Path.Combine(dataFolder, "title.crew.tsv");
+            string titleEpisodePath = Path.Combine(dataFolder, "title.episode.tsv");
+            string titlePrincipalsPath = Path.Combine(dataFolder, "principals.tsv");
 
             var dbContextOptions = new DbContextOptionsBuilder<ImdbContext>().UseMySql(Env.GetString("ConnectionString"), ServerVersion.AutoDetect(Env.GetString("ConnectionString"))).Options;
             Console.WriteLine("Starting data seeding...");
 
-            var titleBasics = new List<Title>();
-
             using (var context = new ImdbContext(dbContextOptions))
             {
 
-                TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath);
-                AddPersonToDb.AddPerson(context, nameBasicPath);
+                //TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath, 100000);
+                //AddPersonToDb.AddPerson(context, nameBasicPath, 100000, titlePrincipalsPath);
+                //AddCrewToDb.AddCrew(context, titleCrewPath, 50000);
+                //AddEpisode.AddEpisodes(context, titleEpisodePath, 50000);
+                //AddActor.AddActorToDb(context, titlePrincipalsPath);
+
+                var actionMovies = context.Titles
+                    .Include(t => t.GenresGenres)
+                    .Where(t => t.GenresGenres.Any(g => g.Genre1 == "Action"))
+                    .Select(t => new
+                    {
+                        t.PrimaryTitle,
+                        t.OriginalTitle,
+                        t.StartYear,
+                        Genre = t.GenresGenres
+                            .Where(g => g.Genre1 == "Action")
+                            .Select(g => g.Genre1)
+                            .FirstOrDefault()
+                    })
+                    .Take(100)
+                    .ToList();
+
+                var table = new ConsoleTablePrinter(new[] { "Primary Title", "Original Title", "Start Year", "Genre" });
+
+                foreach (var movie in actionMovies)
+                {
+                    table.AddRow(new[]
+                    {
+                        movie.PrimaryTitle ?? "",
+                        movie.OriginalTitle ?? "",
+                        movie.StartYear.ToString(),
+                        movie.Genre ?? ""
+                    });
+                }
+                table.Print();
+
+
 
 
 
@@ -37,14 +73,7 @@ namespace SeedData
             Console.WriteLine("Data seeding completed.");
 
         }
-        //static short ParseYear(string value)
-        //{
-        //    if (value == "\\N") return 0;
-        //    if (short.TryParse(value, out var year) && (year == 0 || (year >= 1901 && year <= 2155)))
-        //        return year;
-        //    // cant be null represented in db so return 9999
-        //    return 0;
-        //}
+
 
     }
 }

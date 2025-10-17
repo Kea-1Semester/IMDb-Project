@@ -12,7 +12,8 @@ public partial class Person
 {
     [Key]
     [Column("person_id")]
-    public Guid PersonId { get; set; }
+    [StringLength(50)]
+    public string PersonId { get; set; }
 
     [Required]
     [Column("name")]
@@ -25,7 +26,7 @@ public partial class Person
     [Column("end_year", TypeName = "year")]
     public short? EndYear { get; set; }
 
-    [InverseProperty("TitlesTitle")]
+    [InverseProperty("PersonsPerson")]
     public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
     [InverseProperty("Person")]

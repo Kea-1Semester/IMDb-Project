@@ -15,8 +15,10 @@ public partial class Rating
     [Column("rating_id")]
     public Guid RatingId { get; set; }
 
+    [Required]
     [Column("title_id")]
-    public Guid TitleId { get; set; }
+    [StringLength(50)]
+    public string TitleId { get; set; }
 
     [Column("average_rating")]
     public double AverageRating { get; set; }

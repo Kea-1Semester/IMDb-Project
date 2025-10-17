@@ -16,8 +16,10 @@ public partial class Alias
     [Column("alias_id")]
     public Guid AliasId { get; set; }
 
+    [Required]
     [Column("title_id")]
-    public Guid TitleId { get; set; }
+    [StringLength(50)]
+    public string TitleId { get; set; }
 
     [Required]
     [Column("region")]

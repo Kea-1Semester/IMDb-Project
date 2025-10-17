@@ -45,9 +45,9 @@ public partial class ImdbContext : DbContext
 
         modelBuilder.Entity<Actor>(entity =>
         {
-            entity.HasKey(e => new { e.TitlesTitleId, e.PersonsPersonId })
-                .HasName("PRIMARY")
-                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
 
             entity.HasOne(d => d.PersonsPerson).WithMany(p => p.Actors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -166,8 +166,6 @@ public partial class ImdbContext : DbContext
         modelBuilder.Entity<Person>(entity =>
         {
             entity.HasKey(e => e.PersonId).HasName("PRIMARY");
-
-            entity.Property(e => e.PersonId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
         });
 
         modelBuilder.Entity<Profession>(entity =>
@@ -196,8 +194,6 @@ public partial class ImdbContext : DbContext
         {
             entity.HasKey(e => e.TitleId).HasName("PRIMARY");
 
-            entity.Property(e => e.TitleId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
-
             entity.HasMany(d => d.GenresGenres).WithMany(p => p.TitlesTitles)
                 .UsingEntity<Dictionary<string, object>>(
                     "TitlesHasGenre",
@@ -217,7 +213,9 @@ public partial class ImdbContext : DbContext
                         j.ToTable("Titles_has_Genres");
                         j.HasIndex(new[] { "GenresGenreId" }, "fk_Titles_has_Genres_Genres1_idx");
                         j.HasIndex(new[] { "TitlesTitleId" }, "fk_Titles_has_Genres_Titles1_idx");
-                        j.IndexerProperty<Guid>("TitlesTitleId").HasColumnName("Titles_title_id");
+                        j.IndexerProperty<string>("TitlesTitleId")
+                            .HasMaxLength(50)
+                            .HasColumnName("Titles_title_id");
                         j.IndexerProperty<Guid>("GenresGenreId").HasColumnName("Genres_genre_id");
                     });
 
@@ -240,8 +238,12 @@ public partial class ImdbContext : DbContext
                         j.ToTable("Directors");
                         j.HasIndex(new[] { "PersonsPersonId" }, "fk_Titles_has_Persons_Persons1_idx");
                         j.HasIndex(new[] { "TitlesTitleId" }, "fk_Titles_has_Persons_Titles1_idx");
-                        j.IndexerProperty<Guid>("TitlesTitleId").HasColumnName("Titles_title_id");
-                        j.IndexerProperty<Guid>("PersonsPersonId").HasColumnName("Persons_person_id");
+                        j.IndexerProperty<string>("TitlesTitleId")
+                            .HasMaxLength(50)
+                            .HasColumnName("Titles_title_id");
+                        j.IndexerProperty<string>("PersonsPersonId")
+                            .HasMaxLength(50)
+                            .HasColumnName("Persons_person_id");
                     });
 
             entity.HasMany(d => d.PersonsPeople1).WithMany(p => p.TitlesTitles1)
@@ -263,8 +265,12 @@ public partial class ImdbContext : DbContext
                         j.ToTable("Writers");
                         j.HasIndex(new[] { "PersonsPersonId" }, "fk_Titles_has_Persons_Persons4_idx");
                         j.HasIndex(new[] { "TitlesTitleId" }, "fk_Titles_has_Persons_Titles4_idx");
-                        j.IndexerProperty<Guid>("TitlesTitleId").HasColumnName("Titles_title_id");
-                        j.IndexerProperty<Guid>("PersonsPersonId").HasColumnName("Persons_person_id");
+                        j.IndexerProperty<string>("TitlesTitleId")
+                            .HasMaxLength(50)
+                            .HasColumnName("Titles_title_id");
+                        j.IndexerProperty<string>("PersonsPersonId")
+                            .HasMaxLength(50)
+                            .HasColumnName("Persons_person_id");
                     });
 
             entity.HasMany(d => d.PersonsPeopleNavigation).WithMany(p => p.TitlesTitlesNavigation)
@@ -286,8 +292,12 @@ public partial class ImdbContext : DbContext
                         j.ToTable("Known_for");
                         j.HasIndex(new[] { "PersonsPersonId" }, "fk_Titles_has_Persons_Persons2_idx");
                         j.HasIndex(new[] { "TitlesTitleId" }, "fk_Titles_has_Persons_Titles2_idx");
-                        j.IndexerProperty<Guid>("TitlesTitleId").HasColumnName("Titles_title_id");
-                        j.IndexerProperty<Guid>("PersonsPersonId").HasColumnName("Persons_person_id");
+                        j.IndexerProperty<string>("TitlesTitleId")
+                            .HasMaxLength(50)
+                            .HasColumnName("Titles_title_id");
+                        j.IndexerProperty<string>("PersonsPersonId")
+                            .HasMaxLength(50)
+                            .HasColumnName("Persons_person_id");
                     });
         });
 

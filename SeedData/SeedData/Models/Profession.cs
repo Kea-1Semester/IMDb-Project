@@ -16,8 +16,10 @@ public partial class Profession
     [Column("profession_id")]
     public Guid ProfessionId { get; set; }
 
+    [Required]
     [Column("person_id")]
-    public Guid PersonId { get; set; }
+    [StringLength(50)]
+    public string PersonId { get; set; }
 
     [Required]
     [Column("profession")]
