@@ -1,7 +1,6 @@
 imdb-data/name.basics.tsv
 /SeedData/.vs
 /SeedData/SeedData/data/*
-!/SeedData/SeedData/data/data_sample.txt
 /imdb-data/*
 /.vs/*
 /.vscode/*
