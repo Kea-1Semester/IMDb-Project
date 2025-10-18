@@ -4,7 +4,7 @@ namespace SeedData.Handlers
 {
     public static class AddPersonToDb
     {
-        public static void AddPerson(ImdbContext context, string personTsv, int noOfRow, string principals)
+        public static void AddPerson(ImdbContext context, string personTsv, int noOfRow)
         {
             Console.WriteLine("Seed dat for AddPerson To Db");
             // add person to db
@@ -63,32 +63,6 @@ namespace SeedData.Handlers
                     }
                 }
                 context.Persons.Add(personEntity);
-
-                //// principals
-                //var uniqueActors = new HashSet<(string TitleId, string PersonId)>();
-
-                //foreach (var linePrincipal in File.ReadAllLines(principals).Skip(1))
-                //{
-                //    var parts = linePrincipal.Split('\t');
-                //    var titleId = parts[0];
-                //    var personIdPrincipal = parts[2];
-                //    var role = parts.Length > 5 && !string.IsNullOrWhiteSpace(parts[5]) ? parts[5].Trim('"') : null;
-
-                //    // Only add if this is the current person and the combination is unique
-                //    if (personId == personIdPrincipal && uniqueActors.Add((titleId, personId)))
-                //    {
-                //        var title = context.Titles.FirstOrDefault(t => t.TitleId == titleId);
-                //        if (title != null)
-                //        {
-                //            title.Actors.Add(new Actor
-                //            {
-                //                PersonsPersonId = personId,
-                //                TitlesTitleId = titleId,
-                //                Role = role
-                //            });
-                //        }
-                //    }
-                //}
 
 
             }

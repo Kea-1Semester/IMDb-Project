@@ -7,8 +7,8 @@ namespace SeedData.Handlers
         public static void SeedTitleBasics(ImdbContext context, string titleBasicPath, int noOfRow)
         {
             Console.WriteLine("Seed data for title");
-            var person = new List<Person>();
-            var professions = new List<Profession>();
+            // var person = new List<Person>();
+            // var professions = new List<Profession>();
 
 
             var titleBasics = new List<Title>();
