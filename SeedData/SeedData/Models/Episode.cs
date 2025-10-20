@@ -13,7 +13,7 @@ namespace SeedData.Models;
 public partial class Episode
 {
     [Key]
-    [Column("episode_id",TypeName = "BINARY(16)")]
+    [Column("episode_id", TypeName = "BINARY(16)")]
     public Guid EpisodeId { get; set; } = new Guid();
 
     [Column("title_id_parent", TypeName = "BINARY(16)")]
