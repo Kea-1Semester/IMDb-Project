@@ -4,25 +4,50 @@ namespace SeedData.Handlers
 {
     public static class AddEpisode
     {
-        public static void AddEpisodes(ImdbContext context, string path, int noOfRow)
+        public static async Task AddEpisodes(ImdbContext context, string path, int noOfRow, Dictionary<string, Guid> titleIdsDict)
         {
             Console.WriteLine("Seed data for AddEpisode");
-            var titlesDict = context.Titles.ToDictionary(t => t.TitleId, t => t);
-            var episodes = File.ReadAllLines(path)
-                .Skip(1)
-                .Select(line => line.Split('\t'))
-                .Select(parts => new Episode
+
+            var episodes = new List<Episode>();
+
+            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
+            {
+                using (var reader = new StreamReader(stream))
                 {
-                    EpisodeId = Guid.NewGuid(),
-                    TitleIdParent = parts[0],
-                    TitleIdChild = parts[1],
-                    SeasonNumber = Parse(parts[2]),
-                    EpisodeNumber = Parse(parts[3])
-                })
-                .Where(episode => titlesDict.ContainsKey(episode.TitleIdParent) && titlesDict.ContainsKey(episode.TitleIdChild))
-                .ToList();
-            context.Episodes.AddRange(episodes);
-            context.SaveChanges();
+                    await reader.ReadLineAsync(); // Skip header line
+
+                    string? line;
+                    int count = 0;
+                    while ((line = await reader.ReadLineAsync()) != null)
+                    {
+                        var columns = line.Split('\t');
+                        var titleIdParent = titleIdsDict.TryGetValue(columns[0], out var parent) ? parent : Guid.Empty;
+                        var titleIdChild = titleIdsDict.TryGetValue(columns[1], out var child) ? child : Guid.Empty;
+
+                        if (titleIdParent != default && titleIdChild != default)
+                        {
+                            episodes.Add(new Episode
+                            {
+                                EpisodeId = Guid.NewGuid(),
+                                TitleIdParent = titleIdParent,
+                                TitleIdChild = titleIdChild,
+                                SeasonNumber = Parse(columns[2]),
+                                EpisodeNumber = Parse(columns[3])
+                            });
+                        }
+
+                        count++;
+                        if (count >= noOfRow)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }                    
+
+            await context.Episodes.AddRangeAsync(episodes);
+            await context.SaveChangesAsync();
+
             Console.WriteLine($"Seeded first {noOfRow} Episode records.");
         }
 

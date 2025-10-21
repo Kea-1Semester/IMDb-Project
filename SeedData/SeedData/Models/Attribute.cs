@@ -12,8 +12,8 @@ namespace SeedData.Models;
 public partial class Attribute
 {
     [Key]
-    [Column("attribute_id", TypeName = "BINARY(16)")]
-    public Guid AttributeId { get; set; } = new Guid();
+    [Column("attribute_id")]
+    public Guid AttributeId { get; set; }
 
     [Required]
     [Column("attribute")]

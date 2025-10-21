@@ -12,11 +12,11 @@ namespace SeedData.Models;
 public partial class Rating
 {
     [Key]
-    [Column("rating_id", TypeName = "BINARY(16)")]
-    public Guid RatingId { get; set; } = new Guid();
+    [Column("rating_id")]
+    public Guid RatingId { get; set; }
 
-    [Column("title_id", TypeName = "BINARY(16)")]
-    public Guid TitleId { get; set; } = new Guid();
+    [Column("title_id")]
+    public Guid TitleId { get; set; }
 
     [Column("average_rating")]
     public double AverageRating { get; set; }

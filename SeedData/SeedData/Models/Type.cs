@@ -12,8 +12,8 @@ namespace SeedData.Models;
 public partial class Type
 {
     [Key]
-    [Column("type_id", TypeName = "BINARY(16)")]
-    public Guid TypeId { get; set; } = new Guid();
+    [Column("type_id")]
+    public Guid TypeId { get; set; }
 
     [Required]
     [Column("type")]

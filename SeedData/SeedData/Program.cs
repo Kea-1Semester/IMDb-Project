@@ -19,17 +19,14 @@ internal static class Program
         var nameBasicPath = Path.Combine(dataFolder, "name.basics.tsv");
         var titleCrewPath = Path.Combine(dataFolder, "title.crew.tsv");
         var titleEpisodePath = Path.Combine(dataFolder, "title.episode.tsv");
-        var titlePrincipalsPath = Path.Combine(dataFolder, "principals.tsv");
+        var titlePrincipalsPath = Path.Combine(dataFolder, "title.principals.tsv");
         var titleAkasPath = Path.Combine(dataFolder, "title.akas.tsv");
 
         var optionsBuilder = new DbContextOptionsBuilder<ImdbContext>()
             .UseMySql(
                 Env.GetString("ConnectionString"),
                 await ServerVersion.AutoDetectAsync(Env.GetString("ConnectionString"))
-            )
-            .LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
+            );
 
         using (var _context = new ImdbContext(optionsBuilder.Options))
         {
@@ -39,13 +36,13 @@ internal static class Program
 
             Console.WriteLine("Ran database migrations.");
 
-            TitleBasicsHandler.SeedTitleBasics(_context, titleBasicPath, 100000);
-            AddPersonToDb.AddPerson(_context, nameBasicPath, 100000);
-            AddCrewToDb.AddCrew(_context, titleCrewPath, 5000);
-            AddEpisode.AddEpisodes(_context, titleEpisodePath, 50000);
-            AddActor.AddActorToDb(_context, titlePrincipalsPath);
-            AddRating.AddRatingToDb(_context, titleRatingsPath);
-            AddAkas.AddAkasToDb(_context, titleAkasPath, 50000);
+            var titleIdsDict = await TitleBasicsHandler.SeedTitleBasics(_context, titleBasicPath, 100000);
+            var personIdsDict = await AddPersonToDb.AddPerson(_context, nameBasicPath, 100000, titleIdsDict);
+            await AddCrewToDb.AddCrew(_context, titleCrewPath, 5000, titleIdsDict, personIdsDict);
+            await AddEpisode.AddEpisodes(_context, titleEpisodePath, 50000, titleIdsDict);
+            await AddActor.AddActorToDb(_context, titlePrincipalsPath, titleIdsDict, personIdsDict);
+            await AddRating.AddRatingToDb(_context, titleRatingsPath, titleIdsDict);
+            await AddAkas.AddAkasToDb(_context, titleAkasPath, 50000, titleIdsDict);
 
             /*var actionMovies = context.Titles
             .Include(t => t.GenresGenres)

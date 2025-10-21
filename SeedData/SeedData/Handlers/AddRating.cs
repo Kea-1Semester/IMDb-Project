@@ -4,31 +4,44 @@ namespace SeedData.Handlers
 {
     public class AddRating
     {
-        public static void AddRatingToDb(ImdbContext context, string path)
+        public static async Task AddRatingToDb(ImdbContext context, string path, Dictionary<string, Guid> titleIdsDict)
         {
             Console.WriteLine("Seeding data in addRating");
             // get existing titles from the database
-            var titles = context.Titles.ToDictionary(t => t.TitleId, t => t);
+
             var ratings = new List<Rating>();
-            var ratPath = File.ReadAllLines(path).Skip(1);
-            var rats = ratPath
-                .Select(line => line.Split('\t'))
-                .Select(parts => new Rating
+
+            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
+            {
+                using (var reader = new StreamReader(stream))
                 {
-                    RatingId = Guid.NewGuid(),
-                    TitleId = parts[0],
-                    AverageRating = double.TryParse(parts[1], out var avgRating) ? avgRating : 0.0,
-                    NumVotes = int.TryParse(parts[2], out var numVotes) ? numVotes : 0
-                })
-                .Where(rating => titles.ContainsKey(rating.TitleId))
-                .ToList();
+                    await reader.ReadLineAsync(); // Skip header line
 
-            context.Ratings.AddRange(rats);
-            context.SaveChanges();
+                    string? line;
+                    while ((line = await reader.ReadLineAsync()) != null)
+                    {
+                        var columns = line.Split('\t');
+                        var tconst = columns[0];
+                        var titleId = titleIdsDict.ContainsKey(tconst) ? titleIdsDict[tconst] : Guid.Empty;
+
+                        if (titleId != default)
+                        {
+                            ratings.Add(new Rating
+                            {
+                                RatingId = Guid.NewGuid(),
+                                TitleId = titleId,
+                                AverageRating = double.TryParse(columns[1], out var avgRating) ? avgRating : 0.0,
+                                NumVotes = int.TryParse(columns[2], out var numVotes) ? numVotes : 0
+                            });
+                        }
+                    }
+                }
+            }
+
+            await context.Ratings.AddRangeAsync(ratings);
+            await context.SaveChangesAsync();
+
             Console.WriteLine("Seeded Rating records.");
-
-
-
         }
     }
 }

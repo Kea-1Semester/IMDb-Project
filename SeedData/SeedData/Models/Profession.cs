@@ -13,11 +13,11 @@ namespace SeedData.Models;
 public partial class Profession
 {
     [Key]
-    [Column("profession_id", TypeName = "BINARY(16)")]
-    public Guid ProfessionId { get; set; } = new Guid();
+    [Column("profession_id")]
+    public Guid ProfessionId { get; set; }
 
-    [Column("person_id", TypeName = "BINARY(16)")]
-    public Guid PersonId { get; set; } = new Guid();
+    [Column("person_id")]
+    public Guid PersonId { get; set; }
 
     [Required]
     [Column("profession")]

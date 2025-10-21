@@ -11,21 +11,21 @@ namespace SeedData.Models;
 public partial class Person
 {
     [Key]
-    [Column("person_id", TypeName = "BINARY(16)")]
-    public Guid PersonId { get; set; } = new Guid();
+    [Column("person_id")]
+    public Guid PersonId { get; set; }
 
     [Required]
     [Column("name")]
     [StringLength(255)]
     public string Name { get; set; }
 
-    [Column("birth_year", TypeName = "smallint")]
+    [Column("birth_year")]
     public int BirthYear { get; set; }
 
-    [Column("end_year", TypeName = "smallint")]
+    [Column("end_year")]
     public int? EndYear { get; set; }
 
-    [InverseProperty("TitlesTitle")]
+    [InverseProperty("PersonsPerson")]
     public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
     [InverseProperty("Person")]

@@ -4,91 +4,99 @@ namespace SeedData.Handlers
 {
     public static class AddPersonToDb
     {
-        public static void AddPerson(ImdbContext context, string personTsv, int noOfRow)
+        public static async Task<Dictionary<string, Guid>> AddPerson(ImdbContext context, string personTsv, int noOfRow, Dictionary<string, Guid> titleIdsDict)
         {
             Console.WriteLine("Seed dat for AddPerson To Db");
-            // add person to db
-            // add primary profession to db 
-            // MySQL support rang year 1901 to 2155 for type YEAR if we want to use for old consider using int.
-            var person = new List<Person>();
+
+            var personIdsDict = new Dictionary<string, Guid>();
+
+            var persons = new List<Person>();
             var professions = new List<Profession>();
+            var titleDict = context.Titles.ToDictionary(t => t.TitleId, t => t);
+
             var professionsDic = context.Professions.ToDictionary(p => p.Profession1, p => p.ProfessionId);
-            var knownDict = context.Titles.ToDictionary(t => t.TitleId, t => t);
-            // seed data
-            foreach (var line in File.ReadAllLines(personTsv).Skip(1).Take(noOfRow))
+
+            using (var stream = new FileStream(personTsv, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
             {
-                var columns = line.Split('\t');
-                //var personId = Guid.NewGuid();
-                var personId = columns[0];
-                var personEntity = new Person
+                using (var reader = new StreamReader(stream))
                 {
-                    PersonId = personId,
-                    Name = columns[1],
-                    BirthYear = ParseYear(columns[2]),
-                    EndYear = ParseYear(columns[3]) == 0 ? null : ParseYear(columns[3])
-                };
+                    await reader.ReadLineAsync(); // Skip header line
 
-                person.Add(personEntity);
-                // Use a HashSet to track professions already added in this batch (case-insensitive)
-                var addedProfessions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-                var professionsList = columns[4]
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-                foreach (var profession in professionsList)
-                {
-                    // Skip if already in DB or already added in this batch
-                    if (professionsDic.ContainsKey(profession) || !addedProfessions.Add(profession))
-                        continue;
-
-                    var professionEntity = new Profession
+                    string? line;
+                    int count = 0;
+                    while ((line = await reader.ReadLineAsync()) != null)
                     {
-                        ProfessionId = Guid.NewGuid(),
-                        PersonId = columns[0],
-                        Profession1 = profession
-                    };
-                    professionsDic[profession] = professionEntity.ProfessionId;
-                    professions.Add(professionEntity);
-                }
+                        var columns = line.Split('\t');
+                        
+                        Guid personId = Guid.NewGuid();
+                        
+                        var person = new Person
+                        {
+                            PersonId = personId,
+                            Name = columns[1],
+                            BirthYear = int.TryParse(columns[2], out var start) ? start : DateTime.UtcNow.Year,
+                            EndYear = int.TryParse(columns[3], out int result) ? result : null
+                        };
 
+                        // Use a HashSet to track professions already added in this batch (case-insensitive)
+                        var addedProfessions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-                //var addKnownForTitles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                var knownForTitles = columns[5]
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                foreach (var knownFor in knownForTitles)
-                {
-                    if (knownDict.TryGetValue(knownFor, out var title))
-                    {
-                        personEntity.TitlesTitlesNavigation.Add(title);
+                        var professionsList = columns[4]
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                        foreach (var profession in professionsList)
+                        {
+                            // Skip if already in DB or already added in this batch
+                            if (professionsDic.ContainsKey(profession) || !addedProfessions.Add(profession))
+                                continue;
+
+                            var professionEntity = new Profession
+                            {
+                                ProfessionId = Guid.NewGuid(),
+                                PersonId = personId,
+                                Profession1 = profession
+                            };
+                            professionsDic[profession] = professionEntity.ProfessionId;
+                            professions.Add(professionEntity);
+                        }
+
+                        var knownForTitles = columns[5]
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                        foreach (var knownFor in knownForTitles)
+                        {
+                            if (titleIdsDict.TryGetValue(knownFor, out var titleId))
+                            {
+                                if (titleDict.TryGetValue(titleId, out var title))
+                                {
+                                    person.TitlesTitlesNavigation.Add(title);
+                                }
+                            }
+                        }
+
+                        personIdsDict.Add(columns[0], personId);
+                        persons.Add(person);
+
+                        count++;
+                        if (count >= noOfRow)
+                        {
+                            break;
+                        }
                     }
                 }
-                context.Persons.Add(personEntity);
-
-
             }
 
-            context.Persons.AddRange(person);
-            context.Professions.AddRange(professions);
+            await context.Persons.AddRangeAsync(persons);
 
+            await context.SaveChangesAsync();
 
-            context.SaveChanges();
+            await context.Professions.AddRangeAsync(professions);
+
+            await context.SaveChangesAsync();
+            
             Console.WriteLine($"Seeded first {noOfRow} Person records with Professions.");
-
+            
+            return personIdsDict;
         }
-        static short ParseYear(string value)
-        {
-            if (value == "\\N") return 0;
-            if (short.TryParse(value, out var year) && (year == 0 || (year >= 1901 && year <= 2155)))
-                return year;
-            // cant be null represented in db so return 9999
-            return 0;
-        }
-
     }
-
-}
-public class KnownForTitle
-{
-    public string TitleId { get; set; }
-    public string PersonId { get; set; }
 }

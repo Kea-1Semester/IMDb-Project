@@ -12,8 +12,8 @@ namespace SeedData.Models;
 public partial class Genre
 {
     [Key]
-    [Column("genre_id", TypeName = "BINARY(16)")]
-    public Guid GenreId { get; set; } = new Guid();
+    [Column("genre_id")]
+    public Guid GenreId { get; set; }
 
     [Required]
     [Column("genre")]

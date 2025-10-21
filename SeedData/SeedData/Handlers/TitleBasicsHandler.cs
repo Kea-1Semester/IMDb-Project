@@ -1,67 +1,81 @@
 using SeedData.Models;
+using System.Threading.Tasks;
 
 namespace SeedData.Handlers
 {
     public static class TitleBasicsHandler
     {
-        public static void SeedTitleBasics(ImdbContext context, string titleBasicPath, int noOfRow)
+        public static async Task<Dictionary<string, Guid>> SeedTitleBasics(ImdbContext context, string titleBasicPath, int noOfRow)
         {
             Console.WriteLine("Seed data for title");
-            // var person = new List<Person>();
-            // var professions = new List<Profession>();
 
+            var titleIdsDict = new Dictionary<string, Guid>();
 
             var titleBasics = new List<Title>();
             var genreDict = context.Genres.ToDictionary(g => g.Genre1, g => g); // Cache existing genres
 
-            // Seed TitleBasic
-            foreach (var line in File.ReadLines(titleBasicPath).Skip(1).Take(noOfRow))
+            using (var stream = new FileStream(titleBasicPath, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
             {
-                var columns = line.Split('\t');
-                var title = new Title
+                using (var reader = new StreamReader(stream))
                 {
-                    TitleId = columns[0],
-                    TitleType = columns[1],
-                    PrimaryTitle = columns[2],
-                    OriginalTitle = columns[3],
-                    IsAdult = sbyte.TryParse(columns[4], out var isAdult) ? isAdult == 1 : false,
-                    StartYear = ParseYear(columns[5]),
-                    EndYear = ParseYear(columns[6]),
-                    RuntimeMinutes = int.TryParse(columns[7], out var runtime) ? runtime : null
-                };
+                    await reader.ReadLineAsync(); // Skip header line
 
-                var genres = columns[8].Split(',', '|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-                foreach (var genre in genres)
-                {
-                    if (string.IsNullOrWhiteSpace(genre))
-                        continue;
-
-                    if (!genreDict.TryGetValue(genre, out var genreEntity))
+                    // Seed TitleBasic
+                    string? line;
+                    int count = 0;
+                    while ((line = await reader.ReadLineAsync()) != null)
                     {
-                        genreEntity = new Genre { GenreId = Guid.NewGuid(), Genre1 = genre };
-                        context.Genres.Add(genreEntity);
-                        genreDict[genre] = genreEntity;
+                        var columns = line.Split('\t');
+                        
+                        Guid newGuid = Guid.NewGuid();                        
+
+                        var title = new Title
+                        {
+                            TitleId = newGuid,
+                            TitleType = columns[1],
+                            PrimaryTitle = columns[2],
+                            OriginalTitle = columns[3],
+                            IsAdult = (columns[4] != "0"),
+                            StartYear = int.TryParse(columns[5], out var start) ? start : DateTime.UtcNow.Year,
+                            EndYear = int.TryParse(columns[6], out int result) ? result : null,
+                            RuntimeMinutes = int.TryParse(columns[7], out var runtime) ? runtime : null
+                        };
+
+
+                        var genres = columns[8].Split(',', '|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                        foreach (var genre in genres)
+                        {
+                            if (string.IsNullOrWhiteSpace(genre))
+                                continue;
+
+                            if (!genreDict.TryGetValue(genre, out var genreEntity))
+                            {
+                                genreEntity = new Genre { GenreId = Guid.NewGuid(), Genre1 = genre };
+                                context.Genres.Add(genreEntity);
+                                genreDict[genre] = genreEntity;
+                            }
+                            title.GenresGenres.Add(genreEntity);
+                        }
+
+                        titleIdsDict.Add(columns[0], newGuid);
+                        titleBasics.Add(title);
+
+                        count++;
+                        if (count >= noOfRow)
+                        {
+                            break;
+                        }
                     }
-                    title.GenresGenres.Add(genreEntity);
                 }
+            }            
 
-                titleBasics.Add(title);
-            }
-
-            context.Titles.AddRange(titleBasics);
-            context.SaveChanges();
+            await context.Titles.AddRangeAsync(titleBasics);
+            await context.SaveChangesAsync();
 
             Console.WriteLine($"Seeded first {noOfRow} TitleBasic records.");
-        }
 
-        static short ParseYear(string value)
-        {
-            if (value == "\\N") return 0;
-            if (short.TryParse(value, out var year) && (year == 0 || (year >= 1901 && year <= 2155)))
-                return year;
-            // cant be null represented in db so return 9999
-            return 0;
+            return titleIdsDict;
         }
     }
 }

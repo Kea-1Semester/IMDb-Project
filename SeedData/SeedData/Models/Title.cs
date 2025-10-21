@@ -14,8 +14,8 @@ namespace SeedData.Models;
 public partial class Title
 {
     [Key]
-    [Column("title_id", TypeName = "BINARY(16)")]
-    public Guid TitleId { get; set; } = new Guid();
+    [Column("title_id")]
+    public Guid TitleId { get; set; }
 
     [Required]
     [Column("title_type")]
@@ -33,16 +33,16 @@ public partial class Title
     [Column("is_adult")]
     public bool IsAdult { get; set; }
 
-    [Column("start_year", TypeName = "smallint")]
+    [Column("start_year")]
     public int StartYear { get; set; }
 
-    [Column("end_year", TypeName = "smallint")]
+    [Column("end_year")]
     public int? EndYear { get; set; }
 
     [Column("runtime_minutes")]
     public int? RuntimeMinutes { get; set; }
 
-    [InverseProperty("PersonsPerson")]
+    [InverseProperty("TitlesTitle")]
     public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
     [InverseProperty("TitleNavigation")]
