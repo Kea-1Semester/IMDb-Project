@@ -26,13 +26,21 @@ internal static class Program
             .UseMySql(
                 Env.GetString("ConnectionString"),
                 await ServerVersion.AutoDetectAsync(Env.GetString("ConnectionString"))
-            );
+            )
+            .EnableDetailedErrors();
 
         using (var _context = new ImdbContext(optionsBuilder.Options))
         {
             Console.WriteLine("Ensuring the database exists...");
 
-            await _context.Database.MigrateAsync();
+            try
+            {
+                await _context.Database.MigrateAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+            }
 
             Console.WriteLine("Ran database migrations.");
 
@@ -44,36 +52,6 @@ internal static class Program
             await AddRating.AddRatingToDb(_context, titleRatingsPath, titleIdsDict);
             await AddAkas.AddAkasToDb(_context, titleAkasPath, 50000, titleIdsDict);
 
-            /*var actionMovies = context.Titles
-            .Include(t => t.GenresGenres)
-            .Where(t => t.GenresGenres.Any(g => g.Genre1 == "Action"))
-            .Select(t => new
-            {
-                t.PrimaryTitle,
-                t.OriginalTitle,
-                t.StartYear,
-                Genre = t.GenresGenres
-                    .Where(g => g.Genre1 == "Action")
-                    .Select(g => g.Genre1)
-                    .FirstOrDefault()
-            })
-            .Take(100)
-            .ToList();
-
-            var table = new ConsoleTablePrinter(new[] { "Primary Title", "Original Title", "Start Year", "Genre" });
-
-            foreach (var movie in actionMovies)
-            {
-                table.AddRow(new[]
-                {
-                    movie.PrimaryTitle ?? "",
-                    movie.OriginalTitle ?? "",
-                    movie.StartYear.ToString(),
-                    movie.Genre ?? ""
-                });
-            }
-            table.Print();
-            */
         }
 
         Console.WriteLine("Program Completed");
