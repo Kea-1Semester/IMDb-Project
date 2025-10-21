@@ -45,9 +45,11 @@ public partial class ImdbContext : DbContext
 
         modelBuilder.Entity<Actor>(entity =>
         {
-            entity.HasKey(e => new { e.TitlesTitleId, e.PersonsPersonId })
+            entity.HasKey(e => new { e.ActorId, e.TitlesTitleId, e.PersonsPersonId })
                 .HasName("PRIMARY")
-                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0 });
+
+            entity.Property(e => e.ActorId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
             entity.HasOne(d => d.PersonsPerson).WithMany(p => p.Actors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -62,7 +64,7 @@ public partial class ImdbContext : DbContext
         {
             entity.HasKey(e => e.AliasId).HasName("PRIMARY");
 
-            entity.Property(e => e.AliasId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.AliasId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
             entity.HasOne(d => d.TitleNavigation).WithMany(p => p.Aliases)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -119,14 +121,14 @@ public partial class ImdbContext : DbContext
         {
             entity.HasKey(e => e.AttributeId).HasName("PRIMARY");
 
-            entity.Property(e => e.AttributeId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.AttributeId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
         });
 
         modelBuilder.Entity<Comment>(entity =>
         {
             entity.HasKey(e => e.CommentId).HasName("PRIMARY");
 
-            entity.Property(e => e.CommentId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.CommentId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
             entity.HasOne(d => d.Title).WithMany(p => p.Comments)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -137,40 +139,44 @@ public partial class ImdbContext : DbContext
         {
             entity.HasKey(e => e.EpisodeId).HasName("PRIMARY");
 
-            entity.Property(e => e.EpisodeId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.EpisodeId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
-            entity.HasOne(d => d.TitleIdChildNavigation).WithMany(p => p.EpisodeTitleIdChildNavigations).HasConstraintName("fk_title_episodes_title_basics2");
+            entity.HasOne(d => d.TitleIdChildNavigation).WithMany(p => p.EpisodeTitleIdChildNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_title_episodes_title_basics2");
 
-            entity.HasOne(d => d.TitleIdParentNavigation).WithMany(p => p.EpisodeTitleIdParentNavigations).HasConstraintName("fk_title_episodes_title_basics1");
+            entity.HasOne(d => d.TitleIdParentNavigation).WithMany(p => p.EpisodeTitleIdParentNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_title_episodes_title_basics1");
         });
 
         modelBuilder.Entity<Genre>(entity =>
         {
             entity.HasKey(e => e.GenreId).HasName("PRIMARY");
 
-            entity.Property(e => e.GenreId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.GenreId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
         });
 
         modelBuilder.Entity<Logging>(entity =>
         {
             entity.HasKey(e => e.LoggingId).HasName("PRIMARY");
 
-            entity.Property(e => e.LoggingId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
-            entity.Property(e => e.ExecutedAt).HasDefaultValueSql("now(6)");
+            entity.Property(e => e.LoggingId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+            entity.Property(e => e.ExecutedAt).HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
         });
 
         modelBuilder.Entity<Person>(entity =>
         {
             entity.HasKey(e => e.PersonId).HasName("PRIMARY");
 
-            entity.Property(e => e.PersonId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.PersonId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
         });
 
         modelBuilder.Entity<Profession>(entity =>
         {
             entity.HasKey(e => e.ProfessionId).HasName("PRIMARY");
 
-            entity.Property(e => e.ProfessionId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.ProfessionId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
             entity.HasOne(d => d.Person).WithMany(p => p.Professions)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -181,7 +187,7 @@ public partial class ImdbContext : DbContext
         {
             entity.HasKey(e => e.RatingId).HasName("PRIMARY");
 
-            entity.Property(e => e.RatingId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.RatingId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
             entity.HasOne(d => d.Title).WithMany(p => p.Ratings)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -192,7 +198,7 @@ public partial class ImdbContext : DbContext
         {
             entity.HasKey(e => e.TitleId).HasName("PRIMARY");
 
-            entity.Property(e => e.TitleId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.TitleId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
 
             entity.HasMany(d => d.GenresGenres).WithMany(p => p.TitlesTitles)
                 .UsingEntity<Dictionary<string, object>>(
@@ -291,7 +297,7 @@ public partial class ImdbContext : DbContext
         {
             entity.HasKey(e => e.TypeId).HasName("PRIMARY");
 
-            entity.Property(e => e.TypeId).HasDefaultValueSql("uuid_to_bin(uuid(),1)");
+            entity.Property(e => e.TypeId).HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -16,10 +16,8 @@ public partial class Logging
     [Column("logging_id")]
     public Guid LoggingId { get; set; }
 
-    [Required]
     [Column("table_name")]
-    [StringLength(100)]
-    public string TableName { get; set; }
+    public Guid TableName { get; set; }
 
     [Required]
     [Column("command", TypeName = "enum('INSERT','UPDATE','DELETE')")]

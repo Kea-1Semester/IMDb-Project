@@ -1,34 +1,81 @@
-﻿using SeedData.Models;
-using DotNetEnv;
+﻿using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SeedData.Handlers;
+using SeedData.Models;
 
-namespace SeedData
+namespace SeedData;
+
+internal static class Program
 {
-    static class Program
+    static async Task Main(string[] args)
     {
-        static void Main(string[] args)
+        Env.TraversePath().Load();
+
+        var projectRoot = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
+        var dataFolder = Path.Combine(projectRoot!, "data");
+        var titleBasicPath = Path.Combine(dataFolder, "title.basics.tsv");
+        var titleRatingsPath = Path.Combine(dataFolder, "title.ratings.tsv");
+        var nameBasicPath = Path.Combine(dataFolder, "name.basics.tsv");
+        var titleCrewPath = Path.Combine(dataFolder, "title.crew.tsv");
+        var titleEpisodePath = Path.Combine(dataFolder, "title.episode.tsv");
+        var titlePrincipalsPath = Path.Combine(dataFolder, "title.principals.tsv");
+        var titleAkasPath = Path.Combine(dataFolder, "title.akas.tsv");
+
+        var optionsBuilder = new DbContextOptionsBuilder<ImdbContext>()
+            .UseMySql(
+                Env.GetString("ConnectionString"),
+                await ServerVersion.AutoDetectAsync(Env.GetString("ConnectionString"))
+            );
+
+        using (var _context = new ImdbContext(optionsBuilder.Options))
         {
-            Env.TraversePath().Load();
+            Console.WriteLine("Ensuring the database exists...");
 
-            string? projectRoot = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
-            string dataFolder = Path.Combine(projectRoot!, "data");
-            string titleBasicPath = Path.Combine(dataFolder, "title.basics.tsv");
-            string titleRatingsPath = Path.Combine(dataFolder, "title.ratings.tsv");
-            string nameBasicPath = Path.Combine(dataFolder, "name.basics.tsv");
-            string titleCrewPath = Path.Combine(dataFolder, "title.crew.tsv");
+            await _context.Database.MigrateAsync();
 
-            var dbContextOptions = new DbContextOptionsBuilder<ImdbContext>().UseMySql(Env.GetString("ConnectionString"), ServerVersion.AutoDetect(Env.GetString("ConnectionString"))).Options;
+            Console.WriteLine("Ran database migrations.");
 
-            using (var context = new ImdbContext(dbContextOptions))
+            var titleIdsDict = await TitleBasicsHandler.SeedTitleBasics(_context, titleBasicPath, 100000);
+            var personIdsDict = await AddPersonToDb.AddPerson(_context, nameBasicPath, 100000, titleIdsDict);
+            await AddCrewToDb.AddCrew(_context, titleCrewPath, 5000, titleIdsDict, personIdsDict);
+            await AddEpisode.AddEpisodes(_context, titleEpisodePath, 50000, titleIdsDict);
+            await AddActor.AddActorToDb(_context, titlePrincipalsPath, titleIdsDict, personIdsDict);
+            await AddRating.AddRatingToDb(_context, titleRatingsPath, titleIdsDict);
+            await AddAkas.AddAkasToDb(_context, titleAkasPath, 50000, titleIdsDict);
+
+            /*var actionMovies = context.Titles
+            .Include(t => t.GenresGenres)
+            .Where(t => t.GenresGenres.Any(g => g.Genre1 == "Action"))
+            .Select(t => new
             {
-                TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath);
-                //TitleRatingsHandler.SeedTitleRatings(context, titleRatingsPath);
-                //NameBasicsHandler.SeedNameBasics(context, nameBasicPath);
-                //TitleCrewHandler.SeedTitleCrew(context, titleCrewPath);
-            }
+                t.PrimaryTitle,
+                t.OriginalTitle,
+                t.StartYear,
+                Genre = t.GenresGenres
+                    .Where(g => g.Genre1 == "Action")
+                    .Select(g => g.Genre1)
+                    .FirstOrDefault()
+            })
+            .Take(100)
+            .ToList();
 
-            Console.WriteLine("Data seeding completed.");
+            var table = new ConsoleTablePrinter(new[] { "Primary Title", "Original Title", "Start Year", "Genre" });
+
+            foreach (var movie in actionMovies)
+            {
+                table.AddRow(new[]
+                {
+                    movie.PrimaryTitle ?? "",
+                    movie.OriginalTitle ?? "",
+                    movie.StartYear.ToString(),
+                    movie.Genre ?? ""
+                });
+            }
+            table.Print();
+            */
         }
+
+        Console.WriteLine("Program Completed");
     }
 }

@@ -33,16 +33,16 @@ public partial class Title
     [Column("is_adult")]
     public bool IsAdult { get; set; }
 
-    [Column("start_year", TypeName = "year")]
-    public short? StartYear { get; set; }
+    [Column("start_year")]
+    public int StartYear { get; set; }
 
-    [Column("end_year", TypeName = "year")]
-    public short? EndYear { get; set; }
+    [Column("end_year")]
+    public int? EndYear { get; set; }
 
     [Column("runtime_minutes")]
     public int? RuntimeMinutes { get; set; }
 
-    [InverseProperty("PersonsPerson")]
+    [InverseProperty("TitlesTitle")]
     public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
     [InverseProperty("TitleNavigation")]
