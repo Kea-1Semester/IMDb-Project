@@ -1,4 +1,5 @@
 ﻿using EfCoreModelsLib.Models.Mysql;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Handlers
 {
@@ -10,91 +11,126 @@ namespace SeedData.Handlers
 
             var personIdsDict = new Dictionary<string, Guid>();
 
-            var persons = new List<Person>();
-            var professions = new List<Profession>();
-            var titleDict = context.Titles.ToDictionary(t => t.TitleId, t => t);
+            bool anyPersons = await context.Persons.AnyAsync();
+            bool anyProfessions = await context.Professions.AnyAsync();
 
-            var professionsDic = context.Professions.ToDictionary(p => p.Profession1, p => p.ProfessionId);
-
-            using (var stream = new FileStream(personTsv, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
+            if (!anyPersons && !anyProfessions)
             {
-                using (var reader = new StreamReader(stream))
+                var persons = new List<Persons>();
+                var professions = new List<Professions>();
+                var titleDict = context.Titles.ToDictionary(t => t.TitleId, t => t);
+
+                var professionsDic = context.Professions.ToDictionary(p => p.Profession, p => p.ProfessionId);
+
+                using (var stream = new FileStream(personTsv, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
                 {
-                    await reader.ReadLineAsync(); // Skip header line
-
-                    string? line;
-                    int count = 0;
-                    while ((line = await reader.ReadLineAsync()) != null)
+                    using (var reader = new StreamReader(stream))
                     {
-                        var columns = line.Split('\t');
+                        await reader.ReadLineAsync(); // Skip header line
 
-                        Guid personId = Guid.NewGuid();
-
-                        var person = new Person
+                        string? line;
+                        int count = 0;
+                        while ((line = await reader.ReadLineAsync()) != null)
                         {
-                            PersonId = personId,
-                            Name = columns[1],
-                            BirthYear = int.TryParse(columns[2], out var start) ? start : DateTime.UtcNow.Year,
-                            EndYear = int.TryParse(columns[3], out int result) ? result : null
-                        };
+                            var columns = line.Split('\t');
 
-                        // Use a HashSet to track professions already added in this batch (case-insensitive)
-                        var addedProfessions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                            Guid personId = Guid.NewGuid();
 
-                        var professionsList = columns[4]
-                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-                        foreach (var profession in professionsList)
-                        {
-                            // Skip if already in DB or already added in this batch
-                            if (professionsDic.ContainsKey(profession) || !addedProfessions.Add(profession))
-                                continue;
-
-                            var professionEntity = new Profession
+                            var person = new Persons
                             {
-                                ProfessionId = Guid.NewGuid(),
                                 PersonId = personId,
-                                Profession1 = profession
+                                Name = columns[1],
+                                BirthYear = int.TryParse(columns[2], out var start) ? start : DateTime.UtcNow.Year,
+                                EndYear = int.TryParse(columns[3], out int result) ? result : null
                             };
-                            professionsDic[profession] = professionEntity.ProfessionId;
-                            professions.Add(professionEntity);
-                        }
 
-                        var knownForTitles = columns[5]
-                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                            // Use a HashSet to track professions already added in this batch (case-insensitive)
+                            var addedProfessions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-                        foreach (var knownFor in knownForTitles)
-                        {
-                            if (titleIdsDict.TryGetValue(knownFor, out var titleId))
+                            var professionsList = columns[4]
+                                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                            foreach (var profession in professionsList)
                             {
-                                if (titleDict.TryGetValue(titleId, out var title))
+                                // Skip if already in DB or already added in this batch
+                                if (professionsDic.ContainsKey(profession) || !addedProfessions.Add(profession))
+                                    continue;
+
+                                var professionEntity = new Professions
                                 {
-                                    person.TitlesTitlesNavigation.Add(title);
+                                    ProfessionId = Guid.NewGuid(),
+                                    PersonId = personId,
+                                    Profession = profession
+                                };
+                                professionsDic[profession] = professionEntity.ProfessionId;
+                                professions.Add(professionEntity);
+                            }
+
+                            var knownForTitles = columns[5]
+                                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                            foreach (var knownFor in knownForTitles)
+                            {
+                                if (titleIdsDict.TryGetValue(knownFor, out var titleId))
+                                {
+                                    if (titleDict.TryGetValue(titleId, out var title))
+                                    {
+                                        person.KnownFor.Add(new KnownFor
+                                        {
+                                            KnownForId = Guid.NewGuid(),
+                                            PersonsPersonId = personId,
+                                            TitlesTitleId = titleId
+                                        });
+                                    }
                                 }
                             }
-                        }
 
-                        personIdsDict.Add(columns[0], personId);
-                        persons.Add(person);
+                            personIdsDict.Add(columns[0], personId);
+                            persons.Add(person);
 
-                        count++;
-                        if (count >= noOfRow)
-                        {
-                            break;
+                            count++;
+                            if (count >= noOfRow)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
+
+                try
+                {
+                    await context.Persons.AddRangeAsync(persons);
+                    Console.WriteLine("Adding Persons");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
+
+                try
+                {
+                    await context.Professions.AddRangeAsync(professions);
+                    Console.WriteLine("Adding Professions");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
+
+                try
+                {
+                    await context.SaveChangesAsync();
+                    Console.WriteLine("Saving Persons and Professions");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
             }
-
-            await context.Persons.AddRangeAsync(persons);
-
-            await context.SaveChangesAsync();
-
-            await context.Professions.AddRangeAsync(professions);
-
-            await context.SaveChangesAsync();
-
-            Console.WriteLine($"Seeded first {noOfRow} Person records with Professions.");
+            else
+            {
+                Console.WriteLine("Database already have Persons and Professions");
+            }
 
             return personIdsDict;
         }

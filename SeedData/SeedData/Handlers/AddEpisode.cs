@@ -1,4 +1,5 @@
 ﻿using EfCoreModelsLib.Models.Mysql;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Handlers
 {
@@ -8,47 +9,71 @@ namespace SeedData.Handlers
         {
             Console.WriteLine("Seed data for AddEpisode");
 
-            var episodes = new List<Episode>();
+            bool anyEpisodes = await context.Episodes.AnyAsync();
 
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
+            if (!anyEpisodes)
             {
-                using (var reader = new StreamReader(stream))
+                var episodes = new List<Episodes>();
+
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
                 {
-                    await reader.ReadLineAsync(); // Skip header line
-
-                    string? line;
-                    int count = 0;
-                    while ((line = await reader.ReadLineAsync()) != null)
+                    using (var reader = new StreamReader(stream))
                     {
-                        var columns = line.Split('\t');
-                        var titleIdParent = titleIdsDict.TryGetValue(columns[0], out var parent) ? parent : Guid.Empty;
-                        var titleIdChild = titleIdsDict.TryGetValue(columns[1], out var child) ? child : Guid.Empty;
+                        await reader.ReadLineAsync(); // Skip header line
 
-                        if (titleIdParent != default && titleIdChild != default)
+                        string? line;
+                        int count = 0;
+                        while ((line = await reader.ReadLineAsync()) != null)
                         {
-                            episodes.Add(new Episode
+                            var columns = line.Split('\t');
+                            var titleIdParent = titleIdsDict.TryGetValue(columns[0], out var parent) ? parent : Guid.Empty;
+                            var titleIdChild = titleIdsDict.TryGetValue(columns[1], out var child) ? child : Guid.Empty;
+
+                            if (titleIdParent != default && titleIdChild != default)
                             {
-                                EpisodeId = Guid.NewGuid(),
-                                TitleIdParent = titleIdParent,
-                                TitleIdChild = titleIdChild,
-                                SeasonNumber = Parse(columns[2]),
-                                EpisodeNumber = Parse(columns[3])
-                            });
-                        }
+                                episodes.Add(new Episodes
+                                {
+                                    EpisodeId = Guid.NewGuid(),
+                                    TitleIdParent = titleIdParent,
+                                    TitleIdChild = titleIdChild,
+                                    SeasonNumber = Parse(columns[2]),
+                                    EpisodeNumber = Parse(columns[3])
+                                });
+                            }
 
-                        count++;
-                        if (count >= noOfRow)
-                        {
-                            break;
+                            count++;
+                            if (count >= noOfRow)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
+
+                try
+                {
+                    await context.Episodes.AddRangeAsync(episodes);
+                    Console.WriteLine("Adding Episodes");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
+
+                try
+                {
+                    await context.SaveChangesAsync();
+                    Console.WriteLine("Saving Episodes");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
             }
-
-            await context.Episodes.AddRangeAsync(episodes);
-            await context.SaveChangesAsync();
-
-            Console.WriteLine($"Seeded first {noOfRow} Episode records.");
+            else
+            {
+                Console.WriteLine("Database already have Episodes");
+            }
         }
 
         private static int Parse(string value)

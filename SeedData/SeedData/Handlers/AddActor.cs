@@ -1,4 +1,5 @@
 ﻿using EfCoreModelsLib.Models.Mysql;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.Handlers
 {
@@ -8,44 +9,68 @@ namespace SeedData.Handlers
         {
             Console.WriteLine("Seed data in AddActor");
 
-            var actors = new List<Actor>();
+            bool anyActors = await context.Actors.AnyAsync();
 
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
+            if (!anyActors)
             {
-                using (var reader = new StreamReader(stream))
-                {
-                    await reader.ReadLineAsync(); // Skip header line
+                var actors = new List<Actors>();
 
-                    string? line;
-                    while ((line = await reader.ReadLineAsync()) != null)
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
+                {
+                    using (var reader = new StreamReader(stream))
                     {
-                        var columns = line.Split('\t');
-                        var tconst = columns[0];
-                        var nconst = columns[2];
-                        // Defensive: check if parts[5] exists and is not null
-                        var role = columns.Length > 5 && !string.IsNullOrWhiteSpace(columns[5]) ? columns[5].Trim('"') : null;
-                        //Role allow not null
-                        if (titleIdsDict.TryGetValue(tconst, out var titleId) && personIdsDict.TryGetValue(nconst, out var personId))
+                        await reader.ReadLineAsync(); // Skip header line
+
+                        string? line;
+                        while ((line = await reader.ReadLineAsync()) != null)
                         {
-                            if (!string.IsNullOrWhiteSpace(role))
+                            var columns = line.Split('\t');
+                            var tconst = columns[0];
+                            var nconst = columns[2];
+                            // Defensive: check if parts[5] exists and is not null
+                            var role = columns.Length > 5 && !string.IsNullOrWhiteSpace(columns[5]) ? columns[5].Trim('"') : null;
+                            //Role allow not null
+                            if (titleIdsDict.TryGetValue(tconst, out var titleId) && personIdsDict.TryGetValue(nconst, out var personId))
                             {
-                                actors.Add(new Actor
+                                if (!string.IsNullOrWhiteSpace(role))
                                 {
-                                    ActorId = Guid.NewGuid(),
-                                    TitlesTitleId = titleId,
-                                    PersonsPersonId = personId,
-                                    Role = role
-                                });
+                                    actors.Add(new Actors
+                                    {
+                                        ActorId = Guid.NewGuid(),
+                                        TitlesTitleId = titleId,
+                                        PersonsPersonId = personId,
+                                        Role = role
+                                    });
+                                }
                             }
                         }
                     }
                 }
+
+                try
+                {
+                    await context.Actors.AddRangeAsync(actors);
+                    Console.WriteLine("Adding Actors");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
+
+                try
+                {
+                    await context.SaveChangesAsync();
+                    Console.WriteLine("Saving Actors");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
             }
-
-            await context.Actors.AddRangeAsync(actors);
-            await context.SaveChangesAsync();
-
-            Console.WriteLine($"Seeded first actor records.");
+            else
+            {
+                Console.WriteLine("Database already have Actors");
+            }            
         }
     }
 }

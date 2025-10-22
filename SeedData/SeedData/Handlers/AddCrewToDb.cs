@@ -13,63 +13,89 @@ namespace SeedData.Handlers
         public static async Task AddCrew(ImdbContext context, string path, int noOfRow, Dictionary<string, Guid> titleIdsDict, Dictionary<string, Guid> personIdsDict)
         {
             //Directors , writers 
-            Console.WriteLine("Seed data in AddCrew");
+            Console.WriteLine("Seed data in Crew");
 
-            var titlesDict = context.Titles.ToDictionary(t => t.TitleId, t => t);
-            var personsDict = context.Persons.ToDictionary(p => p.PersonId, p => p);
+            bool anyDirector = await context.Directors.AnyAsync();
+            bool anyWriters = await context.Writers.AnyAsync();
 
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
+            if (!anyDirector && !anyWriters)
             {
-                using (var reader = new StreamReader(stream))
+                var titlesDict = context.Titles.ToDictionary(t => t.TitleId, t => t);
+                var personsDict = context.Persons.ToDictionary(p => p.PersonId, p => p);
+
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, FileOptions.Asynchronous))
                 {
-                    await reader.ReadLineAsync(); // Skip header line
-
-                    string? line;
-                    int count = 0;
-                    while ((line = await reader.ReadLineAsync()) != null)
+                    using (var reader = new StreamReader(stream))
                     {
-                        var columns = line.Split('\t');
+                        await reader.ReadLineAsync(); // Skip header line
 
-                        var tconst = columns[0];
-
-                        var title = titleIdsDict.TryGetValue(tconst, out var titleGuid) && titlesDict.TryGetValue(titleGuid, out var _title)
-                            ? _title
-                            : null;
-
-                        var directors = columns[1]
-                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-                        var writers = columns[2]
-                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-                        foreach (var directorId in directors)
+                        string? line;
+                        int count = 0;
+                        while ((line = await reader.ReadLineAsync()) != null)
                         {
-                            if (personIdsDict.TryGetValue(directorId, out var guid) && personsDict.TryGetValue(guid, out var person))
+                            var columns = line.Split('\t');
+
+                            var tconst = columns[0];
+
+                            var title = titleIdsDict.TryGetValue(tconst, out var titleGuid) && titlesDict.TryGetValue(titleGuid, out var _title)
+                                ? _title
+                                : null;
+
+                            var directors = columns[1]
+                                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                            var writers = columns[2]
+                                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                            foreach (var directorId in directors)
                             {
-                                title?.PersonsPeople.Add(person);
+                                if (personIdsDict.TryGetValue(directorId, out var guid) && personsDict.TryGetValue(guid, out var person))
+                                {
+                                    title?.Directors.Add(new Directors
+                                    {
+                                        DirectorsId = Guid.NewGuid(),
+                                        PersonsPersonId = person.PersonId,
+                                        TitlesTitleId = title.TitleId
+                                    });
+                                }
                             }
-                        }
 
-                        foreach (var writerId in writers)
-                        {
-                            if (personIdsDict.TryGetValue(writerId, out var guid) && personsDict.TryGetValue(guid, out var person))
+                            foreach (var writerId in writers)
                             {
-                                title?.PersonsPeople1.Add(person);
+                                if (personIdsDict.TryGetValue(writerId, out var guid) && personsDict.TryGetValue(guid, out var person))
+                                {
+                                    title?.Writers.Add(new Writers
+                                    {
+                                        WritersId = Guid.NewGuid(),
+                                        PersonsPersonId = person.PersonId,
+                                        TitlesTitleId = title.TitleId
+                                    });
+                                }
                             }
-                        }
 
-                        count++;
-                        if (count >= noOfRow)
-                        {
-                            break;
+                            count++;
+                            if (count >= noOfRow)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
+
+                try
+                {
+                    await context.SaveChangesAsync();
+                    Console.WriteLine("Saving Directors and Writers");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
             }
-
-            await context.SaveChangesAsync();
-
-            Console.WriteLine($"Seeded first {noOfRow} crew records.");
+            else
+            {
+                Console.WriteLine("Database already have Directors and Writers");
+            }
         }
     }
 }

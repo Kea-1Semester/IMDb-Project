@@ -11,8 +11,6 @@ internal static class Program
     {
         Env.TraversePath().Load();
         await SeedData();
-
-
     }
 
     private static async Task SeedData()
@@ -30,7 +28,8 @@ internal static class Program
         var optionsBuilder = new DbContextOptionsBuilder<ImdbContext>()
             .UseMySql(
                 Env.GetString("ConnectionString"),
-                await ServerVersion.AutoDetectAsync(Env.GetString("ConnectionString"))
+                await ServerVersion.AutoDetectAsync(Env.GetString("ConnectionString")),
+                b => b.MigrationsAssembly("SeedData")
             )
             .EnableDetailedErrors();
 
