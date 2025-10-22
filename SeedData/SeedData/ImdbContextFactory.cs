@@ -18,7 +18,8 @@ namespace SeedData
             var optionsBuilder = new DbContextOptionsBuilder<ImdbContext>();
             optionsBuilder.UseMySql(
                 Env.GetString("ConnectionString"),
-                ServerVersion.AutoDetect(Env.GetString("ConnectionString"))
+                ServerVersion.AutoDetect(Env.GetString("ConnectionString")),
+                b => b.MigrationsAssembly("SeedData")
             );
 
             return new ImdbContext(optionsBuilder.Options);

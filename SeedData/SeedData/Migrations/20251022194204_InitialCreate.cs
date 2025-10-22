@@ -222,13 +222,14 @@ namespace SeedData.Migrations
                 name: "Directors",
                 columns: table => new
                 {
+                    directors_id = table.Column<Guid>(type: "char(36)", nullable: false, defaultValueSql: "(uuid_to_bin(uuid(),1))", collation: "ascii_general_ci"),
                     Titles_title_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Persons_person_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.Titles_title_id, x.Persons_person_id })
-                        .Annotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                    table.PrimaryKey("PRIMARY", x => new { x.directors_id, x.Titles_title_id, x.Persons_person_id })
+                        .Annotation("MySql:IndexPrefixLength", new[] { 0, 0, 0 });
                     table.ForeignKey(
                         name: "fk_Titles_has_Persons_Persons1",
                         column: x => x.Persons_person_id,
@@ -274,13 +275,14 @@ namespace SeedData.Migrations
                 name: "Known_for",
                 columns: table => new
                 {
+                    known_for_id = table.Column<Guid>(type: "char(36)", nullable: false, defaultValueSql: "(uuid_to_bin(uuid(),1))", collation: "ascii_general_ci"),
                     Titles_title_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Persons_person_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.Titles_title_id, x.Persons_person_id })
-                        .Annotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                    table.PrimaryKey("PRIMARY", x => new { x.known_for_id, x.Titles_title_id, x.Persons_person_id })
+                        .Annotation("MySql:IndexPrefixLength", new[] { 0, 0, 0 });
                     table.ForeignKey(
                         name: "fk_Titles_has_Persons_Persons2",
                         column: x => x.Persons_person_id,
@@ -345,13 +347,14 @@ namespace SeedData.Migrations
                 name: "Writers",
                 columns: table => new
                 {
+                    writers_id = table.Column<Guid>(type: "char(36)", nullable: false, defaultValueSql: "(uuid_to_bin(uuid(),1))", collation: "ascii_general_ci"),
                     Titles_title_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Persons_person_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.Titles_title_id, x.Persons_person_id })
-                        .Annotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                    table.PrimaryKey("PRIMARY", x => new { x.writers_id, x.Titles_title_id, x.Persons_person_id })
+                        .Annotation("MySql:IndexPrefixLength", new[] { 0, 0, 0 });
                     table.ForeignKey(
                         name: "fk_Titles_has_Persons_Persons4",
                         column: x => x.Persons_person_id,
