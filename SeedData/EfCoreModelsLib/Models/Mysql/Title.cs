@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfCoreModelsLib.Models;
+namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("OriginalTitle", Name = "original_title_index")]
 [Index("PrimaryTitle", Name = "primary_title_index")]

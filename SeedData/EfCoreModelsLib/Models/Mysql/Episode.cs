@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfCoreModelsLib.Models;
+namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("TitleIdParent", Name = "fk_title_episodes_title_basics1")]
 [Index("TitleIdChild", Name = "fk_title_episodes_title_basics2_idx")]

@@ -1,6 +1,6 @@
-﻿using SeedData.Models;
-using Attribute = SeedData.Models.Attribute;
-using Type = SeedData.Models.Type;
+﻿using EfCoreModelsLib.Models.Mysql;
+using Attribute = EfCoreModelsLib.Models.Mysql.Attribute;
+using Type = EfCoreModelsLib.Models.Mysql.Type;
 
 namespace SeedData.Handlers;
 
@@ -63,9 +63,9 @@ public static class AddAkas
 
                         // Avoid adding duplicate types
                         if (!uniqueTypes.Add(type.Type1)) continue;
-                        
+
                         types.Add(type);
-                        
+
                         // Optionally associate with alias if navigation property exists
                         alias.TypesTypes ??= new List<Type>(); // if is the list is null then create new list
                         alias.TypesTypes.Add(type);

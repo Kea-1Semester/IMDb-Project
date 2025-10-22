@@ -1,4 +1,4 @@
-using SeedData.Models;
+using EfCoreModelsLib.Models.Mysql;
 using System.Threading.Tasks;
 
 namespace SeedData.Handlers
@@ -26,8 +26,8 @@ namespace SeedData.Handlers
                     while ((line = await reader.ReadLineAsync()) != null)
                     {
                         var columns = line.Split('\t');
-                        
-                        Guid newGuid = Guid.NewGuid();                        
+
+                        Guid newGuid = Guid.NewGuid();
 
                         var title = new Title
                         {
@@ -68,7 +68,7 @@ namespace SeedData.Handlers
                         }
                     }
                 }
-            }            
+            }
 
             await context.Titles.AddRangeAsync(titleBasics);
             await context.SaveChangesAsync();

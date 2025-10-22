@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfCoreModelsLib.Models;
+namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("ExecutedAt", Name = "executed_at_index")]
 [Index("TableName", Name = "table_name_index")]

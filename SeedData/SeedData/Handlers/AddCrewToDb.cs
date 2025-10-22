@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SeedData.Models;
+using EfCoreModelsLib.Models.Mysql;
 
 namespace SeedData.Handlers
 {
@@ -29,7 +29,7 @@ namespace SeedData.Handlers
                     while ((line = await reader.ReadLineAsync()) != null)
                     {
                         var columns = line.Split('\t');
-                        
+
                         var tconst = columns[0];
 
                         var title = titleIdsDict.TryGetValue(tconst, out var titleGuid) && titlesDict.TryGetValue(titleGuid, out var _title)
@@ -38,10 +38,10 @@ namespace SeedData.Handlers
 
                         var directors = columns[1]
                             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                        
+
                         var writers = columns[2]
                             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                        
+
                         foreach (var directorId in directors)
                         {
                             if (personIdsDict.TryGetValue(directorId, out var guid) && personsDict.TryGetValue(guid, out var person))

@@ -1,4 +1,4 @@
-﻿using SeedData.Models;
+﻿using EfCoreModelsLib.Models.Mysql;
 
 namespace SeedData.Handlers
 {

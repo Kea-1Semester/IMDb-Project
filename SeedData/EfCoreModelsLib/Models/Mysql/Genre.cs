@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfCoreModelsLib.Models;
+namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("Genre1", Name = "genre_UNIQUE", IsUnique = true)]
 public partial class Genre

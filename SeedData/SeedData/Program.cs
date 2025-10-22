@@ -1,7 +1,7 @@
 ﻿using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using SeedData.Handlers;
-using SeedData.Models;
+using EfCoreModelsLib.Models.Mysql;
 
 namespace SeedData;
 

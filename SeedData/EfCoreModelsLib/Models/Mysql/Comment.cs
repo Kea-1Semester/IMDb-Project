@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfCoreModelsLib.Models;
+namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("TitleId", Name = "fk_title_comments_title_basics1_idx")]
 public partial class Comment

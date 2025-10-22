@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfCoreModelsLib.Models;
+namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("PersonId", Name = "fk_Professions_Persons1_idx")]
 [Index("Profession1", Name = "profession_UNIQUE", IsUnique = true)]

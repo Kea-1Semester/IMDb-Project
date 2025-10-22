@@ -1,0 +1,15 @@
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\bin\Debug\net9.0\EfCoreModelsLib.deps.json
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\bin\Debug\net9.0\EfCoreModelsLib.runtimeconfig.json
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\bin\Debug\net9.0\EfCoreModelsLib.dll
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\bin\Debug\net9.0\EfCoreModelsLib.pdb
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\EfCoreModelsLib.csproj.AssemblyReference.cache
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\EfCoreModelsLib.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\EfCoreModelsLib.AssemblyInfoInputs.cache
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\EfCoreModelsLib.AssemblyInfo.cs
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\EfCoreModelsLib.csproj.CoreCompileInputs.cache
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\EfCoreModelsLib.sourcelink.json
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\EfCoreModelsLib.dll
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\refint\EfCoreModelsLib.dll
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\EfCoreModelsLib.pdb
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\EfCoreModelsLib.genruntimeconfig.cache
+C:\Users\olive\source\repos\Kea-1Semester\IMDb-Project\SeedData\EfCoreModelsLib\obj\Debug\net9.0\ref\EfCoreModelsLib.dll

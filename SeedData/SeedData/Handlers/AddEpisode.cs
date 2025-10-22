@@ -1,4 +1,4 @@
-﻿using SeedData.Models;
+﻿using EfCoreModelsLib.Models.Mysql;
 
 namespace SeedData.Handlers
 {
@@ -43,7 +43,7 @@ namespace SeedData.Handlers
                         }
                     }
                 }
-            }                    
+            }
 
             await context.Episodes.AddRangeAsync(episodes);
             await context.SaveChangesAsync();

@@ -1,4 +1,4 @@
-﻿using SeedData.Models;
+﻿using EfCoreModelsLib.Models.Mysql;
 
 namespace SeedData.Handlers
 {
@@ -27,9 +27,9 @@ namespace SeedData.Handlers
                     while ((line = await reader.ReadLineAsync()) != null)
                     {
                         var columns = line.Split('\t');
-                        
+
                         Guid personId = Guid.NewGuid();
-                        
+
                         var person = new Person
                         {
                             PersonId = personId,
@@ -93,9 +93,9 @@ namespace SeedData.Handlers
             await context.Professions.AddRangeAsync(professions);
 
             await context.SaveChangesAsync();
-            
+
             Console.WriteLine($"Seeded first {noOfRow} Person records with Professions.");
-            
+
             return personIdsDict;
         }
     }

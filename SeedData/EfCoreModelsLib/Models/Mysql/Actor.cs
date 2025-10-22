@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfCoreModelsLib.Models;
+namespace EfCoreModelsLib.Models.Mysql;
 
 [PrimaryKey("ActorId", "TitlesTitleId", "PersonsPersonId")]
 [Index("PersonsPersonId", Name = "fk_Titles_has_Persons_Persons3_idx")]

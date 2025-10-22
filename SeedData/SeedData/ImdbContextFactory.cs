@@ -1,8 +1,9 @@
 ﻿using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using EfCoreModelsLib.Models.Mysql;
 
-namespace SeedData.Models
+namespace SeedData
 {
     public class ImdbContextFactory : IDesignTimeDbContextFactory<ImdbContext>
     {
