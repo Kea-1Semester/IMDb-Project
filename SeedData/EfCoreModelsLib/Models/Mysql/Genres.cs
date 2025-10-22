@@ -8,19 +8,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreModelsLib.Models.Mysql;
 
-[Index("Type1", Name = "type_UNIQUE", IsUnique = true)]
-public partial class Type
+[Index("Genre", Name = "genre_UNIQUE", IsUnique = true)]
+public partial class Genres
 {
     [Key]
-    [Column("type_id")]
-    public Guid TypeId { get; set; }
+    [Column("genre_id")]
+    public Guid GenreId { get; set; }
 
     [Required]
-    [Column("type")]
+    [Column("genre")]
     [StringLength(100)]
-    public string Type1 { get; set; }
+    public string Genre { get; set; }
 
-    [ForeignKey("TypesTypeId")]
-    [InverseProperty("TypesTypes")]
-    public virtual ICollection<Alias> AliasesAliases { get; set; } = new List<Alias>();
+    [ForeignKey("GenresGenreId")]
+    [InverseProperty("GenresGenre")]
+    public virtual ICollection<Titles> TitlesTitle { get; set; } = new List<Titles>();
 }

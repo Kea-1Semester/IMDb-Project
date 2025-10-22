@@ -10,7 +10,7 @@ namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("TitleIdParent", Name = "fk_title_episodes_title_basics1")]
 [Index("TitleIdChild", Name = "fk_title_episodes_title_basics2_idx")]
-public partial class Episode
+public partial class Episodes
 {
     [Key]
     [Column("episode_id")]
@@ -29,10 +29,10 @@ public partial class Episode
     public int EpisodeNumber { get; set; }
 
     [ForeignKey("TitleIdChild")]
-    [InverseProperty("EpisodeTitleIdChildNavigations")]
-    public virtual Title TitleIdChildNavigation { get; set; }
+    [InverseProperty("EpisodesTitleIdChildNavigation")]
+    public virtual Titles TitleIdChildNavigation { get; set; }
 
     [ForeignKey("TitleIdParent")]
-    [InverseProperty("EpisodeTitleIdParentNavigations")]
-    public virtual Title TitleIdParentNavigation { get; set; }
+    [InverseProperty("EpisodesTitleIdParentNavigation")]
+    public virtual Titles TitleIdParentNavigation { get; set; }
 }

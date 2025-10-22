@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreModelsLib.Models.Mysql;
 
-[Index("Attribute1", Name = "attribute_UNIQUE", IsUnique = true)]
-public partial class Attribute
+[Index("Attribute", Name = "attribute_UNIQUE", IsUnique = true)]
+public partial class Attributes
 {
     [Key]
     [Column("attribute_id")]
@@ -18,9 +18,9 @@ public partial class Attribute
     [Required]
     [Column("attribute")]
     [StringLength(100)]
-    public string Attribute1 { get; set; }
+    public string Attribute { get; set; }
 
     [ForeignKey("AttributesAttributeId")]
-    [InverseProperty("AttributesAttributes")]
-    public virtual ICollection<Alias> AliasesAliases { get; set; } = new List<Alias>();
+    [InverseProperty("AttributesAttribute")]
+    public virtual ICollection<Aliases> AliasesAlias { get; set; } = new List<Aliases>();
 }

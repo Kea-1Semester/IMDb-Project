@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreModelsLib.Models.Mysql;
 
-public partial class Person
+public partial class Persons
 {
     [Key]
     [Column("person_id")]
@@ -26,20 +26,17 @@ public partial class Person
     public int? EndYear { get; set; }
 
     [InverseProperty("PersonsPerson")]
-    public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
+    public virtual ICollection<Actors> Actors { get; set; } = new List<Actors>();
+
+    [InverseProperty("PersonsPerson")]
+    public virtual ICollection<Directors> Directors { get; set; } = new List<Directors>();
+
+    [InverseProperty("PersonsPerson")]
+    public virtual ICollection<KnownFor> KnownFor { get; set; } = new List<KnownFor>();
 
     [InverseProperty("Person")]
-    public virtual ICollection<Profession> Professions { get; set; } = new List<Profession>();
+    public virtual ICollection<Professions> Professions { get; set; } = new List<Professions>();
 
-    [ForeignKey("PersonsPersonId")]
-    [InverseProperty("PersonsPeople")]
-    public virtual ICollection<Title> TitlesTitles { get; set; } = new List<Title>();
-
-    [ForeignKey("PersonsPersonId")]
-    [InverseProperty("PersonsPeople1")]
-    public virtual ICollection<Title> TitlesTitles1 { get; set; } = new List<Title>();
-
-    [ForeignKey("PersonsPersonId")]
-    [InverseProperty("PersonsPeopleNavigation")]
-    public virtual ICollection<Title> TitlesTitlesNavigation { get; set; } = new List<Title>();
+    [InverseProperty("PersonsPerson")]
+    public virtual ICollection<Writers> Writers { get; set; } = new List<Writers>();
 }

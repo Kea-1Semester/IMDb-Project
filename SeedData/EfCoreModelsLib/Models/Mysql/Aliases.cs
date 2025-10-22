@@ -10,7 +10,7 @@ namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("TitleId", Name = "fk_title_akas_title_basics_idx")]
 [Index("Title", Name = "title_index")]
-public partial class Alias
+public partial class Aliases
 {
     [Key]
     [Column("alias_id")]
@@ -38,13 +38,13 @@ public partial class Alias
 
     [ForeignKey("TitleId")]
     [InverseProperty("Aliases")]
-    public virtual Title TitleNavigation { get; set; }
+    public virtual Titles TitleNavigation { get; set; }
 
     [ForeignKey("AliasesAliasId")]
-    [InverseProperty("AliasesAliases")]
-    public virtual ICollection<Attribute> AttributesAttributes { get; set; } = new List<Attribute>();
+    [InverseProperty("AliasesAlias")]
+    public virtual ICollection<Attributes> AttributesAttribute { get; set; } = new List<Attributes>();
 
     [ForeignKey("AliasesAliasId")]
-    [InverseProperty("AliasesAliases")]
-    public virtual ICollection<Type> TypesTypes { get; set; } = new List<Type>();
+    [InverseProperty("AliasesAlias")]
+    public virtual ICollection<Types> TypesType { get; set; } = new List<Types>();
 }

@@ -10,7 +10,7 @@ namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("ExecutedAt", Name = "executed_at_index")]
 [Index("TableName", Name = "table_name_index")]
-public partial class Logging
+public partial class Loggings
 {
     [Key]
     [Column("logging_id")]

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("TitleId", Name = "fk_title_comments_title_basics1_idx")]
-public partial class Comment
+public partial class Comments
 {
     [Key]
     [Column("comment_id")]
@@ -21,9 +21,9 @@ public partial class Comment
     [Required]
     [Column("comment")]
     [StringLength(255)]
-    public string Comment1 { get; set; }
+    public string Comment { get; set; }
 
     [ForeignKey("TitleId")]
     [InverseProperty("Comments")]
-    public virtual Title Title { get; set; }
+    public virtual Titles Title { get; set; }
 }

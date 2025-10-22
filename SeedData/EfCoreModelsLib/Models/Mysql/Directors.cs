@@ -8,14 +8,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreModelsLib.Models.Mysql;
 
-[PrimaryKey("ActorId", "TitlesTitleId", "PersonsPersonId")]
-[Index("PersonsPersonId", Name = "fk_Titles_has_Persons_Persons3_idx")]
-[Index("TitlesTitleId", Name = "fk_Titles_has_Persons_Titles3_idx")]
-public partial class Actor
+[PrimaryKey("DirectorsId", "TitlesTitleId", "PersonsPersonId")]
+[Index("PersonsPersonId", Name = "fk_Titles_has_Persons_Persons1_idx")]
+[Index("TitlesTitleId", Name = "fk_Titles_has_Persons_Titles1_idx")]
+public partial class Directors
 {
     [Key]
-    [Column("actor_id")]
-    public Guid ActorId { get; set; }
+    [Column("directors_id")]
+    public Guid DirectorsId { get; set; }
 
     [Key]
     [Column("Titles_title_id")]
@@ -25,15 +25,11 @@ public partial class Actor
     [Column("Persons_person_id")]
     public Guid PersonsPersonId { get; set; }
 
-    [Required]
-    [StringLength(255)]
-    public string Role { get; set; }
-
     [ForeignKey("PersonsPersonId")]
-    [InverseProperty("Actors")]
-    public virtual Person PersonsPerson { get; set; }
+    [InverseProperty("Directors")]
+    public virtual Persons PersonsPerson { get; set; }
 
     [ForeignKey("TitlesTitleId")]
-    [InverseProperty("Actors")]
-    public virtual Title TitlesTitle { get; set; }
+    [InverseProperty("Directors")]
+    public virtual Titles TitlesTitle { get; set; }
 }

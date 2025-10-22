@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("PersonId", Name = "fk_Professions_Persons1_idx")]
-[Index("Profession1", Name = "profession_UNIQUE", IsUnique = true)]
-public partial class Profession
+[Index("Profession", Name = "profession_UNIQUE", IsUnique = true)]
+public partial class Professions
 {
     [Key]
     [Column("profession_id")]
@@ -22,9 +22,9 @@ public partial class Profession
     [Required]
     [Column("profession")]
     [StringLength(45)]
-    public string Profession1 { get; set; }
+    public string Profession { get; set; }
 
     [ForeignKey("PersonId")]
     [InverseProperty("Professions")]
-    public virtual Person Person { get; set; }
+    public virtual Persons Person { get; set; }
 }

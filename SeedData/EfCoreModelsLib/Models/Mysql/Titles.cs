@@ -11,7 +11,7 @@ namespace EfCoreModelsLib.Models.Mysql;
 [Index("OriginalTitle", Name = "original_title_index")]
 [Index("PrimaryTitle", Name = "primary_title_index")]
 [Index("TitleType", Name = "title_type_index")]
-public partial class Title
+public partial class Titles
 {
     [Key]
     [Column("title_id")]
@@ -43,36 +43,33 @@ public partial class Title
     public int? RuntimeMinutes { get; set; }
 
     [InverseProperty("TitlesTitle")]
-    public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
+    public virtual ICollection<Actors> Actors { get; set; } = new List<Actors>();
 
     [InverseProperty("TitleNavigation")]
-    public virtual ICollection<Alias> Aliases { get; set; } = new List<Alias>();
+    public virtual ICollection<Aliases> Aliases { get; set; } = new List<Aliases>();
 
     [InverseProperty("Title")]
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public virtual ICollection<Comments> Comments { get; set; } = new List<Comments>();
+
+    [InverseProperty("TitlesTitle")]
+    public virtual ICollection<Directors> Directors { get; set; } = new List<Directors>();
 
     [InverseProperty("TitleIdChildNavigation")]
-    public virtual ICollection<Episode> EpisodeTitleIdChildNavigations { get; set; } = new List<Episode>();
+    public virtual ICollection<Episodes> EpisodesTitleIdChildNavigation { get; set; } = new List<Episodes>();
 
     [InverseProperty("TitleIdParentNavigation")]
-    public virtual ICollection<Episode> EpisodeTitleIdParentNavigations { get; set; } = new List<Episode>();
+    public virtual ICollection<Episodes> EpisodesTitleIdParentNavigation { get; set; } = new List<Episodes>();
+
+    [InverseProperty("TitlesTitle")]
+    public virtual ICollection<KnownFor> KnownFor { get; set; } = new List<KnownFor>();
 
     [InverseProperty("Title")]
-    public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+    public virtual ICollection<Ratings> Ratings { get; set; } = new List<Ratings>();
+
+    [InverseProperty("TitlesTitle")]
+    public virtual ICollection<Writers> Writers { get; set; } = new List<Writers>();
 
     [ForeignKey("TitlesTitleId")]
-    [InverseProperty("TitlesTitles")]
-    public virtual ICollection<Genre> GenresGenres { get; set; } = new List<Genre>();
-
-    [ForeignKey("TitlesTitleId")]
-    [InverseProperty("TitlesTitles")]
-    public virtual ICollection<Person> PersonsPeople { get; set; } = new List<Person>();
-
-    [ForeignKey("TitlesTitleId")]
-    [InverseProperty("TitlesTitles1")]
-    public virtual ICollection<Person> PersonsPeople1 { get; set; } = new List<Person>();
-
-    [ForeignKey("TitlesTitleId")]
-    [InverseProperty("TitlesTitlesNavigation")]
-    public virtual ICollection<Person> PersonsPeopleNavigation { get; set; } = new List<Person>();
+    [InverseProperty("TitlesTitle")]
+    public virtual ICollection<Genres> GenresGenre { get; set; } = new List<Genres>();
 }

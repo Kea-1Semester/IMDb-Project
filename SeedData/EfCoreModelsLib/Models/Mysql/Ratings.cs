@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EfCoreModelsLib.Models.Mysql;
 
 [Index("TitleId", Name = "fk_title_ratings_title_basics1")]
-public partial class Rating
+public partial class Ratings
 {
     [Key]
     [Column("rating_id")]
@@ -26,5 +26,5 @@ public partial class Rating
 
     [ForeignKey("TitleId")]
     [InverseProperty("Ratings")]
-    public virtual Title Title { get; set; }
+    public virtual Titles Title { get; set; }
 }

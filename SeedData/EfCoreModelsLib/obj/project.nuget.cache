@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TqVk8Je2XJw=",
+  "dgSpecHash": "nmk+n5gElWc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\olive\\source\\repos\\Kea-1Semester\\IMDb-Project\\SeedData\\EfCoreModelsLib\\EfCoreModelsLib.csproj",
+  "projectFilePath": "C:\\Users\\olive\\source\\repos\\IMDb-Project\\SeedData\\EfCoreModelsLib\\EfCoreModelsLib.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\olive\\.nuget\\packages\\dbcontext\\1.0.0\\dbcontext.1.0.0.nupkg.sha512",
     "C:\\Users\\olive\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
