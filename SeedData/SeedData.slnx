@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="EfCoreModelsLib/EfCoreModelsLib.csproj" Id="f8f30f8c-e714-4af5-8b1e-0aca9922013f" />
   <Project Path="SeedData/SeedData.csproj" />
 </Solution>
