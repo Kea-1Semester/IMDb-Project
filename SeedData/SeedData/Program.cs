@@ -1,6 +1,5 @@
 ﻿using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using SeedData.Handlers;
 using SeedData.Models;
 
@@ -11,7 +10,13 @@ internal static class Program
     static async Task Main(string[] args)
     {
         Env.TraversePath().Load();
+        await SeedData();
 
+
+    }
+
+    private static async Task SeedData()
+    {
         var projectRoot = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
         var dataFolder = Path.Combine(projectRoot!, "data");
         var titleBasicPath = Path.Combine(dataFolder, "title.basics.tsv");
@@ -55,5 +60,15 @@ internal static class Program
         }
 
         Console.WriteLine("Program Completed");
+
+    }
+
+    private static async Task MigrateToMongoDb()
+    {
+
+    }
+    private static async Task MigrateToNeo4J()
+    {
+
     }
 }
