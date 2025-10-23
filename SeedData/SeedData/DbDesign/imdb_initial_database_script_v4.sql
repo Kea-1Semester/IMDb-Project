@@ -1,0 +1,417 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema imdb
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `imdb` ;
+
+-- -----------------------------------------------------
+-- Schema imdb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `imdb` DEFAULT CHARACTER SET utf8mb3 ;
+USE `imdb` ;
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Persons`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Persons` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Persons` (
+  `person_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `name` VARCHAR(255) CHARACTER SET 'utf8mb3' NOT NULL,
+  `birth_year` INT NOT NULL,
+  `end_year` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`person_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Titles`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Titles` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Titles` (
+  `title_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `title_type` VARCHAR(100) CHARACTER SET 'utf8mb3' NOT NULL,
+  `primary_title` VARCHAR(255) CHARACTER SET 'utf8mb3' NOT NULL,
+  `original_title` VARCHAR(255) CHARACTER SET 'utf8mb3' NOT NULL,
+  `is_adult` TINYINT(1) NOT NULL,
+  `start_year` INT NOT NULL,
+  `end_year` INT NULL DEFAULT NULL,
+  `runtime_minutes` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`title_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `original_title_index` ON `imdb`.`Titles` (`original_title` ASC) VISIBLE;
+
+CREATE INDEX `primary_title_index` ON `imdb`.`Titles` (`primary_title` ASC) VISIBLE;
+
+CREATE INDEX `title_type_index` ON `imdb`.`Titles` (`title_type` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Actors`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Actors` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Actors` (
+  `actor_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `Titles_title_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `Persons_person_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `Role` VARCHAR(255) CHARACTER SET 'utf8mb3' NOT NULL,
+  PRIMARY KEY (`actor_id`, `Titles_title_id`, `Persons_person_id`),
+  CONSTRAINT `fk_Titles_has_Persons_Persons3`
+    FOREIGN KEY (`Persons_person_id`)
+    REFERENCES `imdb`.`Persons` (`person_id`),
+  CONSTRAINT `fk_Titles_has_Persons_Titles3`
+    FOREIGN KEY (`Titles_title_id`)
+    REFERENCES `imdb`.`Titles` (`title_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_Titles_has_Persons_Persons3_idx` ON `imdb`.`Actors` (`Persons_person_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Titles_has_Persons_Titles3_idx` ON `imdb`.`Actors` (`Titles_title_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Aliases`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Aliases` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Aliases` (
+  `alias_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `title_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `region` VARCHAR(100) CHARACTER SET 'utf8mb3' NOT NULL,
+  `language` VARCHAR(100) CHARACTER SET 'utf8mb3' NOT NULL,
+  `is_original_title` TINYINT(1) NOT NULL,
+  `title` VARCHAR(255) CHARACTER SET 'utf8mb3' NOT NULL,
+  PRIMARY KEY (`alias_id`),
+  CONSTRAINT `fk_title_akas_title_basics`
+    FOREIGN KEY (`title_id`)
+    REFERENCES `imdb`.`Titles` (`title_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_title_akas_title_basics_idx` ON `imdb`.`Aliases` (`title_id` ASC) VISIBLE;
+
+CREATE INDEX `title_index` ON `imdb`.`Aliases` (`title` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Attributes`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Attributes` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Attributes` (
+  `attribute_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `attribute` VARCHAR(100) CHARACTER SET 'utf8mb3' NOT NULL,
+  PRIMARY KEY (`attribute_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE UNIQUE INDEX `attribute_UNIQUE` ON `imdb`.`Attributes` (`attribute` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Aliases_has_Attributes`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Aliases_has_Attributes` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Aliases_has_Attributes` (
+  `Aliases_alias_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `Attributes_attribute_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  PRIMARY KEY (`Aliases_alias_id`, `Attributes_attribute_id`),
+  CONSTRAINT `fk_Aliases_has_Attributes_Aliases1`
+    FOREIGN KEY (`Aliases_alias_id`)
+    REFERENCES `imdb`.`Aliases` (`alias_id`),
+  CONSTRAINT `fk_Aliases_has_Attributes_Attributes1`
+    FOREIGN KEY (`Attributes_attribute_id`)
+    REFERENCES `imdb`.`Attributes` (`attribute_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_Aliases_has_Attributes_Aliases1_idx` ON `imdb`.`Aliases_has_Attributes` (`Aliases_alias_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Aliases_has_Attributes_Attributes1_idx` ON `imdb`.`Aliases_has_Attributes` (`Attributes_attribute_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Types`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Types` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Types` (
+  `type_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `type` VARCHAR(100) CHARACTER SET 'utf8mb3' NOT NULL,
+  PRIMARY KEY (`type_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE UNIQUE INDEX `type_UNIQUE` ON `imdb`.`Types` (`type` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Aliases_has_Types`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Aliases_has_Types` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Aliases_has_Types` (
+  `Aliases_alias_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `Types_type_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  PRIMARY KEY (`Aliases_alias_id`, `Types_type_id`),
+  CONSTRAINT `fk_Aliases_has_Types_Aliases1`
+    FOREIGN KEY (`Aliases_alias_id`)
+    REFERENCES `imdb`.`Aliases` (`alias_id`),
+  CONSTRAINT `fk_Aliases_has_Types_Types1`
+    FOREIGN KEY (`Types_type_id`)
+    REFERENCES `imdb`.`Types` (`type_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_Aliases_has_Types_Aliases1_idx` ON `imdb`.`Aliases_has_Types` (`Aliases_alias_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Aliases_has_Types_Types1_idx` ON `imdb`.`Aliases_has_Types` (`Types_type_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Comments`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Comments` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Comments` (
+  `comment_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `title_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `comment` VARCHAR(255) CHARACTER SET 'utf8mb3' NOT NULL,
+  PRIMARY KEY (`comment_id`),
+  CONSTRAINT `fk_title_comments_title_basics1`
+    FOREIGN KEY (`title_id`)
+    REFERENCES `imdb`.`Titles` (`title_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_title_comments_title_basics1_idx` ON `imdb`.`Comments` (`title_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Directors`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Directors` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Directors` (
+  `directors_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `Titles_title_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `Persons_person_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  PRIMARY KEY (`directors_id`, `Titles_title_id`, `Persons_person_id`),
+  CONSTRAINT `fk_Titles_has_Persons_Persons1`
+    FOREIGN KEY (`Persons_person_id`)
+    REFERENCES `imdb`.`Persons` (`person_id`),
+  CONSTRAINT `fk_Titles_has_Persons_Titles1`
+    FOREIGN KEY (`Titles_title_id`)
+    REFERENCES `imdb`.`Titles` (`title_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_Titles_has_Persons_Persons1_idx` ON `imdb`.`Directors` (`Persons_person_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Titles_has_Persons_Titles1_idx` ON `imdb`.`Directors` (`Titles_title_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Episodes`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Episodes` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Episodes` (
+  `episode_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `title_id_parent` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `title_id_child` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `season_number` INT NOT NULL,
+  `episode_number` INT NOT NULL,
+  PRIMARY KEY (`episode_id`),
+  CONSTRAINT `fk_title_episodes_title_basics1`
+    FOREIGN KEY (`title_id_parent`)
+    REFERENCES `imdb`.`Titles` (`title_id`),
+  CONSTRAINT `fk_title_episodes_title_basics2`
+    FOREIGN KEY (`title_id_child`)
+    REFERENCES `imdb`.`Titles` (`title_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_title_episodes_title_basics1` ON `imdb`.`Episodes` (`title_id_parent` ASC) VISIBLE;
+
+CREATE INDEX `fk_title_episodes_title_basics2_idx` ON `imdb`.`Episodes` (`title_id_child` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Genres`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Genres` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Genres` (
+  `genre_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `genre` VARCHAR(100) CHARACTER SET 'utf8mb3' NOT NULL,
+  PRIMARY KEY (`genre_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE UNIQUE INDEX `genre_UNIQUE` ON `imdb`.`Genres` (`genre` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Known_for`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Known_for` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Known_for` (
+  `known_for_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `Titles_title_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `Persons_person_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  PRIMARY KEY (`known_for_id`, `Titles_title_id`, `Persons_person_id`),
+  CONSTRAINT `fk_Titles_has_Persons_Persons2`
+    FOREIGN KEY (`Persons_person_id`)
+    REFERENCES `imdb`.`Persons` (`person_id`),
+  CONSTRAINT `fk_Titles_has_Persons_Titles2`
+    FOREIGN KEY (`Titles_title_id`)
+    REFERENCES `imdb`.`Titles` (`title_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_Titles_has_Persons_Persons2_idx` ON `imdb`.`Known_for` (`Persons_person_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Titles_has_Persons_Titles2_idx` ON `imdb`.`Known_for` (`Titles_title_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Loggings`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Loggings` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Loggings` (
+  `logging_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `table_name` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `command` ENUM('INSERT', 'UPDATE', 'DELETE') CHARACTER SET 'utf8mb3' NOT NULL,
+  `new_value` JSON NULL DEFAULT NULL,
+  `old_value` JSON NULL DEFAULT NULL,
+  `executed_by` VARCHAR(100) CHARACTER SET 'utf8mb3' NULL DEFAULT NULL,
+  `executed_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (`logging_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `executed_at_index` ON `imdb`.`Loggings` (`executed_at` ASC) VISIBLE;
+
+CREATE INDEX `table_name_index` ON `imdb`.`Loggings` (`table_name` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Professions`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Professions` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Professions` (
+  `profession_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `person_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `profession` VARCHAR(45) CHARACTER SET 'utf8mb3' NOT NULL,
+  PRIMARY KEY (`profession_id`),
+  CONSTRAINT `fk_Professions_Persons1`
+    FOREIGN KEY (`person_id`)
+    REFERENCES `imdb`.`Persons` (`person_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE UNIQUE INDEX `profession_UNIQUE` ON `imdb`.`Professions` (`profession` ASC) VISIBLE;
+
+CREATE INDEX `fk_Professions_Persons1_idx` ON `imdb`.`Professions` (`person_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Ratings`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Ratings` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Ratings` (
+  `rating_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `title_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `average_rating` DOUBLE NOT NULL,
+  `num_votes` INT NOT NULL,
+  PRIMARY KEY (`rating_id`),
+  CONSTRAINT `fk_title_ratings_title_basics1`
+    FOREIGN KEY (`title_id`)
+    REFERENCES `imdb`.`Titles` (`title_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_title_ratings_title_basics1` ON `imdb`.`Ratings` (`title_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Titles_has_Genres`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Titles_has_Genres` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Titles_has_Genres` (
+  `Titles_title_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `Genres_genre_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  PRIMARY KEY (`Titles_title_id`, `Genres_genre_id`),
+  CONSTRAINT `fk_Titles_has_Genres_Genres1`
+    FOREIGN KEY (`Genres_genre_id`)
+    REFERENCES `imdb`.`Genres` (`genre_id`),
+  CONSTRAINT `fk_Titles_has_Genres_Titles1`
+    FOREIGN KEY (`Titles_title_id`)
+    REFERENCES `imdb`.`Titles` (`title_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_Titles_has_Genres_Genres1_idx` ON `imdb`.`Titles_has_Genres` (`Genres_genre_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Titles_has_Genres_Titles1_idx` ON `imdb`.`Titles_has_Genres` (`Titles_title_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`Writers`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`Writers` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`Writers` (
+  `writers_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL DEFAULT uuid_to_bin(uuid(),1),
+  `Titles_title_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  `Persons_person_id` CHAR(36) CHARACTER SET 'ascii' NOT NULL,
+  PRIMARY KEY (`writers_id`, `Titles_title_id`, `Persons_person_id`),
+  CONSTRAINT `fk_Titles_has_Persons_Persons4`
+    FOREIGN KEY (`Persons_person_id`)
+    REFERENCES `imdb`.`Persons` (`person_id`),
+  CONSTRAINT `fk_Titles_has_Persons_Titles4`
+    FOREIGN KEY (`Titles_title_id`)
+    REFERENCES `imdb`.`Titles` (`title_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+CREATE INDEX `fk_Titles_has_Persons_Persons4_idx` ON `imdb`.`Writers` (`Persons_person_id` ASC) VISIBLE;
+
+CREATE INDEX `fk_Titles_has_Persons_Titles4_idx` ON `imdb`.`Writers` (`Titles_title_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `imdb`.`__EFMigrationsHistory`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `imdb`.`__EFMigrationsHistory` ;
+
+CREATE TABLE IF NOT EXISTS `imdb`.`__EFMigrationsHistory` (
+  `MigrationId` VARCHAR(150) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  `ProductVersion` VARCHAR(32) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
+  PRIMARY KEY (`MigrationId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
