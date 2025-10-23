@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EfCoreModelsLib")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8f6829fae364d3e02c4032a4ed2628cb0569ac86")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+100a839a138570773271e69b738dba56e102f322")]
 [assembly: System.Reflection.AssemblyProductAttribute("EfCoreModelsLib")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EfCoreModelsLib")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
