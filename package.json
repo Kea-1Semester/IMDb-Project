@@ -1,0 +1,25 @@
+{
+  "name": "imdb-project",
+  "version": "1.0.0",
+  "description": "[Frontend](https://imdb-project-frontend.onrender.com/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Husky ran!\"",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kea-1Semester/IMDb-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Kea-1Semester/IMDb-Project/issues"
+  },
+  "homepage": "https://github.com/Kea-1Semester/IMDb-Project#readme",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
