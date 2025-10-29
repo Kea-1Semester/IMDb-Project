@@ -39,7 +39,6 @@
 
   "actors": [
     {
-      "actorId": "ObjectId(\"...\")",
       "personId": "ObjectId(\"...\")",
       "name": "Leonardo DiCaprio",
       "role": "Cobb"
