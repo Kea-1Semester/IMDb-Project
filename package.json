@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Husky ran!\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "dev_up": "bash ./scripts/dev_up.sh",
+    "dev_down": "bash ./scripts/dev_down.sh"
   },
   "repository": {
     "type": "git",
