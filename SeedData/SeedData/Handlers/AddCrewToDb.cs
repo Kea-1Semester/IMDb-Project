@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EfCoreModelsLib.Models.Mysql;
 using Microsoft.EntityFrameworkCore;
-using EfCoreModelsLib.Models.Mysql;
 
 namespace SeedData.Handlers
 {
@@ -84,6 +79,8 @@ namespace SeedData.Handlers
 
                 try
                 {
+                    await context.Directors.AddRangeAsync(context.Directors.Local);
+                    await context.Writers.AddRangeAsync(context.Writers.Local);
                     await context.SaveChangesAsync();
                     Console.WriteLine("Saving Directors and Writers");
                 }
