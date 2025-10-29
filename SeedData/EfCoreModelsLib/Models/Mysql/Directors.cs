@@ -14,6 +14,7 @@ namespace EfCoreModelsLib.Models.Mysql;
 public partial class Directors
 {
     [Key]
+    //directors_id
     [Column("directors_id")]
     public Guid DirectorsId { get; set; }
 

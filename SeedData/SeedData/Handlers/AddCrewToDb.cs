@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EfCoreModelsLib.Models.Mysql;
 using Microsoft.EntityFrameworkCore;
-using EfCoreModelsLib.Models.Mysql;
 
 namespace SeedData.Handlers
 {
@@ -80,6 +75,26 @@ namespace SeedData.Handlers
                             }
                         }
                     }
+                }
+
+                try
+                {
+                    await context.Directors.AddRangeAsync(context.Directors.Local);
+                    Console.WriteLine("Adding Professions");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
+
+                try
+                {
+                    await context.Writers.AddRangeAsync(context.Writers.Local);
+                    Console.WriteLine("Adding Professions");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
                 }
 
                 try

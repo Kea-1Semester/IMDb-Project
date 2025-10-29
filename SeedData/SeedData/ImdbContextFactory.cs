@@ -11,14 +11,15 @@ namespace SeedData
         {
             Env.TraversePath().Load();
 
-            var connectionString = Env.GetString("ConnectionString");
+            var connectionString = Env.GetString("ConnectionStringDocker");
+
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new InvalidOperationException("Connection string is not set in environment variables.");
 
             var optionsBuilder = new DbContextOptionsBuilder<ImdbContext>();
             optionsBuilder.UseMySql(
-                Env.GetString("ConnectionString"),
-                ServerVersion.AutoDetect(Env.GetString("ConnectionString")),
+                connectionString,
+                ServerVersion.AutoDetect(connectionString),
                 b => b.MigrationsAssembly("SeedData")
             );
 
