@@ -80,7 +80,25 @@ namespace SeedData.Handlers
                 try
                 {
                     await context.Directors.AddRangeAsync(context.Directors.Local);
+                    Console.WriteLine("Adding Professions");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
+
+                try
+                {
                     await context.Writers.AddRangeAsync(context.Writers.Local);
+                    Console.WriteLine("Adding Professions");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
+                }
+
+                try
+                {
                     await context.SaveChangesAsync();
                     Console.WriteLine("Saving Directors and Writers");
                 }
