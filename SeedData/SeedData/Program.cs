@@ -15,7 +15,7 @@ internal static class Program
     {
         Env.TraversePath().Load();
         //await SeedData();
-        await MigrateToMongoDb();
+        await TitleMongoDbMapper.MigrateToMongoDb("ConnectionStringDocker");
         //await MigrateToNeo4J();
     }
 
@@ -62,114 +62,11 @@ internal static class Program
     }
 
 
-
-    private static async Task MigrateToMongoDb()
-    {
-        var mongoDbData = new List<TitleMongoDb>();
-
-        // 1. Read from MySQL and join data that match the MongoDB Schema
-        await using var mysqlContext = MySqlSettings.MySqlConnectionToGetData("ConnectionStringDocker");
-
-
-        mongoDbData.AddRange(await TitleMongoDbMapper.ListTitleMongoData(mysqlContext));
-
-
-
-        /*var episodes = await mysqlContext.Episodes
-            .AsNoTracking()
-            .ToListAsync();
-
-        var joinEpisodesWithTiles = (
-            from e in mysqlContext.Episodes
-            join p in mysqlContext.Titles on e.TitleIdParent equals p.TitleId
-            join c in mysqlContext.Titles on e.TitleIdChild equals c.TitleId
-            select new
-            {
-                TitleIdParent = e.TitleIdParent,
-                TitleIdChild = e.TitleIdChild,
-                ParentTitle = p.PrimaryTitle,
-                ChildTitle = c.PrimaryTitle
-            }
-        ).ToList();*/
-
-        /*var titlesFromMysql = await mysqlContext.Titles
-            .Include(t => t.GenresGenre)
-            .Include(t => t.Aliases)
-            .Include(t => t.Comments)
-            .Include(t => t.Ratings)
-            .Include(t => t.EpisodesTitleIdParentNavigation)
-                 .ThenInclude(e => e.TitleIdChildNavigation)
-            .Include(t => t.Actors)
-                .ThenInclude(a => a.PersonsPerson)
-            .Include(t => t.Directors)
-                .ThenInclude(d => d.PersonsPerson)
-            .Include(r => r.Writers)
-                .ThenInclude(w => w.PersonsPerson)
-            .AsNoTracking()
-            .Take(10000)
-            .ToListAsync();
-
-
-        var titlesList = titlesFromMysql
-            .Where(t =>
-                t.Aliases.Any() &&
-                t.Ratings != null &&
-                t.Actors.Any() &&
-                t.Directors.Any() &&
-                t.Writers.Any()
-                )
-            .Take(100)
-            .ToList();
-
-        var listWithEpisodes = titlesFromMysql
-            .Where(t =>
-                (
-                t.EpisodesTitleIdParentNavigation.Count != 0 ||
-                t.EpisodesTitleIdChildNavigation.Count != 0
-                )
-            )
-            .ToList();
-
-        // combine both lists
-        var bothLists = titlesList.Union(listWithEpisodes).Distinct()
-            .Select(TitleMongoDbMapper.MapTitleMongoDb)
-            .Distinct()
-            .ToList();
-
-
-        mongoDbData.AddRange(bothLists);*/
-
-        // 2. Validate / Create MongoDB and Collections
-
-        MongoSchemaInitializer.EnsureCollectionSchema(
-        Env.GetString("MongoDbConnectionStr"),
-        "imdb-mongo-db",
-        "Titles",
-        TitlesValidator.GetSchema());
-
-        // 3. Migrate Data to MongoDB
-        await using var contextMongo = MongoDbSettings.MongoDbConnection();
-        Console.WriteLine("Ensuring the MongoDB database exists...");
-        try
-        {
-            await  contextMongo.Database.EnsureDeletedAsync();
-            await contextMongo.Database.EnsureCreatedAsync();
-            Console.WriteLine("MongoDB database ensured.");
-
-
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
-        }
-
-        await contextMongo.Titles.AddRangeAsync(mongoDbData);
-        await contextMongo.SaveChangesAsync();
-
-    }
     private static async Task MigrateToNeo4J()
     {
 
 
     }
 }
+
+
