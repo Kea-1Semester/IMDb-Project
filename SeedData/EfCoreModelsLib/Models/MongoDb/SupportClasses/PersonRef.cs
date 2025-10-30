@@ -7,7 +7,7 @@ public class PersonRef
 {
     [BsonId]  
     [BsonRepresentation(BsonType.String)]
-    public Guid PersonId { get; set; } 
+    public Guid PersonId { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string Name { get; set; } = string.Empty;
 }

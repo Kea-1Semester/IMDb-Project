@@ -15,8 +15,6 @@ namespace EfCoreModelsLib.Models.MongoDb
         public int? EndYear { get; set; }
         [BsonElement("professions")]
         public List<string> Professions { get; set; } = null!;
-        [BsonElement("knownForTitles")]
-        public List<KnownForTitle> KnownFor { get; set; } = null!;
 
     }
 }

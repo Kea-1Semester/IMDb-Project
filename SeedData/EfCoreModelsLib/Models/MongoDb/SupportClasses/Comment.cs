@@ -7,6 +7,10 @@ public class Comment
 {
     [BsonId]
     [BsonRepresentation(BsonType.String)]
-    public string Id { get; set; } = null!;
-    public string CommentText { get; set; } = null!;
+    public Guid Id { get; set; } 
+    public string CommentText { get; set; } = string.Empty;
+
+    // Consider adding userId and CreateAt
+    // public Guid UserId { get; set; }
+    // public DateTime CreatedAt { get; set; }
 }
