@@ -1,5 +1,6 @@
 ﻿using DotNetEnv;
 using EfCoreModelsLib.Models.MongoDb;
+using EfCoreModelsLib.Models.MongoDb.Handler;
 using EfCoreModelsLib.Models.MongoDb.SchemaValidator;
 using EfCoreModelsLib.Models.MongoDb.SupportClasses;
 using EfCoreModelsLib.Models.Mysql;
@@ -15,6 +16,7 @@ public static class TitleMongoDbMapper
     {
         return new TitleMongoDb
         {
+            Id = ObjectId.GenerateNewId(),
             TitleId = titles.TitleId,
             TitleType = titles.TitleType,
             PrimaryTitle = titles.PrimaryTitle,
@@ -71,7 +73,7 @@ public static class TitleMongoDbMapper
                     Attributes = a.AttributesAttribute != null
                         ? a.AttributesAttribute.Select(attr => attr.Attribute).ToList()
                         : new List<string>(),
-                    Types = a.TypesType != null ? a.TypesType.Select(type => type.Type).ToList() : new List<string>(),
+                    Types = a.TypesType != null ? a.TypesType.Select(type => type.Type).ToList() : new List<string>()
                 }).ToList() ?? [],
             Comments = titles.Comments?
                 .Where(c => c != null)
@@ -84,7 +86,6 @@ public static class TitleMongoDbMapper
                 .Where(e => e != null)
                 .Select(e => new EfCoreModelsLib.Models.MongoDb.SupportClasses.Episodes
                 {
-                    Id = ObjectId.GenerateNewId(),
                     TitleIdParent = e.TitleIdParent,
                     TitleIdChild = e.TitleIdChild,
                     SeasonNumber = e.SeasonNumber,
@@ -152,6 +153,7 @@ public static class TitleMongoDbMapper
         // 1. Read from MySQL and join data that match the MongoDB Schema
         await using var mysqlContext = MySqlSettings.MySqlConnectionToGetData(connectionString);
         await using var contextMongo = MongoDbSettings.MongoDbConnection();
+
 
         await contextMongo.Database.EnsureDeletedAsync();
 
