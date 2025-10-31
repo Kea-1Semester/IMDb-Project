@@ -1,13 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "
 ╔═══════════════════════════════════╗
-║     RUNNING HUSKY PRE-COMMIT      ║
+║           RUNNING BUILD           ║
 ╚═══════════════════════════════════╝
 "
 
 # Build frontend project
-npm run build
+cd ./frontend || exit 1
 
-# Run tests
-npm run test
+# Install dependencies
+npm install
+
+# Run build script
+npm run build
