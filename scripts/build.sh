@@ -1,11 +1,5 @@
 #!/bin/bash
 
-echo "
-╔═══════════════════════════════════╗
-║           RUNNING BUILD           ║
-╚═══════════════════════════════════╝
-"
-
 # Build frontend project
 cd ./frontend || exit 1
 
