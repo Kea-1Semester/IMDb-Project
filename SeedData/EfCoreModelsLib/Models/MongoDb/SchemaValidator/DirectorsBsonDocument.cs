@@ -15,6 +15,7 @@ public abstract class DirectorsBsonDocument
                 {
                     { "bsonType", "object" },
                     { "required", new BsonArray {  "id", "name" } },
+                    { "additionalProperties", false },
                     {
                         "properties", new BsonDocument
                         {

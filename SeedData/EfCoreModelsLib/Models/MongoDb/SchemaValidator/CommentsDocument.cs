@@ -14,6 +14,7 @@ public abstract class CommentsDocument
                 {
                     { "bsonType", "object" },
                     { "required", new BsonArray { "id" } },
+                    { "additionalProperties", false },
                     {
                         "properties", new BsonDocument
                         {

@@ -5,10 +5,6 @@ namespace EfCoreModelsLib.Models.MongoDb.SupportClasses;
 
 public class Episodes
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public ObjectId Id { get; set; } 
-
     [BsonElement("titleIdParent")]
     [BsonRepresentation(BsonType.String)]
     public Guid TitleIdParent { get; set; }

@@ -12,13 +12,12 @@ namespace EfCoreModelsLib.Models.MongoDb.SchemaValidator
                     "$jsonSchema", new BsonDocument
                     {
                         { "bsonType", "object" },
-                        {
-                            "required", new BsonArray
-                                { "titleId", "titleType", "primaryTitle", "originalTitle", "isAdult", "startYear" }
-                        },
+                        { "required", new BsonArray { "titleId", "titleType", "primaryTitle", "originalTitle", "isAdult", "startYear" } },
+                        { "additionalProperties", false },
                         {
                             "properties", new BsonDocument
                             {
+                                {"_id", new BsonDocument("bsonType", "objectId") },
                                 { "titleId", new BsonDocument("bsonType", new BsonArray { "binData", "string" }) }, // allow Guid or string
                                 { "titleType", new BsonDocument("bsonType", "string") },
                                 { "primaryTitle", new BsonDocument("bsonType", "string") },

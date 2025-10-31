@@ -1,10 +1,10 @@
-using MongoDB.Bson.Serialization.Attributes;
+    using MongoDB.Bson.Serialization.Attributes;
 namespace EfCoreModelsLib.Models.MongoDb.SupportClasses;
 
 public class Rating
 {
-    [BsonElement("AverageRating")]
+    [BsonElement("averageRating")]
     public double AverageRating { get; set; }
-    [BsonElement("NumVotes")]
+    [BsonElement("numVotes")]
     public int NumVotes { get; set; }
 }

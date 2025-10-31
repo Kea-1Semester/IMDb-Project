@@ -14,6 +14,7 @@ public abstract class AliasesBsonDocument
                 {
                     { "bsonType", "object" },
                     { "required", new BsonArray { "id", "title" } },
+                    { "additionalProperties", false },
                     {
                         "properties", new BsonDocument
                         {

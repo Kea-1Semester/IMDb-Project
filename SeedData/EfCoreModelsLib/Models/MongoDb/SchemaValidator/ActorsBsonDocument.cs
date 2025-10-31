@@ -14,6 +14,7 @@ public abstract class ActorsBsonDocument
                 {
                     { "bsonType", "object" },
                     { "required", new BsonArray { "id", "name" } },
+                    { "additionalProperties", false },
                     {
                         "properties", new BsonDocument
                         {

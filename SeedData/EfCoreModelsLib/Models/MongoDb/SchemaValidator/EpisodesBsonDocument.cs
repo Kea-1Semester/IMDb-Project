@@ -14,6 +14,7 @@ public abstract class EpisodesBsonDocument
                 {
                     { "bsonType", "object" },
                     { "required", new BsonArray { "titleIdParent", "titleIdChild", "seasonNumber", "episodeNumber" } },
+                    { "additionalProperties", false },
                     {
                         "properties", new BsonDocument
                         {

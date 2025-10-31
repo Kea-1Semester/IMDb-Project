@@ -6,12 +6,8 @@ namespace EfCoreModelsLib.Models.MongoDb;
 
 public class TitleMongoDb
 {
-    // Use string for the MongoDB Id to avoid Guid/ObjectId serialization issues
-
-    [BsonId]
-    [BsonElement("id")]
     [BsonRepresentation(BsonType.ObjectId)]
-    public ObjectId Id { get; set; } = new ObjectId();
+    public ObjectId Id { get; set; }
 
     [BsonElement("titleId")]
     [BsonRepresentation(BsonType.String)]
@@ -59,4 +55,5 @@ public class TitleMongoDb
     public List<Comment> Comments { get; set; } = new();
     [BsonElement("episodes")]
     public List<Episodes> Episodes { get; set; } = new();
+
 }

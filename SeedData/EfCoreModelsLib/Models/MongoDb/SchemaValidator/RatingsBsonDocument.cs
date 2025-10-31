@@ -9,6 +9,8 @@ public abstract class RatingsBsonDocument
         return new BsonDocument
         {
             { "bsonType", new BsonArray { "object", "null" } },
+            { "required", new BsonArray { "averageRating", "numVotes" } },
+            { "additionalProperties", false },
             {
                 "properties", new BsonDocument
                 {

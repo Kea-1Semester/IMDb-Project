@@ -9,6 +9,7 @@ namespace EfCoreModelsLib.Models.MongoDb.SchemaValidator
             return new BsonDocument
             {
                 { "bsonType", "array" },
+                { "additionalProperties", false },
                 { "items", new BsonDocument("bsonType", "string") }
 
             };
