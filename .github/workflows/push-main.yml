@@ -21,6 +21,7 @@ jobs:
     name: Deploy Hooks Job
     needs: test
     runs-on: ubuntu-latest
+    environment: secrets
     steps:
       - name: Deploy webhook
         uses: distributhor/workflow-webhook@v3
