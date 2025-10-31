@@ -17,7 +17,7 @@ services:
   #   container_name: mysql
   #   environment:
   #     MYSQL_ROOT_PASSWORD: rootpassword
-  #     MYSQL_DATABASE: rawgDatabase
+  #     MYSQL_DATABASE: imdb
   #   ports:
   #     - "3307:3306"
   #   volumes:
