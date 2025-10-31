@@ -15,7 +15,7 @@ public static class TitleMongoDbMapper
     {
         return new TitleMongoDb
         {
-            Id = titles.TitleId,
+            TitleId = titles.TitleId,
             TitleType = titles.TitleType,
             PrimaryTitle = titles.PrimaryTitle,
             OriginalTitle = titles.OriginalTitle,
@@ -25,12 +25,12 @@ public static class TitleMongoDbMapper
             RuntimeMinutes = titles.RuntimeMinutes,
             Genres = titles.GenresGenre.Select(g => g.Genre).ToList(),
             Actors = titles.Actors?
-                    .Where(a => a is { PersonsPerson: not null } &&
-                                !string.IsNullOrWhiteSpace(a.PersonsPerson.Name) &&
-                                a.PersonsPersonId != Guid.Empty)
+                         .Where(a => a is { PersonsPerson: not null } &&
+                                     !string.IsNullOrWhiteSpace(a.PersonsPerson.Name) &&
+                                     a.PersonsPersonId != Guid.Empty)
                          .Select(a => new CastMember
                          {
-                             PersonId = a.PersonsPersonId,
+                             Id = a.PersonsPersonId,
                              Name = a.PersonsPerson.Name,
                              Role = a.Role
                          })
@@ -42,14 +42,14 @@ public static class TitleMongoDbMapper
                 )
                 .Select(d => new PersonRef
                 {
-                    PersonId = d.PersonsPersonId,
+                    Id = d.PersonsPersonId,
                     Name = d.PersonsPerson.Name
                 }).ToList() ?? [],
             Writers = titles.Writers?
                 .Where(w => w.PersonsPerson != null && !string.IsNullOrEmpty(w.PersonsPerson.Name))
                 .Select(w => new PersonRef
                 {
-                    PersonId = w.PersonsPersonId,
+                    Id = w.PersonsPersonId,
                     Name = w.PersonsPerson.Name
                 }).ToList() ?? [],
             Ratings = titles.Ratings != null && titles.Ratings.Any()
@@ -68,7 +68,9 @@ public static class TitleMongoDbMapper
                     Language = a.Language,
                     IsOriginalTitle = a.IsOriginalTitle,
                     Title = a.Title,
-                    Attributes = a.AttributesAttribute != null ? a.AttributesAttribute.Select(attr => attr.Attribute).ToList() : new List<string>(),
+                    Attributes = a.AttributesAttribute != null
+                        ? a.AttributesAttribute.Select(attr => attr.Attribute).ToList()
+                        : new List<string>(),
                     Types = a.TypesType != null ? a.TypesType.Select(type => type.Type).ToList() : new List<string>(),
                 }).ToList() ?? [],
             Comments = titles.Comments?
@@ -87,11 +89,8 @@ public static class TitleMongoDbMapper
                     TitleIdChild = e.TitleIdChild,
                     SeasonNumber = e.SeasonNumber,
                     EpisodeNumber = e.EpisodeNumber
-
                 }).ToList() ?? []
-
         };
-
     }
 
     private static async Task<List<TitleMongoDb>> ListTitleMongoData(ImdbContext imdbContext)
@@ -139,7 +138,6 @@ public static class TitleMongoDbMapper
             .Select(MapTitleMongoDb)
             .Distinct()
             .ToList();
-
     }
 
     /// <summary>
@@ -153,16 +151,39 @@ public static class TitleMongoDbMapper
 
         // 1. Read from MySQL and join data that match the MongoDB Schema
         await using var mysqlContext = MySqlSettings.MySqlConnectionToGetData(connectionString);
+        await using var contextMongo = MongoDbSettings.MongoDbConnection();
+
+        await contextMongo.Database.EnsureDeletedAsync();
 
         mongoDbData.AddRange(await ListTitleMongoData(mysqlContext));
 
         // 2. Validate / Create MongoDB and Collections
         // Validate Titles Collection Schema
-        MongoSchemaInitializer.EnsureCollectionSchema(
+
+        var compoundIndex = new List<BsonDocument>
+        {
+            new BsonDocument
+            {
+                { "primaryTitle", 1 },
+                { "originalTitle", 1 },
+                // on ratings
+                { "ratings.averageRating", -1 },
+                { "ratings.numVotes", -1 }
+            }
+        };
+        var singleFieldIndex = new BsonDocument
+        {
+            { "titleId", 1 }
+        };
+
+        await MongoSchemaInitializer<TitleMongoDb>.EnsureCollectionSchema(
             Env.GetString("MongoDbConnectionStr"),
             "imdb-mongo-db",
             nameof(SchemaName.Titles),
-            TitlesValidator.GetSchema());
+            TitlesValidator.GetSchema(),
+            compoundIndex,
+            singleFieldIndex
+        );
 
         //Validate Persons Collection Schema
         //MongoSchemaInitializer.EnsureCollectionSchema(
@@ -172,23 +193,18 @@ public static class TitleMongoDbMapper
         //    PersonsValidator.GetSchema());
 
 
-        // 3. Migrate Data to MongoDB
-        await using var contextMongo = MongoDbSettings.MongoDbConnection();
-
         Console.WriteLine("Ensuring the MongoDB database exists...");
         try
         {
-            await contextMongo.Database.EnsureDeletedAsync();
             await contextMongo.Database.EnsureCreatedAsync();
             Console.WriteLine("MongoDB database ensured.");
-
-
         }
         catch (Exception ex)
         {
             Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
         }
 
+        // 3. Migrate Data to MongoDB
         await contextMongo.Titles.AddRangeAsync(mongoDbData);
         await contextMongo.SaveChangesAsync();
     }
@@ -198,5 +214,4 @@ public enum SchemaName
 {
     Titles,
     Persons
-
 }
