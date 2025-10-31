@@ -19,7 +19,10 @@ jobs:
 
   deploy-hooks:
     name: Deploy Hooks Job
-    uses: ./.github/workflows/deploy-hooks.yml
     needs: test
-    secrets:
-      BREZOR_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy webhook
+        uses: distributhor/workflow-webhook@v3
+        with:
+          webhook_url: ${{ secrets.BREZOR_DEPLOY_HOOK }}
