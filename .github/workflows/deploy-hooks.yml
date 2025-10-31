@@ -15,4 +15,4 @@ jobs:
     steps:
       - name: Deploy Hooks
         run: |
-          curl "$BREZOR_DEPLOY_HOOK"
+          curl "${{ BREZOR_DEPLOY_HOOK }}"
