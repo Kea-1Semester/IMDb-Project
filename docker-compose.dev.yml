@@ -1,27 +1,27 @@
 services:
-  imdb-frontend:
-    container_name: imdb-frontend
+  frontend:
+    container_name: frontend
     build:
-      context: ./imdb-frontend
+      context: ./frontend
       dockerfile: Dockerfile.dev
     volumes:
-      - ./imdb-frontend:/app
+      - ./frontend:/app
       - /app/node_modules # Prevents overwriting node_modules on the container
     ports:
       - "3000:3000"
     environment:
       VITE_API_URL: http://localhost:5000
 
-  # mysql:
-  #   image: mysql:latest
-  #   container_name: mysql
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: rootpassword
-  #     MYSQL_DATABASE: rawgDatabase
-  #   ports:
-  #     - "3307:3306"
-  #   volumes:
-  #     - mysql-data_rawg:/var/lib/mysql
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: imdb
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data_rawg:/var/lib/mysql
 
 volumes:
   mysql-data_rawg:
