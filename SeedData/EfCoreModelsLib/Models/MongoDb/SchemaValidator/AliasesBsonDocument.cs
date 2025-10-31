@@ -13,22 +13,24 @@ public abstract class AliasesBsonDocument
                 "items", new BsonDocument
                 {
                     { "bsonType", "object" },
-                    { "required", new BsonArray { "Id", "title" } },
+                    { "required", new BsonArray { "id", "title" } },
                     {
                         "properties", new BsonDocument
                         {
-                            { "Id", new BsonDocument("bsonType", new BsonArray { "binData", "string" }) },
+                            { "id", new BsonDocument("bsonType", new BsonArray { "binData", "string" }) },
                             { "region", new BsonDocument("bsonType", new BsonArray { "string", "null" }) },
                             { "title", new BsonDocument("bsonType", "string") },
                             { "language", new BsonDocument("bsonType", new BsonArray { "string", "null" }) },
                             { "isOriginalTitle", new BsonDocument("bsonType", new BsonArray { "bool", "null" }) },
-                            { "types", new BsonDocument
+                            {
+                                "types", new BsonDocument
                                 {
                                     { "bsonType", "array" },
                                     { "items", new BsonDocument("bsonType", new BsonArray { "string", "null" }) }
                                 }
                             },
-                            { "attributes", new BsonDocument
+                            {
+                                "attributes", new BsonDocument
                                 {
                                     { "bsonType", "array" },
                                     { "items", new BsonDocument("bsonType", new BsonArray { "string", "null" }) }
@@ -38,9 +40,6 @@ public abstract class AliasesBsonDocument
                     }
                 }
             }
-
-
         };
     }
-
 }

@@ -14,11 +14,11 @@ public abstract class DirectorsBsonDocument
                 "items", new BsonDocument
                 {
                     { "bsonType", "object" },
-                    { "required", new BsonArray {  "personId", "name" } },
+                    { "required", new BsonArray {  "id", "name" } },
                     {
                         "properties", new BsonDocument
                         {
-                            { "personId", new BsonDocument("bsonType", new BsonArray { "binData", "string" }) },
+                            { "id", new BsonDocument("bsonType", new BsonArray { "binData", "string" }) },
                             { "name", new BsonDocument("bsonType", "string") }
                         }
                     }
