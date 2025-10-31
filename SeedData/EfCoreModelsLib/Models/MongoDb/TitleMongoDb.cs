@@ -8,10 +8,14 @@ public class TitleMongoDb
 {
     // Use string for the MongoDB Id to avoid Guid/ObjectId serialization issues
 
-    //[BsonId]  
-    [BsonRepresentation(BsonType.String)]
+    [BsonId]
     [BsonElement("id")]
-    public Guid Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public ObjectId Id { get; set; } = new ObjectId();
+
+    [BsonElement("titleId")]
+    [BsonRepresentation(BsonType.String)]
+    public Guid TitleId { get; set; } = Guid.Empty;
 
     [BsonElement("titleType")]
     public string TitleType { get; set; } = string.Empty;
