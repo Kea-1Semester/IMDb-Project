@@ -1,4 +1,5 @@
 services:
+  #-- Frontend Service for Development Environment --
   frontend:
     container_name: frontend
     build:
@@ -12,6 +13,7 @@ services:
     environment:
       VITE_API_URL: http://localhost:5000
 
+  #-- MySQL Service for Development Environment --
   mysql:
     image: mysql:8.0
     container_name: mysql
@@ -21,7 +23,30 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - mysql-data_rawg:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
+
+  #-- MongoDB Service for Development Environment --
+  mongodb:
+    image: mongo:8.0
+    container_name: mongodb
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb-data:/data/db
+
+  #-- Neo4j Service for Development Environment --
+  neo4j:
+    image: neo4j:5.26
+    container_name: neo4j
+    environment:
+      NEO4J_AUTH: neo4j/admin123
+    ports:
+      - "7475:7474"
+      - "7688:7687"
+    volumes:
+      - neo4j-data:/data
 
 volumes:
-  mysql-data_rawg:
+  mysql-data:
+  mongodb-data:
+  neo4j-data:
