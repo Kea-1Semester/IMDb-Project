@@ -6,13 +6,12 @@ on:
       BREZOR_DEPLOY_HOOK:
         required: true
 
-env:
-  BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
-
 jobs:
   deploy-hooks:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Hooks
+        env:
+          BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
         run: |
-          curl "${{ BREZOR_DEPLOY_HOOK }}"
+          curl "$BREZOR_DEPLOY_HOOK"
