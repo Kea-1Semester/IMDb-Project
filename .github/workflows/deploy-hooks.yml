@@ -11,5 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Hooks
-        run: |
-          curl "$BREZOR_HOOK"
+        uses: distributhor/workflow-webhook@v3
+        with:
+          webhook_url: $BREZOR_HOOK
