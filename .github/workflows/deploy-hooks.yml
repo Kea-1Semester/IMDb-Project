@@ -3,7 +3,7 @@ name: Deploy Hooks
 on:
   workflow_call:
     secrets:
-      BREZOR_DEPLOY_HOOK:
+      BREZOR_HOOK:
         required: true
 
 jobs:
@@ -11,7 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Hooks
-        env:
-          BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
         run: |
-          curl "$BREZOR_DEPLOY_HOOK" -X POST
+          curl "$BREZOR_HOOK"
