@@ -14,4 +14,4 @@ jobs:
         env:
           BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
         run: |
-          curl $BREZOR_DEPLOY_HOOK
+          curl "$BREZOR_DEPLOY_HOOK" -X POST
