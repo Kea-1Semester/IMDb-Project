@@ -5,9 +5,10 @@ namespace EfCoreModelsLib.Models.MongoDb.SupportClasses;
 
 public class Comment
 {
-    [BsonId]
+    [BsonElement("id")]
     [BsonRepresentation(BsonType.String)]
     public Guid Id { get; set; } 
+    [BsonElement("commentText")]
     public string CommentText { get; set; } = string.Empty;
 
     // Consider adding userId and CreateAt
