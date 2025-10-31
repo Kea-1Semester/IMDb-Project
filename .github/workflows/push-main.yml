@@ -15,3 +15,9 @@ jobs:
 
       - name: Run a Simple Command
         run: echo "This is a test job for push main."
+
+  deploy-hooks:
+    name: Deploy Hooks Job
+    uses: ./.github/workflows/deploy-hooks.yml
+    needs: test
+    secrets: ${{ secrets }}
