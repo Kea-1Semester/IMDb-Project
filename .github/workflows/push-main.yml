@@ -1,0 +1,30 @@
+name: Merge to Main Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Just a Test Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Run a Simple Command
+        run: echo "This is a test job for push main."
+
+  deploy-hooks:
+    name: Deploy Hooks Job
+    needs: test
+    runs-on: ubuntu-latest
+    environment: secrets
+    steps:
+      - name: Deploy frontend
+        if: github.ref == 'refs/heads/main'
+        env:
+          BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
+        run: |
+          curl "$BREZOR_DEPLOY_HOOK"
