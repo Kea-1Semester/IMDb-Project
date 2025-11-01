@@ -6,20 +6,20 @@ namespace EfCoreModelsLib.Models.MongoDb;
 
 public class TitleMongoDb
 {
-    // Use string for the MongoDB Id to avoid Guid/ObjectId serialization issues
+    [BsonRepresentation(BsonType.ObjectId)]
+    public ObjectId Id { get; set; }
 
-    [BsonId]  
-    [BsonRepresentation(BsonType.String)]  
-    public Guid Id { get; set; }
+    [BsonElement("titleId")]
+    [BsonRepresentation(BsonType.String)]
+    public Guid TitleId { get; set; } = Guid.Empty;
 
     [BsonElement("titleType")]
-    public string TitleType { get; set; } = null!;
+    public string TitleType { get; set; } = string.Empty;
 
     [BsonElement("primaryTitle")]
-    public string PrimaryTitle { get; set; } = null!;
-
+    public string PrimaryTitle { get; set; } = string.Empty;
     [BsonElement("originalTitle")]
-    public string OriginalTitle { get; set; } = null!;
+    public string OriginalTitle { get; set; } = string.Empty;
 
     [BsonElement("isAdult")]
     public bool IsAdult { get; set; }
@@ -53,4 +53,7 @@ public class TitleMongoDb
 
     [BsonElement("comments")]
     public List<Comment> Comments { get; set; } = new();
+    [BsonElement("episodes")]
+    public List<Episodes> Episodes { get; set; } = new();
+
 }

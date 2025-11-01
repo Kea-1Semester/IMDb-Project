@@ -5,9 +5,10 @@ namespace EfCoreModelsLib.Models.MongoDb.SupportClasses;
 
 public class PersonRef
 {
-    [BsonId]  
+    [BsonElement("id")]
     [BsonRepresentation(BsonType.String)]
-    public Guid PersonId { get; set; } 
+    public Guid Id { get; set; } = Guid.Empty;
 
-    public string Name { get; set; } = null!;
+    [BsonElement("name")]
+    public string Name { get; set; } = string.Empty;
 }

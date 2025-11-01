@@ -5,8 +5,13 @@ namespace EfCoreModelsLib.Models.MongoDb.SupportClasses;
 
 public class Comment
 {
-    [BsonId]
+    [BsonElement("id")]
     [BsonRepresentation(BsonType.String)]
-    public string Id { get; set; } = null!;
-    public string CommentText { get; set; } = null!;
+    public Guid Id { get; set; } 
+    [BsonElement("commentText")]
+    public string CommentText { get; set; } = string.Empty;
+
+    // Consider adding userId and CreateAt
+    // public Guid UserId { get; set; }
+    // public DateTime CreatedAt { get; set; }
 }

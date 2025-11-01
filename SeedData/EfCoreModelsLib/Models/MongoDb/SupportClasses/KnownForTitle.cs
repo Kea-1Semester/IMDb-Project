@@ -5,8 +5,9 @@ namespace EfCoreModelsLib.Models.MongoDb.SupportClasses;
 
 public class KnownForTitle
 {
-    [BsonId]
+    [BsonElement("titleId")]
     [BsonRepresentation(BsonType.String)]
     public Guid TitleId { get; set; }
-    public string TitleName { get; set; }
+    [BsonElement("titleName")]
+    public string TitleName { get; set; } = string.Empty;
 }
