@@ -25,7 +25,9 @@ public static class TitleMongoDbMapper
             StartYear = titles.StartYear,
             EndYear = titles.EndYear,
             RuntimeMinutes = titles.RuntimeMinutes,
-            Genres = titles.GenresGenre.Select(g => g.Genre).ToList(),
+            Genres = titles.GenresGenre.Select(g => g.Genre)
+                .Where(g => !string.IsNullOrWhiteSpace(g) && g != "\\N")
+                .ToList(),
             Actors = titles.Actors?
                          .Where(a => a is { PersonsPerson: not null } &&
                                      !string.IsNullOrWhiteSpace(a.PersonsPerson.Name) &&
@@ -34,7 +36,7 @@ public static class TitleMongoDbMapper
                          {
                              Id = a.PersonsPersonId,
                              Name = a.PersonsPerson.Name,
-                             Role = a.Role
+                             Role = string.IsNullOrWhiteSpace(a.Role) || a.Role == "\\N" ? null : a.Role
                          })
                          .ToList()
                      ?? [],
@@ -94,27 +96,42 @@ public static class TitleMongoDbMapper
         };
     }
 
-    private static async Task<List<TitleMongoDb>> ListTitleMongoData(ImdbContext imdbContext)
+    private static async Task<List<TitleMongoDb>> ListTitleMongoData(ImdbContext imdbContext, int pageSize, int page)
     {
-        var titlesFromMysql = await imdbContext.Titles
-            .Include(t => t.GenresGenre)
-            .Include(t => t.Aliases)
-            .Include(t => t.Comments)
-            .Include(t => t.Ratings)
-            .Include(t => t.EpisodesTitleIdParentNavigation)
-            .ThenInclude(e => e.TitleIdChildNavigation)
-            .Include(t => t.Actors)
-            .ThenInclude(a => a.PersonsPerson)
-            .Include(t => t.Directors)
-            .ThenInclude(d => d.PersonsPerson)
-            .Include(r => r.Writers)
-            .ThenInclude(w => w.PersonsPerson)
-            .AsNoTracking()
-            .Take(10000)
-            .ToListAsync();
+
+        List<Titles> alTitlesList = new();
+
+        for (var i = 0; i < page; i++)
+        {
+            var titlesFromMysql = await imdbContext.Titles
+                .Include(t => t.GenresGenre)
+                .Include(t => t.Aliases)
+                .Include(t => t.Comments)
+                .Include(t => t.Ratings)
+                .Include(t => t.EpisodesTitleIdParentNavigation)
+                .ThenInclude(e => e.TitleIdChildNavigation)
+                .Include(t => t.Actors)
+                .ThenInclude(a => a.PersonsPerson)
+                .Include(t => t.Directors)
+                .ThenInclude(d => d.PersonsPerson)
+                .Include(r => r.Writers)
+                .ThenInclude(w => w.PersonsPerson)
+                .AsNoTracking()
+                .OrderBy(t => t.TitleId)
+                .Skip(i * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            if (titlesFromMysql.Count == 0)
+                break;
+
+            alTitlesList.AddRange(titlesFromMysql);
+            Console.WriteLine($"Fetched {alTitlesList.Count} titles from MySQL.. page {i + 1}/{page}");
+            await Task.Delay(1000);
 
 
-        var titlesList = titlesFromMysql
+        }
+        /*var titlesList = alTitlesList
             .Where(t =>
                 t.Aliases.Any() &&
                 t.Ratings != null &&
@@ -122,23 +139,24 @@ public static class TitleMongoDbMapper
                 t.Directors.Any() &&
                 t.Writers.Any()
             )
-            .Take(100)
             .ToList();
 
-        var listWithEpisodes = titlesFromMysql
+        var listWithEpisodes = alTitlesList
             .Where(t =>
                 (
                     t.EpisodesTitleIdParentNavigation.Count != 0 ||
                     t.EpisodesTitleIdChildNavigation.Count != 0
                 )
             )
-            .ToList();
+            .ToList();*/
 
-        // combine both lists
-        return titlesList.Union(listWithEpisodes).Distinct()
-            .Select(MapTitleMongoDb)
-            .Distinct()
-            .ToList();
+        return alTitlesList.Select(MapTitleMongoDb).DistinctBy(t => t.TitleId).ToList();
+
+        //// combine both lists
+        //return titlesList.Union(listWithEpisodes).Distinct()
+        //    .Select(MapTitleMongoDb)
+        //    .DistinctBy(t => t.TitleId)
+        //    .ToList();
     }
 
     /// <summary>
@@ -146,18 +164,22 @@ public static class TitleMongoDbMapper
     /// To Change connection, provide the connection string parameter. 
     /// </summary>
     /// <param name="connectionString">MySql connection string to get data from</param>
-    public static async Task MigrateToMongoDb(string connectionString)
+    /// <param name="pageSize"></param>
+    /// <param name="page"></param>
+    public static async Task MigrateToMongoDb(int pageSize = 1000, int page = 0, string? connectionString = null)
     {
         var mongoDbData = new List<TitleMongoDb>();
 
+
         // 1. Read from MySQL and join data that match the MongoDB Schema
-        await using var mysqlContext = MySqlSettings.MySqlConnectionToGetData(connectionString);
+        await using var mysqlContext = MySqlSettings.MySqlConnectionToGetData(
+            connectionString ?? "ConnectionString");
         await using var contextMongo = MongoDbSettings.MongoDbConnection();
 
 
         await contextMongo.Database.EnsureDeletedAsync();
 
-        mongoDbData.AddRange(await ListTitleMongoData(mysqlContext));
+        mongoDbData.AddRange(await ListTitleMongoData(mysqlContext, pageSize: pageSize, page: page));
 
         // 2. Validate / Create MongoDB and Collections
         // Validate Titles Collection Schema
