@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Concurrent;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace EfCoreModelsLib.Models.MongoDb.Handler
@@ -7,7 +8,12 @@ namespace EfCoreModelsLib.Models.MongoDb.Handler
     /// Utility for ensuring MongoDB collection schema and indexes.
     /// </summary>
     public static class MongoSchemaInitializer<T>
-    {        
+    {
+        private static readonly ConcurrentDictionary<string, MongoClient> _clients = new();
+
+        private static MongoClient GetOrCreateClient(string connectionString) =>
+            _clients.GetOrAdd(connectionString, connStr => new MongoClient(connStr));
+
         /// <summary>
         /// Ensures the collection exists with the specified schema and indexes.
         /// </summary>
@@ -23,29 +29,32 @@ namespace EfCoreModelsLib.Models.MongoDb.Handler
         {
             try
             {
-                var client = new MongoClient(connectionString);
+                var client = GetOrCreateClient(connectionString);
                 var database = client.GetDatabase(databaseName);
 
 
-                var collectionList = await database.ListCollectionNames().ToListAsync(cancellationToken);
-                if (!collectionList.Contains(collectionName))
+                if (database != null)
                 {
-                    var options = new CreateCollectionOptions<BsonDocument>()
+                    var collectionList = await (await database.ListCollectionNamesAsync(cancellationToken: cancellationToken)).ToListAsync(cancellationToken);
+                    if (!collectionList.Contains(collectionName))
                     {
-                        Validator = new BsonDocumentFilterDefinition<BsonDocument>(schema)
-                    };
-                    await database.CreateCollectionAsync(collectionName, options, cancellationToken);
+                        var options = new CreateCollectionOptions<BsonDocument>()
+                        {
+                            Validator = new BsonDocumentFilterDefinition<BsonDocument>(schema)
+                        };
+                        await database.CreateCollectionAsync(collectionName, options, cancellationToken);
 
-                    Console.WriteLine($"Created collection '{collectionName}' with schema validation.");
-                }
-                else
-                {
-                    var command = new BsonDocument
+                        Console.WriteLine($"Created collection '{collectionName}' with schema validation.");
+                    }
+                    else
                     {
-                        { "collMod", collectionName },
-                        { "validator", schema }
-                    };
-                    await database.RunCommandAsync<BsonDocument>(command, cancellationToken: cancellationToken);
+                        var command = new BsonDocument
+                        {
+                            { "collMod", collectionName },
+                            { "validator", schema }
+                        };
+                        await database.RunCommandAsync<BsonDocument>(command, cancellationToken: cancellationToken);
+                    }
                 }
 
                 if (compoundIndex != null)

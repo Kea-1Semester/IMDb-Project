@@ -5,5 +5,5 @@ namespace EfCoreModelsLib.Models.MongoDb.SupportClasses;
 public class CastMember : PersonRef
 {
     [BsonElement("role")]
-    public string Role { get; set; } = string.Empty;
+    public string? Role { get; set; } = string.Empty;
 }
