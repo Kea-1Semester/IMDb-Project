@@ -57,25 +57,25 @@ namespace EfCoreModelsLib.Models.MongoDb.Handler
                     }
                 }
 
-                if (compoundIndex != null)
+                if (compoundIndex != null && compoundIndex.ToList().Count() > 0)
                 {
-                    var collection = database.GetCollection<T>(collectionName);
+                    var collection = database?.GetCollection<T>(collectionName);
                     var indexes = compoundIndex
                         .Select(indexDoc =>
                             new CreateIndexModel<T>(new BsonDocumentIndexKeysDefinition<T>(indexDoc)))
                         .ToList();
 
                     if (indexes.Count > 0)
-                        await collection.Indexes.CreateManyAsync(indexes, cancellationToken);
+                        await collection?.Indexes.CreateManyAsync(indexes, cancellationToken)!;
                     
                     Console.WriteLine($"Ensured indexes on collection '{collectionName}'.");
                     
                 }
                 if (singleFieldIndex != null)
                 {
-                    var collection = database.GetCollection<T>(collectionName);
+                    var collection = database?.GetCollection<T>(collectionName);
                     var indexModel = new CreateIndexModel<T>(new BsonDocumentIndexKeysDefinition<T>(singleFieldIndex));
-                    await collection.Indexes.CreateOneAsync(indexModel, cancellationToken: cancellationToken);
+                    await collection?.Indexes.CreateOneAsync(indexModel, cancellationToken: cancellationToken)!;
 
                     Console.WriteLine($"Ensured single field index on collection '{collectionName}'.");
                 }
