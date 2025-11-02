@@ -117,7 +117,9 @@ public static class TitleMongoDbMapper
                 .Include(r => r.Writers)
                 .ThenInclude(w => w.PersonsPerson)
                 .AsNoTracking()
+                .AsSplitQuery()
                 .OrderBy(t => t.TitleId)
+                .ThenBy(t => t.StartYear)
                 .Skip(i * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -152,16 +154,26 @@ public static class TitleMongoDbMapper
 
         return alTitlesList.Select(MapTitleMongoDb).DistinctBy(t => t.TitleId).ToList();
 
-        //// combine both lists
-        //return titlesList.Union(listWithEpisodes).Distinct()
-        //    .Select(MapTitleMongoDb)
-        //    .DistinctBy(t => t.TitleId)
-        //    .ToList();
+        /*// combine both lists
+        return titlesList.Union(listWithEpisodes).Distinct()
+            .Select(MapTitleMongoDb)
+            .DistinctBy(t => t.TitleId)
+            .ToList();*/
     }
 
     /// <summary>
     /// By default, connects to the MySql cloud instance to get data.
-    /// To Change connection, provide the connection string parameter. 
+    /// To Change connection, provide the connection string parameter.
+    /// <example>
+    /// Call this method as follows:
+    /// <code>
+    /// await TitleMongoDbMapper.MigrateToMongoDb(
+    ///     pageSize: 5000,
+    ///     page: 10,
+    ///     connectionString: "YourMySqlConnectionStringHere"
+    /// );
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="connectionString">MySql connection string to get data from</param>
     /// <param name="pageSize"></param>
@@ -228,9 +240,27 @@ public static class TitleMongoDbMapper
             Console.WriteLine($"{ex.Message}: {ex.InnerException?.Message}");
         }
 
-        // 3. Migrate Data to MongoDB
-        await contextMongo.Titles.AddRangeAsync(mongoDbData);
-        await contextMongo.SaveChangesAsync();
+        //// 3. Migrate Data to MongoDB
+        //await contextMongo.Titles.AddRangeAsync(mongoDbData);
+        ////await contextMongo.Titles.AddRangeAsync
+        //await contextMongo.SaveChangesAsync();
+        const int batchSize = 10000;
+        for (var i = 0; i < mongoDbData.Count; i++)
+        {
+            var batch = mongoDbData
+                .Skip(i * batchSize)
+                .Take(batchSize).ToList();
+            if (batch.Count == 0)
+                break;
+            await contextMongo.Titles.AddRangeAsync(batch);
+            await contextMongo.SaveChangesAsync();
+            await Task.Delay(2000);
+
+            Console.WriteLine($"Inserted {Math.Min((i + 1) * batchSize, mongoDbData.Count)} of {mongoDbData.Count} titles into MongoDB...");
+        }
+
+
+
     }
 }
 
