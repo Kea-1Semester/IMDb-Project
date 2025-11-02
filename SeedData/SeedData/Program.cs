@@ -16,7 +16,7 @@ internal static class Program
         Env.TraversePath().Load();
         //await SeedData();
         //ConnectionStringDocker
-        await TitleMongoDbMapper.MigrateToMongoDb(40000, 100,connectionString:"ConnectionStringDocker");
+        await TitleMongoDbMapper.MigrateToMongoDb(40000, 100);
         //await MigrateToNeo4J();
     }
 
