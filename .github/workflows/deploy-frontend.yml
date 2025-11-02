@@ -12,8 +12,19 @@ jobs:
     runs-on: ubuntu-latest
     environment: secrets
     steps:
-      - name: Deploy Frontend
-        # if: github.ref == 'refs/heads/main'
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Filter Frontend Changes
+        uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+
+      - name: Deploy Frontend if Changes Detected
+        if: steps.changes.outputs.frontend == 'true'
         env:
           BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
         run: |
