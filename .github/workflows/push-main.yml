@@ -17,8 +17,8 @@ jobs:
       - name: Run a Simple Command
         run: echo "This is a test job for push main."
 
-  deploy-hooks:
-    name: Deploy Hooks Job
+  deploy-fronend:
+    name: Deploy Frontend Application
     needs: test
     uses: ./.github/workflows/deploy-frontend.yml
     with:
