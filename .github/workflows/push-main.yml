@@ -21,3 +21,5 @@ jobs:
     name: Deploy Hooks Job
     needs: test
     uses: ./.github/workflows/deploy-frontend.yml
+    with:
+      BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
