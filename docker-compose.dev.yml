@@ -17,19 +17,18 @@ services:
     container_name: seeddata
     build:
       context: .
-      dockerfile: SeedData/SeedData/Dockerfile
+      dockerfile: SeedData/Dockerfile
     depends_on:
       - mysql
       - mongodb
       - neo4j
     environment:
       SEED_SAMPLE_DATA: true
-      ConnectionStringDocker: server=127.0.0.1;port=3307;database=imdb;user=root;password=admin
+      ConnectionStringDocker: server=mysql;port=3306;database=imdb;user=root;password=admin
       MongoDbConnectionStr: mongodb://root:admin@mongodb:27018
       MongoDbDatabase: imdb
-    volumes:
-      - ./SeedData:/app
-
+    # volumes:
+    #   - ./SeedData:/app
 
   #-- MySQL Service for Development Environment --
   mysql:
