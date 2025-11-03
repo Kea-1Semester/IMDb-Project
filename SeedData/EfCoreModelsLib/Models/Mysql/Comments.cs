@@ -26,4 +26,8 @@ public partial class Comments
     [ForeignKey("TitleId")]
     [InverseProperty("Comments")]
     public virtual Titles Title { get; set; }
+
+    // Consider adding userId and CreateAt
+    // public Guid UserId { get; set; }
+    // public DateTime CreatedAt { get; set; }
 }

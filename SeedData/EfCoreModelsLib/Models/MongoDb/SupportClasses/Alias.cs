@@ -6,14 +6,21 @@ namespace EfCoreModelsLib.Models.MongoDb.SupportClasses;
 
 public class Alias
 {
-    [BsonId]
+    [BsonElement("id")]
     [BsonRepresentation(BsonType.String)]
     public Guid Id { get; set; }
-    public string Region { get; set; } = null!;
-    public string Language { get; set; } = null!;
+
+    [BsonElement("region")]
+    public string Region { get; set; } = string.Empty;
+    [BsonElement("language")]
+    public string Language { get; set; } = string.Empty;
+    [BsonElement("isOriginalTitle")]
     public bool IsOriginalTitle { get; set; }
-    public string Title { get; set; } = null!;
-    public List<string> Types { get; set; } = null!;
-    public List<string> Attributes { get; set; } = null!;
+    [BsonElement("title")]
+    public string Title { get; set; } = string.Empty;
+    [BsonElement("types")]
+    public List<string> Types { get; set; } = new();
+    [BsonElement("attributes")]
+    public List<string> Attributes { get; set; } = new();
 
 }
