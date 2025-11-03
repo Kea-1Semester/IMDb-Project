@@ -1,5 +1,5 @@
 ﻿using DotNetEnv;
-using EfCoreModelsLib.Models.MongoDb;
+using EfCoreModelsLib.Models.MongoDb.ObjDbContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.DbConnection;
