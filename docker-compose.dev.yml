@@ -3,8 +3,8 @@ services:
   frontend:
     container_name: frontend
     build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: frontend/Dockerfile.dev
     volumes:
       - ./frontend:/app
       - /app/node_modules # Prevents overwriting node_modules on the container
@@ -12,6 +12,24 @@ services:
       - "3000:3000"
     environment:
       VITE_API_URL: http://localhost:5000
+
+  seed_data:
+    container_name: seeddata
+    build:
+      context: .
+      dockerfile: SeedData/SeedData/Dockerfile
+    depends_on:
+      - mysql
+      - mongodb
+      - neo4j
+    environment:
+      SEED_SAMPLE_DATA: true
+      ConnectionStringDocker: server=127.0.0.1;port=3307;database=imdb;user=root;password=admin
+      MongoDbConnectionStr: mongodb://root:admin@mongodb:27018
+      MongoDbDatabase: imdb
+    volumes:
+      - ./SeedData:/app
+
 
   #-- MySQL Service for Development Environment --
   mysql:
