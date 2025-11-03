@@ -214,7 +214,7 @@ public static class TitleMongoDbMapper
 
         await MongoSchemaInitializer<TitleMongoDb>.EnsureCollectionSchema(
             Env.GetString("MongoDbConnectionStr"),
-            "imdb-mongo-db",
+            databaseName: Env.GetString("MongoDbDatabase"),
             nameof(SchemaName.Titles),
             TitlesValidator.GetSchema(),
             compoundIndex,
