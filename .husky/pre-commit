@@ -6,4 +6,8 @@ echo "
 ╚═══════════════════════════════════╝
 "
 
+# Build frontend project
+npm run build
+
+# Run tests
 npm run test

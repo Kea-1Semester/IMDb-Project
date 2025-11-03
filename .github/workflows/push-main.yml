@@ -1,0 +1,24 @@
+name: Merge to Main Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Just a Test Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Run a Simple Command
+        run: echo "This is a test job for push main."
+
+  deploy-fronend:
+    name: Deploy Frontend Application
+    needs: test
+    uses: ./.github/workflows/deploy-frontend.yml
+    secrets:
+      BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}

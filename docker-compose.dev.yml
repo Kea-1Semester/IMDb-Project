@@ -1,27 +1,52 @@
 services:
-  imdb-frontend:
-    container_name: imdb-frontend
+  #-- Frontend Service for Development Environment --
+  frontend:
+    container_name: frontend
     build:
-      context: ./imdb-frontend
+      context: ./frontend
       dockerfile: Dockerfile.dev
     volumes:
-      - ./imdb-frontend:/app
+      - ./frontend:/app
       - /app/node_modules # Prevents overwriting node_modules on the container
     ports:
       - "3000:3000"
     environment:
       VITE_API_URL: http://localhost:5000
 
-  # mysql:
-  #   image: mysql:latest
-  #   container_name: mysql
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: rootpassword
-  #     MYSQL_DATABASE: rawgDatabase
-  #   ports:
-  #     - "3307:3306"
-  #   volumes:
-  #     - mysql-data_rawg:/var/lib/mysql
+  #-- MySQL Service for Development Environment --
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: imdb
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  #-- MongoDB Service for Development Environment --
+  mongodb:
+    image: mongo:8.0
+    container_name: mongodb
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb-data:/data/db
+
+  #-- Neo4j Service for Development Environment --
+  neo4j:
+    image: neo4j:5.26
+    container_name: neo4j
+    environment:
+      NEO4J_AUTH: neo4j/admin123
+    ports:
+      - "7475:7474"
+      - "7688:7687"
+    volumes:
+      - neo4j-data:/data
 
 volumes:
-  mysql-data_rawg:
+  mysql-data:
+  mongodb-data:
+  neo4j-data:
