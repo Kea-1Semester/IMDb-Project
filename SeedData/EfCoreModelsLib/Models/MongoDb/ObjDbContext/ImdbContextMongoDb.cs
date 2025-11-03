@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace EfCoreModelsLib.Models.MongoDb
+namespace EfCoreModelsLib.Models.MongoDb.ObjDbContext
 {
     public class ImdbContextMongoDb : DbContext
     {
