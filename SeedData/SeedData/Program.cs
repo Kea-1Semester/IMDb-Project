@@ -32,6 +32,9 @@ internal static class Program
 
             try
             {
+                await context.Database.EnsureDeletedAsync();
+                await context.Database.EnsureCreatedAsync();
+
                 await context.Database.MigrateAsync();
             }
             catch (Exception ex)
@@ -44,10 +47,14 @@ internal static class Program
 
             if (Environment.GetEnvironmentVariable("SEED_SAMPLE_DATA") == "true")
             {
-                var mySqlDataFolder = Path.Combine(projectRoot!, "mySql");
-                await context.Database.ExecuteSqlRawAsync(Path.Combine(mySqlDataFolder, "mysqldump.sql"));
-                Console.WriteLine("Seeded Sample Data into MySQL Database.");
+                var dataRoot = Environment.GetEnvironmentVariable("DATA_ROOT")!;
+                var sqlFile = Path.Combine(dataRoot, "mysqldump.sql");
+                Console.WriteLine($"Data Root: {dataRoot}");
                 
+                await context.Database.ExecuteSqlRawAsync(await File.ReadAllTextAsync(sqlFile));
+                Console.WriteLine("Seeded Sample Data into MySQL Database.");
+
+                await TitleMongoDbMapper.MigrateToMongoDb(40000, 100, "ConnectionStringDocker");
             }
             else
             {

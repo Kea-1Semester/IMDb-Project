@@ -1,17 +1,17 @@
 services:
   #-- Frontend Service for Development Environment --
-  frontend:
-    container_name: frontend
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile.dev
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules # Prevents overwriting node_modules on the container
-    ports:
-      - "3000:3000"
-    environment:
-      VITE_API_URL: http://localhost:5000
+  # frontend:
+  #   container_name: frontend
+  #   build:
+  #     context: .
+  #     dockerfile: frontend/Dockerfile.dev
+  #   volumes:
+  #     - ./frontend:/app
+  #     - /app/node_modules # Prevents overwriting node_modules on the container
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     VITE_API_URL: http://localhost:5000
 
   seed_data:
     container_name: seeddata
@@ -24,11 +24,12 @@ services:
       - neo4j
     environment:
       SEED_SAMPLE_DATA: true
-      ConnectionStringDocker: server=mysql;port=3306;database=imdb;user=root;password=admin
-      MongoDbConnectionStr: mongodb://root:admin@mongodb:27018
+      ConnectionStringDocker: server=mysql;port=3306;database=imdb;user=root;password=admin;default command timeout=600
+      MongoDbConnectionStr: mongodb://mongodb:27017
       MongoDbDatabase: imdb
-    # volumes:
-    #   - ./SeedData:/app
+      DATA_ROOT: /mySql
+    volumes:
+      - ./SeedData/SeedData/mySql:/mySql
 
   #-- MySQL Service for Development Environment --
   mysql:
@@ -37,10 +38,18 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: imdb
+      # MYSQL_NET_WRITE_TIMEOUT: 600
+      # MYSQL_NET_READ_TIMEOUT: 600
+      # MYSQL_WAIT_TIMEOUT: 600
     ports:
       - "3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   #-- MongoDB Service for Development Environment --
   mongodb:
@@ -67,3 +76,4 @@ volumes:
   mysql-data:
   mongodb-data:
   neo4j-data:
+  seeddata-data:

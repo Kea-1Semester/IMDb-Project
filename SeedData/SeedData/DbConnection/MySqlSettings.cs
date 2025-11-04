@@ -14,7 +14,8 @@ public static class MySqlSettings
     /// <returns>ImdbContext </returns>
     public static ImdbContext MySqlConnection(string connectionStr = "ConnectionString")
     {
-        var mysqlConnectionUri = Env.GetString(connectionStr);
+        var mysqlConnectionUri = Environment.GetEnvironmentVariable(connectionStr)!;
+        Console.WriteLine($"mysqlConnectionUri: {mysqlConnectionUri}");
         var optionsBuilder = new DbContextOptionsBuilder<ImdbContext>()
             .UseMySql(
                 mysqlConnectionUri,
@@ -24,9 +25,8 @@ public static class MySqlSettings
             .EnableDetailedErrors();
         //.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
         return new ImdbContext(optionsBuilder.Options);
-
-
     }
+
     /// <summary>
     /// This connection is used to get data from MySql without applying migrations.
     /// This will prevent to re-apply migrations when reading data.
@@ -35,7 +35,7 @@ public static class MySqlSettings
     /// <returns>ImdbContext </returns>
     public static ImdbContext MySqlConnectionToGetData(string connectionStr = "ConnectionString")
     {
-        var mysqlConnectionUri = Env.GetString(connectionStr);
+        var mysqlConnectionUri = Environment.GetEnvironmentVariable(connectionStr)!;
         var optionsBuilder = new DbContextOptionsBuilder<ImdbContext>()
             .UseMySql(
                 mysqlConnectionUri,
@@ -44,7 +44,5 @@ public static class MySqlSettings
         //    .EnableDetailedErrors()
         //.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
         return new ImdbContext(optionsBuilder.Options);
-
-
     }
 }
