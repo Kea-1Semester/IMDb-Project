@@ -30,7 +30,9 @@
 **/values.dev.yaml
 LICENSE
 README.md
-SeedData/data
+SeedData/data/
+SeedData/data/*
+SeedData/data/**
 # Ignore .NET build outputs
 **/bin/
 **/obj/
