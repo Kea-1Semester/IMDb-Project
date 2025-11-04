@@ -17,6 +17,9 @@ npm install
 # Run build script
 npm run build
 
+# Audit for safety
+npm audit
+
 echo "Navigating to SeedData..."
 
 # Navigate to SeedData project
