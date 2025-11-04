@@ -26,4 +26,6 @@ RUN dotnet publish "./SeedData.csproj" -c $BUILD_CONFIGURATION -o /app/publish /
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "SeedData.dll"]
+ENTRYPOINT ["sh","-c", "sleep 30 && dotnet SeedData.dll"]
+
+CMD ["sh", "-c", "sleep 30 && dotnet SeedData.dll"]

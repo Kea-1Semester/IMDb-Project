@@ -17,15 +17,18 @@ services:
     container_name: seeddata
     build:
       context: .
-      dockerfile: SeedData/Dockerfile
+      dockerfile: SeedData/SeedData/Dockerfile
     depends_on:
       - mysql
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
       - neo4j
     environment:
       SEED_SAMPLE_DATA: true
       ConnectionStringDocker: server=mysql;port=3306;database=imdb;user=root;password=admin;default command timeout=600
-      MongoDbConnectionStr: mongodb://mongodb:27017
+      # MongoDbConnectionStr: mongodb://mongodb:27017
+      MongoDbConnectionStr: mongodb://mongodb1:27017?replicaSet=rs0
       MongoDbDatabase: imdb
       DATA_ROOT: /mySql
     volumes:
@@ -38,9 +41,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: imdb
-      # MYSQL_NET_WRITE_TIMEOUT: 600
-      # MYSQL_NET_READ_TIMEOUT: 600
-      # MYSQL_WAIT_TIMEOUT: 600
     ports:
       - "3307:3306"
     volumes:
@@ -52,13 +52,45 @@ services:
       retries: 5
 
   #-- MongoDB Service for Development Environment --
-  mongodb:
+  mongodb1:
     image: mongo:8.0
-    container_name: mongodb
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
     ports:
-      - "27018:27017"
+      - 27017:27017
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017',priority:1},{_id:1,host:'host.docker.internal:27018',priority:0.5},{_id:2,host:'host.docker.internal:27019',priority:0.5}]}) }" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
     volumes:
-      - mongodb-data:/data/db
+      - "mongodb1_data:/data/db"
+      - "mongodb1_config:/data/configdb"
+
+  mongodb2:
+    image: mongo:8.0
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27018"]
+    ports:
+      - 27018:27018
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - "mongodb2_data:/data/db"
+      - "mongodb2_config:/data/configdb"
+
+  mongodb3:
+    image: mongo:8.0
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27019"]
+    ports:
+      - 27019:27019
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - "mongodb3_data:/data/db"
+      - "mongodb3_config:/data/configdb"
 
   #-- Neo4j Service for Development Environment --
   neo4j:
@@ -74,6 +106,12 @@ services:
 
 volumes:
   mysql-data:
-  mongodb-data:
+  # mongodb-data:
   neo4j-data:
   seeddata-data:
+  mongodb1_data:
+  mongodb2_data:
+  mongodb3_data:
+  mongodb1_config:
+  mongodb2_config:
+  mongodb3_config:
