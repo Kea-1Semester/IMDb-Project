@@ -17,12 +17,13 @@ jobs:
         run: echo "This is a test job for push main."
 
   # ci-docker-template:
-  #   name: CI Docker Build and Push Frontend Image
+  #   name: CI Docker Build and Push Docker Image
   #   needs: test
   #   uses: ./.github/workflows/ci-docker-template.yml
-  #   secrets:
-  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
+  #   permissions:
+  #     contents: read
+  #     packages: write
+
   deploy-frontend:
     name: Deploy Frontend Application
     needs: test

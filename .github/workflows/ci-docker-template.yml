@@ -2,19 +2,10 @@ name: CI Docker Build and Push <NAME OF YOUR DOCKER IMAGE>
 
 on:
   workflow_call:
-    secrets:
-      GITHUB_TOKEN:
-        required: true
-  push:
-    branches:
-      - default # change letter to main
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - name: Checkout repository
