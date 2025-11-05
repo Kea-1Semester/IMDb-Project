@@ -41,7 +41,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest ./frontend
+          docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest -f ./frontend/Dockerfile.dev .
 
       - name: Push Docker image to GitHub Container Registry
         run: |
