@@ -1,4 +1,4 @@
-name: CI Docker Build and Push <NAME OF YOUR DOCKER IMAGE>
+name: CI Docker Build and Push  Frontend
 
 on:
   workflow_call:
@@ -41,9 +41,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest ./<PATH_TO_YOUR_DOCKERFILE_DIRECTORY>
+          docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest ./frontend
 
       - name: Push Docker image to GitHub Container Registry
         run: |
           docker push $IMAGE_NAME:$IMAGE_TAG
           docker push $IMAGE_NAME:latest
+
