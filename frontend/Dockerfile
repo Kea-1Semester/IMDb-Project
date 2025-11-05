@@ -7,6 +7,7 @@ RUN npm ci
 
 COPY . .
 
+# Ensure bash is available for scripts starting with #!/bin/bash
 RUN apk add --no-cache bash
 
 RUN npm run build
