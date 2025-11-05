@@ -8,5 +8,8 @@ RUN npm install
 # Copy built assets and necessary files
 COPY . .
 
+# Build production assets
+RUN npm run build
+
 EXPOSE 4173
 CMD ["npm", "run", "start"]
