@@ -30,7 +30,7 @@ jobs:
           REPOSITORY="${{ github.repository }}"
           REPOSITORY="${REPOSITORY,,}"
 
-          IMAGE_NAME="ghcr.io/$OWNER/$REPOSITORY"
+          IMAGE_NAME="ghcr.io/$OWNER/$REPOSITORY/frontend"
           # Use the commit SHA as the image tag and identify the image uniquely
           TAG=${{ github.sha }} 
 
