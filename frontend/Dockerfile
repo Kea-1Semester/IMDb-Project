@@ -9,6 +9,7 @@ RUN npm install
 # Copy sources
 COPY . .
 
+
 # Ensure bash is available for scripts starting with #!/bin/bash
 RUN apk add --no-cache bash
 
