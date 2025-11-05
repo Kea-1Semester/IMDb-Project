@@ -22,7 +22,7 @@ RUN npm install
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/vite.config.* ./
-COPY --from=builder /app/index.html ./
+COPY --from=builder /app/public/index.html ./
 
 EXPOSE 4173
 CMD ["npm", "run", "start"]
