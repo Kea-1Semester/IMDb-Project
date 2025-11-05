@@ -21,8 +21,7 @@ COPY package*.json ./
 RUN npm install 
 
 # Copy the built files from the builder stage
-COPY --from=builder /app/dist ./dist
-
+COPY . .
 # Expose the default preview port
 EXPOSE 4173
 
