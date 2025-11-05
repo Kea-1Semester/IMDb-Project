@@ -3,8 +3,8 @@ services:
   frontend:
     container_name: frontend
     build:
-      context: .
-      dockerfile: frontend/Dockerfile.dev
+      context: ./frontend
+      dockerfile: Dockerfile.dev
     volumes:
       - ./frontend:/app
       - /app/node_modules # Prevents overwriting node_modules on the container
@@ -12,6 +12,7 @@ services:
       - "3000:3000"
     environment:
       VITE_API_URL: http://localhost:5000
+      CHOKIDAR_USEPOLLING: "true" # Enables file watching in Docker on some systems
 
   seed_data:
     container_name: seeddata
