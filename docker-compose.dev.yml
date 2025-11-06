@@ -17,8 +17,8 @@ services:
   seed_data:
     container_name: seeddata
     build:
-      context: .
-      dockerfile: SeedData/SeedData/Dockerfile
+      context: ./SeedData
+      dockerfile: SeedData/Dockerfile
     depends_on:
       - mysql
       - mongodb1
