@@ -1,24 +1,23 @@
 services:
-  # -- Frontend Service for Development Environment --
-  frontend:
-    container_name: frontend
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules # Prevents overwriting node_modules on the container
-    ports:
-      - "3000:3000"
-    environment:
-      VITE_API_URL: http://localhost:5000
-      CHOKIDAR_USEPOLLING: "true" # Enables file watching in Docker on some systems
+  #-- Frontend Service for Development Environment --
+  # frontend:
+  #   container_name: frontend
+  #   build:
+  #     context: .
+  #     dockerfile: frontend/Dockerfile.dev
+  #   volumes:
+  #     - ./frontend:/app
+  #     - /app/node_modules # Prevents overwriting node_modules on the container
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     VITE_API_URL: http://localhost:5000
 
   seed_data:
     container_name: seeddata
     build:
-      context: ./SeedData
-      dockerfile: SeedData/Dockerfile
+      context: .
+      dockerfile: SeedData/SeedData/Dockerfile
     depends_on:
       - mysql
       - mongodb1
@@ -28,6 +27,7 @@ services:
     environment:
       SEED_SAMPLE_DATA: true
       ConnectionStringDocker: server=mysql;port=3306;database=imdb;user=root;password=admin;default command timeout=600
+      # MongoDbConnectionStr: mongodb://mongodb:27017
       MongoDbConnectionStr: mongodb://mongodb1:27017?replicaSet=rs0
       MongoDbDatabase: imdb
       DATA_ROOT: /mySql
@@ -58,8 +58,10 @@ services:
     command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
     ports:
       - 27017:27017
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     healthcheck:
-      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb1:27017',priority:1},{_id:1,host:'mongodb2:27017',priority:0.5},{_id:2,host:'mongodb3:27017',priority:0.5}]}) }" | mongosh --port 27017 --quiet
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017',priority:1},{_id:1,host:'host.docker.internal:27018',priority:0.5},{_id:2,host:'host.docker.internal:27019',priority:0.5}]}) }" | mongosh --port 27017 --quiet
       interval: 5s
       timeout: 30s
       start_period: 0s
@@ -72,9 +74,11 @@ services:
   mongodb2:
     image: mongo:8.0
     container_name: mongodb2
-    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27018"]
     ports:
-      - 27018:27017
+      - 27018:27018
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - "mongodb2_data:/data/db"
       - "mongodb2_config:/data/configdb"
@@ -82,9 +86,11 @@ services:
   mongodb3:
     image: mongo:8.0
     container_name: mongodb3
-    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27019"]
     ports:
-      - 27019:27017
+      - 27019:27019
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - "mongodb3_data:/data/db"
       - "mongodb3_config:/data/configdb"
@@ -103,6 +109,7 @@ services:
 
 volumes:
   mysql-data:
+  # mongodb-data:
   neo4j-data:
   seeddata-data:
   mongodb1_data:

@@ -10,8 +10,12 @@ public static class MongoDbSettings
         string connectionStr = "MongoDbConnectionStr",
         string databaseNameKey = "MongoDbDatabase")
     {
-        var mongoDbConnectionUri = Env.GetString(connectionStr);
-        var dbName = Env.GetString(databaseNameKey);
+        var mongoDbConnectionUri = Environment.GetEnvironmentVariable(connectionStr)!;
+        var dbName = Environment.GetEnvironmentVariable(databaseNameKey)!;
+
+        Console.WriteLine($"mongoDbConnectionUri: {mongoDbConnectionUri}");
+        Console.WriteLine($"dbName: {dbName}");
+
 
         var optionsBuilder = new DbContextOptionsBuilder<ImdbContextMongoDb>()
             .UseMongoDB(mongoDbConnectionUri, dbName)

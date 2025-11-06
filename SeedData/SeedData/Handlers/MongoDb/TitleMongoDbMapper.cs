@@ -186,6 +186,7 @@ public static class TitleMongoDbMapper
         // 1. Read from MySQL and join data that match the MongoDB Schema
         await using var mysqlContext = MySqlSettings.MySqlConnectionToGetData(
             connectionString ?? "ConnectionString");
+        
         await using var contextMongo = MongoDbSettings.MongoDbConnection();
 
 
