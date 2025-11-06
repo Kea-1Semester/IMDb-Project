@@ -5,7 +5,7 @@ WORKDIR /app
 COPY frontend/package*.json ./
 RUN npm install
 
-COPY frontend/ ./
+COPY . .
 
 RUN apk add --no-cache bash
 
