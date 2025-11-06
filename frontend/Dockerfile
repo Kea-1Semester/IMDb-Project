@@ -2,31 +2,28 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
+# Copy package.json first
 COPY package*.json ./
 RUN npm ci
 
-COPY . .
+# Copy all frontend source
+COPY . ./
 
-RUN apk add --no-cache bash
-
-# Build the app (creates /dist)
+# Build frontend (creates /app/dist)
 RUN npm run build
 
 # Production stage
 FROM node:22-alpine
 WORKDIR /app
 
-# Copy only what's needed for running the built app
-COPY package*.json ./
-RUN npm install 
-
-# Copy the built files from the builder stage
-COPY . .
-# Expose the default preview port
-EXPOSE 4173
-
-# Use a lightweight static server instead of vite preview
+# Install lightweight server
 RUN npm install -g serve
 
-# Start the static server
-CMD ["npm", "run", "start"]
+# Copy build output from builder
+COPY --from=builder /app/dist ./dist
+
+# Expose port
+EXPOSE 4173
+
+# Start server
+CMD ["serve", "-s", "dist", "-l", "4173"]
