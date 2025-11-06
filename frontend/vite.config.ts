@@ -13,4 +13,8 @@ export default defineConfig({
       usePolling: true,
     },
   },
+  // allow the preview server to accept requests from the Render host
+  preview: {
+    allowedHosts: ['frontend-ys4r.onrender.com'],
+  },
 });
