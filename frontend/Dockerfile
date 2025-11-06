@@ -29,4 +29,4 @@ EXPOSE 4173
 RUN npm install -g serve
 
 # Start the static server
-CMD ["serve", "-s", "dist", "-l", "4173"]
+CMD ["npm", "run", "start"]
