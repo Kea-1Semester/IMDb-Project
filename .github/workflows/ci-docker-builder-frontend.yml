@@ -40,8 +40,11 @@ jobs:
           echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
 
       - name: Build Docker image
-        run: |
-          docker build --no-cache -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest -f ./frontend/Dockerfile ./frontend
+        run: | 
+          cd frontend
+          # print path
+          pwd
+          docker build --no-cache -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest -f ./Dockerfile .
 
       - name: Push Docker image to GitHub Container Registry
         run: |
