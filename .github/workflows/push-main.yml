@@ -3,7 +3,7 @@ name: Merge to Main Workflow
 on:
   push:
     branches:
-      - main 
+      - main
       - dev/GHCR
 
 jobs:
@@ -25,9 +25,10 @@ jobs:
       contents: read
       packages: write
 
-  # deploy-frontend:
-  #   name: Deploy Frontend Application
-  #   needs: test
-  #   uses: ./.github/workflows/deploy-frontend.yml
-  #   secrets:
-  #     BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
+  deploy-frontend:
+    name: Deploy Frontend Application
+    needs: test
+    uses: ./.github/workflows/deploy-frontend.yml
+    secrets:
+      BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
+      RASHO_RENDER_DEPLOY_HOOK: ${{ secrets.RASHO_RENDER_DEPLOY_HOOK }}
