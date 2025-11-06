@@ -24,16 +24,13 @@ internal static class Program
     {
         var projectRoot = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
 
-
-        // MySqlConnection default connection is connected to the cloud sql instance
-        await using (var context = MySqlSettings.MySqlConnection("ConnectionStringDocker"))
+        await using (var context = MySqlSettings.MySqlConnection("ConnectionString"))
         {
             Console.WriteLine("Ensuring the database exists...");
 
             try
             {
                 await context.Database.EnsureDeletedAsync();
-                await context.Database.EnsureCreatedAsync();
 
                 await context.Database.MigrateAsync();
             }
@@ -50,7 +47,7 @@ internal static class Program
                 var dataRoot = Environment.GetEnvironmentVariable("DATA_ROOT")!;
                 var sqlFile = Path.Combine(dataRoot, "mysqldump.sql");
                 Console.WriteLine($"Data Root: {dataRoot}");
-                
+
                 await context.Database.ExecuteSqlRawAsync(await File.ReadAllTextAsync(sqlFile));
                 Console.WriteLine("Seeded Sample Data into MySQL Database.");
 
@@ -70,7 +67,7 @@ internal static class Program
                 var titleIdsDict = await TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath, 100000);
                 var personIdsDict = await AddPersonToDb.AddPerson(context, nameBasicPath, 100000, titleIdsDict);
                 await AddCrewToDb.AddCrew(context, titleCrewPath, 50000, titleIdsDict, personIdsDict);
-                await AddEpisode.AddEpisodes(context, titleEpisodePath, 50000, titleIdsDict);
+                await AddEpisode.AddEpisodes(context, titleEpisodePath, titleIdsDict);
                 await AddActor.AddActorToDb(context, titlePrincipalsPath, titleIdsDict, personIdsDict);
                 await AddRating.AddRatingToDb(context, titleRatingsPath, titleIdsDict);
                 await AddAkas.AddAkasToDb(context, titleAkasPath, 50000, titleIdsDict);
