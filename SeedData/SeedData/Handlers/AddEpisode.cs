@@ -5,7 +5,7 @@ namespace SeedData.Handlers
 {
     public static class AddEpisode
     {
-        public static async Task AddEpisodes(ImdbContext context, string path, int noOfRow, Dictionary<string, Guid> titleIdsDict)
+        public static async Task AddEpisodes(ImdbContext context, string path, Dictionary<string, Guid> titleIdsDict)
         {
             Console.WriteLine("Seed data for AddEpisode");
 
@@ -22,14 +22,13 @@ namespace SeedData.Handlers
                         await reader.ReadLineAsync(); // Skip header line
 
                         string? line;
-                        int count = 0;
                         while ((line = await reader.ReadLineAsync()) != null)
                         {
                             var columns = line.Split('\t');
-                            var titleIdParent = titleIdsDict.TryGetValue(columns[0], out var parent) ? parent : Guid.Empty;
-                            var titleIdChild = titleIdsDict.TryGetValue(columns[1], out var child) ? child : Guid.Empty;
+                            var titleIdParent = titleIdsDict.TryGetValue(columns[1], out var parent) ? parent : Guid.Empty;
+                            var titleIdChild = titleIdsDict.TryGetValue(columns[0], out var child) ? child : Guid.Empty;
 
-                            if (titleIdParent != default && titleIdChild != default)
+                            if (titleIdParent != Guid.Empty && titleIdChild != Guid.Empty)
                             {
                                 episodes.Add(new Episodes
                                 {
@@ -39,12 +38,6 @@ namespace SeedData.Handlers
                                     SeasonNumber = Parse(columns[2]),
                                     EpisodeNumber = Parse(columns[3])
                                 });
-                            }
-
-                            count++;
-                            if (count >= noOfRow)
-                            {
-                                break;
                             }
                         }
                     }
