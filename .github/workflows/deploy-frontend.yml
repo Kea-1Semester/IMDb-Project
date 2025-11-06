@@ -1,4 +1,4 @@
-name: Deply Frontend Workflow
+name: Deploy Frontend Workflow
 
 on:
   workflow_call:
@@ -15,7 +15,7 @@ jobs:
     environment: secrets
     steps:
       - name: Deploy Frontend
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev/GHCR'
         env:
           BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
           RASHO_RENDER_DEPLOY_HOOK: ${{ secrets.RASHO_RENDER_DEPLOY_HOOK }}

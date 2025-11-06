@@ -17,7 +17,7 @@ jobs:
       - name: Run a Simple Command
         run: echo "This is a test job for push main."
 
-  ci-docker-template:
+  ci-docker-builder-frontend:
     name: CI Docker Build and Push Docker Image
     needs: test
     uses: ./.github/workflows/ci-docker-builder-frontend.yml
@@ -27,7 +27,7 @@ jobs:
 
   deploy-frontend:
     name: Deploy Frontend Application
-    needs: ci-docker-template
+    needs: ci-docker-builder-frontend
     uses: ./.github/workflows/deploy-frontend.yml
     secrets:
       BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
