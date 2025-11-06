@@ -3,11 +3,11 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 
 # Copy package.json first
-COPY package*.json ./
+COPY ./frontend/package*.json ./
 RUN npm ci
 
 # Copy all frontend source
-COPY . ./
+COPY ./frontend/ ./
 
 RUN apk add --no-cache bash
 # Build frontend (creates /app/dist)
@@ -21,7 +21,7 @@ WORKDIR /app
 RUN npm install -g serve
 
 # Copy build output from builder
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/frontend/dist ./dist
 
 # Expose port
 EXPOSE 4173
