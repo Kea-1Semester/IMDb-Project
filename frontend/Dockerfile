@@ -7,7 +7,7 @@ RUN apk --no-cache add bash
 
 # Copy package files and install dependencies
 COPY package*.json ./
-RUN npm install --only=production
+RUN npm install
 
 # Copy rest of source code and build the static files
 COPY . ./
