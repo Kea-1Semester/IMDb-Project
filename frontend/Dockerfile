@@ -9,6 +9,7 @@ RUN npm ci
 # Copy all frontend source
 COPY . ./
 
+RUN apk add --no-cache bash
 # Build frontend (creates /app/dist)
 RUN npm run build
 
