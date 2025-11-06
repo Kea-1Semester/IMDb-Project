@@ -20,4 +20,5 @@ jobs:
           BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
           RASHO_RENDER_DEPLOY_HOOK: ${{ secrets.RASHO_RENDER_DEPLOY_HOOK }}
         run: |
-          curl "$RASHO_RENDER_DEPLOY_HOOK"
+              # curl "$BREZOR_DEPLOY_HOOK"
+              curl "$RASHO_RENDER_DEPLOY_HOOK"
