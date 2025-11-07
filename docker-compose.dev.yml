@@ -27,8 +27,8 @@ services:
       - neo4j
     environment:
       SEED_SAMPLE_DATA: true
-      ConnectionStringDocker: server=mysql;port=3306;database=imdb;user=root;password=admin;default command timeout=600
-      MongoDbConnectionStr: mongodb://mongodb1:27017?replicaSet=rs0
+      MySqlConnectionString: server=mysql;port=3306;database=imdb;user=root;password=admin;default command timeout=600
+      MongoDbConnectionString: mongodb://mongodb1:27017?replicaSet=rs0
       MongoDbDatabase: imdb
       DATA_ROOT: /mySql
     volumes:

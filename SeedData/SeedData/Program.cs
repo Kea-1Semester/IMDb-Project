@@ -1,7 +1,4 @@
 ﻿using DotNetEnv;
-using EfCoreModelsLib.Models.MongoDb;
-using EfCoreModelsLib.Models.MongoDb.SchemaValidator;
-using EfCoreModelsLib.Models.Mysql;
 using Microsoft.EntityFrameworkCore;
 using SeedData.DbConnection;
 using SeedData.Handlers;
@@ -15,8 +12,7 @@ internal static class Program
     {
         Env.TraversePath().Load();
         await SeedData();
-        //ConnectionStringDocker
-        // await TitleMongoDbMapper.MigrateToMongoDb(40000, 100);
+         await TitleMongoDbMapper.MigrateToMongoDb(40000, 4);
         //await MigrateToNeo4J();
     }
 
@@ -24,7 +20,9 @@ internal static class Program
     {
         var projectRoot = Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
 
-        await using (var context = MySqlSettings.MySqlConnection("ConnectionString"))
+
+        // MySqlConnection default connection is connected to the cloud sql instance
+        await using (var context = MySqlSettings.MySqlConnection())
         {
             Console.WriteLine("Ensuring the database exists...");
 
@@ -50,8 +48,6 @@ internal static class Program
 
                 await context.Database.ExecuteSqlRawAsync(await File.ReadAllTextAsync(sqlFile));
                 Console.WriteLine("Seeded Sample Data into MySQL Database.");
-
-                await TitleMongoDbMapper.MigrateToMongoDb(40000, 100, "ConnectionStringDocker");
             }
             else
             {
