@@ -190,7 +190,7 @@ public static class TitleMongoDbMapper
         await using var contextMongo = MongoDbSettings.MongoDbConnection();
 
 
-        //await contextMongo.Database.EnsureDeletedAsync();
+        await contextMongo.Database.EnsureDeletedAsync();
 
         mongoDbData.AddRange(await ListTitleMongoData(mysqlContext, pageSize: pageSize, page: page));
 
@@ -233,7 +233,6 @@ public static class TitleMongoDbMapper
         Console.WriteLine("Ensuring the MongoDB database exists...");
         try
         {
-            await contextMongo.Database.EnsureDeletedAsync();
             await contextMongo.Database.EnsureCreatedAsync();
             Console.WriteLine("MongoDB database ensured.");
         }
