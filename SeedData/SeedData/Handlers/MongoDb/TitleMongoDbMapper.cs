@@ -7,6 +7,7 @@ using EfCoreModelsLib.Models.Mysql;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 using SeedData.DbConnection;
+using System;
 
 namespace SeedData.Handlers.MongoDb;
 
@@ -184,13 +185,12 @@ public static class TitleMongoDbMapper
 
 
         // 1. Read from MySQL and join data that match the MongoDB Schema
-        await using var mysqlContext = MySqlSettings.MySqlConnectionToGetData(
-            connectionString ?? "ConnectionString");
-        
+        await using var mysqlContext = MySqlSettings.MySqlConnectionToGetData();
+
         await using var contextMongo = MongoDbSettings.MongoDbConnection();
 
 
-        await contextMongo.Database.EnsureDeletedAsync();
+        //await contextMongo.Database.EnsureDeletedAsync();
 
         mongoDbData.AddRange(await ListTitleMongoData(mysqlContext, pageSize: pageSize, page: page));
 
@@ -214,8 +214,8 @@ public static class TitleMongoDbMapper
         };
 
         await MongoSchemaInitializer<TitleMongoDb>.EnsureCollectionSchema(
-            Env.GetString("MongoDbConnectionStr"),
-            databaseName: Env.GetString("MongoDbDatabase"),
+            connectionString: Environment.GetEnvironmentVariable("MongoDbConnectionString")!,
+            databaseName: Environment.GetEnvironmentVariable("MongoDbDatabase")!,
             nameof(SchemaName.Titles),
             TitlesValidator.GetSchema(),
             compoundIndex,
@@ -224,7 +224,7 @@ public static class TitleMongoDbMapper
 
         //Validate Persons Collection Schema
         //MongoSchemaInitializer.EnsureCollectionSchema(
-        //    Env.GetString("MongoDbConnectionStr"),
+        //   Environment.GetEnvironmentVariable("MongoDbConnectionStr"),
         //    "imdb-mongo-db",
         //    "Persons",
         //    PersonsValidator.GetSchema());
@@ -233,6 +233,7 @@ public static class TitleMongoDbMapper
         Console.WriteLine("Ensuring the MongoDB database exists...");
         try
         {
+            await contextMongo.Database.EnsureDeletedAsync();
             await contextMongo.Database.EnsureCreatedAsync();
             Console.WriteLine("MongoDB database ensured.");
         }

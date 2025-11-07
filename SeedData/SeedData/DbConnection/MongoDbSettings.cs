@@ -1,5 +1,4 @@
-﻿using DotNetEnv;
-using EfCoreModelsLib.Models.MongoDb.ObjDbContext;
+﻿using EfCoreModelsLib.Models.MongoDb.ObjDbContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace SeedData.DbConnection;
@@ -7,7 +6,7 @@ namespace SeedData.DbConnection;
 public static class MongoDbSettings
 {
     public static ImdbContextMongoDb MongoDbConnection(
-        string connectionStr = "MongoDbConnectionStr",
+        string connectionStr = "MongoDbConnectionString",
         string databaseNameKey = "MongoDbDatabase")
     {
         var mongoDbConnectionUri = Environment.GetEnvironmentVariable(connectionStr)!;
