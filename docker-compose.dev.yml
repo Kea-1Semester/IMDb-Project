@@ -41,8 +41,8 @@ services:
     environment:
       NEO4J_AUTH: neo4j/admin123
     ports:
-      - "7475:7474"
-      - "7688:7687"
+      - "7474:7474"
+      - "7687:7687"
     volumes:
       - neo4j-data:/data
 

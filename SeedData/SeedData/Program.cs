@@ -14,7 +14,7 @@ internal static class Program
     static async Task Main(string[] args)
     {
         Env.TraversePath().Load();
-        //await SeedData();
+        await SeedData();
         //ConnectionStringDocker
         await TitleMongoDbMapper.MigrateToMongoDb(40000, 100);
         //await MigrateToNeo4J();
@@ -33,7 +33,7 @@ internal static class Program
         var titleAkasPath = Path.Combine(dataFolder, "title.akas.tsv");
 
         // MySqlConnection default connection is connected to the cloud sql instance
-        await using (var context = MySqlSettings.MySqlConnection("ConnectionStringDocker"))
+        await using (var context = MySqlSettings.MySqlConnection("ConnectionStringAiven"))
         {
             Console.WriteLine("Ensuring the database exists...");
 
