@@ -29,7 +29,6 @@ internal static class Program
             try
             {
                 await context.Database.EnsureDeletedAsync();
-                await context.Database.EnsureCreatedAsync();
 
                 await context.Database.MigrateAsync();
             }
@@ -64,7 +63,7 @@ internal static class Program
                 var titleIdsDict = await TitleBasicsHandler.SeedTitleBasics(context, titleBasicPath, 100000);
                 var personIdsDict = await AddPersonToDb.AddPerson(context, nameBasicPath, 100000, titleIdsDict);
                 await AddCrewToDb.AddCrew(context, titleCrewPath, 50000, titleIdsDict, personIdsDict);
-                await AddEpisode.AddEpisodes(context, titleEpisodePath, 50000, titleIdsDict);
+                await AddEpisode.AddEpisodes(context, titleEpisodePath, titleIdsDict);
                 await AddActor.AddActorToDb(context, titlePrincipalsPath, titleIdsDict, personIdsDict);
                 await AddRating.AddRatingToDb(context, titleRatingsPath, titleIdsDict);
                 await AddAkas.AddAkasToDb(context, titleAkasPath, 50000, titleIdsDict);

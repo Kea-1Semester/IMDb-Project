@@ -80,7 +80,7 @@ namespace SeedData.Handlers
                 try
                 {
                     await context.Directors.AddRangeAsync(context.Directors.Local);
-                    Console.WriteLine("Adding Professions");
+                    Console.WriteLine("Adding Directors");
                 }
                 catch (Exception ex)
                 {
@@ -90,7 +90,7 @@ namespace SeedData.Handlers
                 try
                 {
                     await context.Writers.AddRangeAsync(context.Writers.Local);
-                    Console.WriteLine("Adding Professions");
+                    Console.WriteLine("Adding Writers");
                 }
                 catch (Exception ex)
                 {
