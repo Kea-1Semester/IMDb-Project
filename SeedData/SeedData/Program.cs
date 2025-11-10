@@ -2,10 +2,12 @@
 using EfCoreModelsLib.Models.MongoDb;
 using EfCoreModelsLib.Models.MongoDb.SchemaValidator;
 using EfCoreModelsLib.Models.Mysql;
+using EfCoreModelsLib.Models.Neo4J.Neo4JModels;
 using Microsoft.EntityFrameworkCore;
 using SeedData.DbConnection;
 using SeedData.Handlers;
 using SeedData.Handlers.MongoDb;
+using SeedData.Handlers.Neo4j;
 
 namespace SeedData;
 
@@ -14,10 +16,10 @@ internal static class Program
     static async Task Main(string[] args)
     {
         Env.TraversePath().Load();
-        await SeedData();
+        //await SeedData();
         //ConnectionStringDocker
-        await TitleMongoDbMapper.MigrateToMongoDb(40000, 100);
-        //await MigrateToNeo4J();
+        //await TitleMongoDbMapper.MigrateToMongoDb(40000, 100);
+        await MigrateToNeo4J();
     }
 
     private static async Task SeedData()
@@ -65,8 +67,17 @@ internal static class Program
 
     private static async Task MigrateToNeo4J()
     {
+        Env.TraversePath().Load();
 
+         var testAttributes = new List<AttributesEntity>
+        {
+            new() { AttributeId = Guid.NewGuid(), Attribute = "Color" },
+            new() { AttributeId = Guid.NewGuid(), Attribute = "Genre" }
+        };
 
+        await Neo4jMapper.MigrateToNeo4j(testAttributes);
+
+        Console.WriteLine("Testnodes inserted into Neo4j!");
     }
 }
 

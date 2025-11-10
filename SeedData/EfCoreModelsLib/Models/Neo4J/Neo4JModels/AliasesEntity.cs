@@ -1,6 +1,6 @@
 namespace EfCoreModelsLib.Models.Neo4J.Neo4JModels
 {
-    public partial class Aliases
+    public partial class AliasesEntity
     {
         public Guid AliasId { get; set; }
         public string Region { get; set; }
@@ -9,7 +9,7 @@ namespace EfCoreModelsLib.Models.Neo4J.Neo4JModels
         public string Title { get; set; }
 
         // Relationships
-        public List<Attributes> HasAttributes { get; set; } = new();
-        public List<Types> HasTypes { get; set; } = new();
+        public List<AttributesEntity> HasAttributes { get; set; } = new();
+        public List<TypesEntity> HasTypes { get; set; } = new();
     }
 }

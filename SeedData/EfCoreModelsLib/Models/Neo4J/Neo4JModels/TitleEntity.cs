@@ -2,7 +2,7 @@ using EfCoreModelsLib.Models.Neo4J.Neo4JModels;
 
 namespace EfCoreModelsLib.models.Neo4J.Neo4JModels
 {
-    public partial class Titles
+    public partial class TitlesEntity
     {
         public Guid TitleId { get; set; }
         public string TitleType { get; set; }
@@ -14,21 +14,21 @@ namespace EfCoreModelsLib.models.Neo4J.Neo4JModels
         public int RuntimeMinutes { get; set; }
 
         // Title-To-Title Relationships
-        public List<Titles> EpisodesInSerie { get; set; } = new();
-        public Titles Series { get; set; }
+        public List<TitlesEntity> EpisodesInSerie { get; set; } = new();
+        public TitlesEntity Series { get; set; }
 
         // Persons Relationships
-        public List<Persons> DirectedBy { get; set; } = new();
-        public List<Persons> WrittenBy { get; set; } = new();
-        public List<Persons> PlayedAsBy { get; set; } = new();
+        public List<PersonsEntity> DirectedBy { get; set; } = new();
+        public List<PersonsEntity> WrittenBy { get; set; } = new();
+        public List<PersonsEntity> PlayedAsBy { get; set; } = new();
 
         // Genres Relationships
-        public List<Genres> HasGenres { get; set; } = new();
+        public List<GenresEntity> HasGenres { get; set; } = new();
 
 
         // Ratings, Aliases, Comments Relationships
-        public Ratings HasRating { get; set; }
-        public List<Aliases> HasAliases { get; set; } = new();
-        public List<Comments> HasComments { get; set; } = new();
+        public RatingsEntity HasRating { get; set; }
+        public List<AliasesEntity> HasAliases { get; set; } = new();
+        public List<CommentsEntity> HasComments { get; set; } = new();
     }
 }
