@@ -4,7 +4,7 @@ namespace EfCoreModelsLib.models.Neo4J.Neo4JModels
     {
         // Actors is Renamed to Characters to be more inclusive
         public Guid CharacterId { get; set; }
-        public string CharacterName { get; set; }
+        public string CharacterName { get; set; } = "";
 
         // Persons Relationships
         public List<PersonsEntity> PlayedBy { get; set; } = new();

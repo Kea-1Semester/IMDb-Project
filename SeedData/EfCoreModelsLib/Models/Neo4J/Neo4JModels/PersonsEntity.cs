@@ -5,7 +5,7 @@ namespace EfCoreModelsLib.models.Neo4J.Neo4JModels
     public class PersonsEntity
     {
         public Guid PersonId { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         public int BirthYear { get; set; }
         public int EndYear { get; set; }
 
