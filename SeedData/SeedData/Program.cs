@@ -69,15 +69,39 @@ internal static class Program
     {
         Env.TraversePath().Load();
 
-         var testAttributes = new List<AttributesEntity>
+        // 1) Schema (Community-safe UNIQUE constraints for alle labels du bruger)
+        await EfCoreModelsLib.Models.Neo4J.Handler.Neo4jSchemaInitializer.EnsureConstraintsAsync(
+            Env.GetString("NEO4J_URI"),
+            Env.GetString("NEO4J_USER"),
+            Env.GetString("NEO4J_PASSWORD"));
+
+        // 2) Eksempeldata (erstat evt. med dine data fra MySQL)
+        var attrColor = new AttributesEntity { AttributeId = Guid.NewGuid(), Attribute = "Color" };
+        var typeMovie = new TypesEntity       { TypeId = Guid.NewGuid(),     Type      = "movie" };
+
+        var alias = new AliasesEntity
         {
-            new() { AttributeId = Guid.NewGuid(), Attribute = "Color" },
-            new() { AttributeId = Guid.NewGuid(), Attribute = "Genre" }
+            AliasId = Guid.NewGuid(),
+            Region = "DK",
+            Language = "da",
+            IsOriginalTitle = false,
+            Title = "Den danske titel",
+            HasAttributes = new() { attrColor },
+            HasTypes      = new() { typeMovie }
         };
 
-        await Neo4jMapper.MigrateToNeo4j(testAttributes);
+        // 3) Kør ALT i én call
+        var payload = new Neo4jMapper.UpsertPayload
+        {
+            Attributes = new[] { attrColor },
+            Types      = new[] { typeMovie },
+            Aliases    = new[] { alias }
+        };
 
-        Console.WriteLine("Testnodes inserted into Neo4j!");
+        await Neo4jMapper.UpsertAll(payload, batchSize: 1000);
+
+        Console.WriteLine("✅ Neo4j upsert complete (Attributes, Types, Aliases).");
+    
     }
 }
 
