@@ -1,71 +1,59 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Neo4j.Driver;
-using EfCoreModelsLib.models.Neo4J.Neo4JModels;
-using EfCoreModelsLib.models.Neo4J.Handler;
+// Neo4jMapper.cs
 using DotNetEnv;
-using MongoDB.Driver.Core.Misc;
 using EfCoreModelsLib.Models.Neo4J.Neo4JModels;
+using Neo4j.Driver;
 
 namespace SeedData.Handlers.Neo4j
 {
     public static class Neo4jMapper
     {
-        public static async Task MigrateToNeo4j(
-            IEnumerable<AttributesEntity> source,
-            int batchSize = 1000)
+        public static async Task WithWriteSession(Func<IAsyncSession, Task> action)
         {
             var uri = Env.GetString("NEO4J_URI");
             var user = Env.GetString("NEO4J_USER");
-            var pass = Env.GetString("NEO4J_PASSWORD");
+            var password = Env.GetString("NEO4J_PASSWORD");
 
-            await Neo4jSchemaInitializer.EnsureConstraintsAsync(uri, user, pass);
-
-            var driver = GraphDatabase.Driver(uri, AuthTokens.Basic(user, pass));
-            await using var session = driver.AsyncSession();
-
-            var buffer = new List<AttributesEntity>(batchSize);
-
-            foreach (var attribute in source)
-            {
-                buffer.Add(attribute);
-
-                if (buffer.Count >= batchSize)
-                {
-                    await UpsertBatch(session, buffer);
-                    buffer.Clear();
-                }
-            }
-
-            if (buffer.Count > 0)
-            {
-                await UpsertBatch(session, buffer);
-            }
-
-            await session.CloseAsync();
-            await driver.CloseAsync();
+            await using var driver  = GraphDatabase.Driver(uri, AuthTokens.Basic(user, password));
+            await using var session = driver.AsyncSession(o => o.WithDefaultAccessMode(AccessMode.Write));
+            await action(session);
         }
 
-        public static async Task UpsertBatch(IAsyncSession session, List<AttributesEntity> attributes)
+        public static IEnumerable<List<T>> Chunk<T>(IEnumerable<T> source, int size)
         {
-            const string cypher = @"
-            UNWIND $rows AS row
-            MERGE (a:Attributes { AttributeId: row.AttributeId })
-            SET a.Attribute = row.Attribute";
-
-            var param = new
+            var batch = new List<T>(size);
+            foreach (var item in source)
             {
-                rows = attributes.ConvertAll(a => new
+                batch.Add(item);
+                if (batch.Count == size)
                 {
-                    AttributeId = a.AttributeId.ToString(),
-                    Attribute   = a.Attribute
-                })
-            };
+                    yield return batch;
+                    batch = new List<T>(size);
+                }
+            }
+            if (batch.Count > 0)
+                yield return batch;
+        }
 
-            await session.ExecuteWriteAsync(async tx =>
+        public sealed class UpsertPayload
+        {
+            public IEnumerable<AttributesEntity> Attributes { get; init; }
+                = Enumerable.Empty<AttributesEntity>();
+            public IEnumerable<TypesEntity> Types { get; init; }
+                = Enumerable.Empty<TypesEntity>();
+            public IEnumerable<AliasesEntity> Aliases { get; init; }
+                = Enumerable.Empty<AliasesEntity>();
+        }
+
+        public static async Task UpsertAll(UpsertPayload data, int batchSize = 1000)
+        {
+            await WithWriteSession(async session =>
             {
-                await tx.RunAsync(cypher, param);
+                // Kør kun hvis der er data i den pågældende samling
+                if (data.Attributes.Any()) await Neo4jAttributesMapper.UpsertAttributes(session, data.Attributes, batchSize);
+                if (data.Types.Any())      await Neo4jTypesMapper.UpsertTypes(session, data.Types, batchSize);
+                if (data.Aliases.Any())    await Neo4jAliasesMapper.UpsertAliases(session, data.Aliases, batchSize);
+
+                // Tilføj flere linjer her når du får nye entiteter
             });
         }
     }
