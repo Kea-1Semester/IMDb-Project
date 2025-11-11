@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver.Core.Misc;
 using Neo4j.Driver;
 
-namespace EfCoreModelsLib.models.Neo4J.Handler
+namespace EfCoreModelsLib.Models.Neo4J.Handler
 {
     public static class Neo4jSchemaInitializer
     {
@@ -19,14 +19,27 @@ namespace EfCoreModelsLib.models.Neo4J.Handler
                 // Attributes
                 "CREATE CONSTRAINT attributes_id_unique IF NOT EXISTS FOR (a:Attributes) REQUIRE a.AttributeId IS UNIQUE",
 
-                // Persons
-                "CREATE CONSTRAINT persons_id_unique IF NOT EXISTS FOR (p:Person) REQUIRE p.PersonId IS UNIQUE",
+                // Aliases
+                "CREATE CONSTRAINT aliases_id_unique IF NOT EXISTS FOR (al:Aliases) REQUIRE al.AliasId IS UNIQUE",
 
+                // Types
+                "CREATE CONSTRAINT types_id_unique IF NOT EXISTS FOR (t:Types) REQUIRE t.TypeId IS UNIQUE"
+                
                 // Titles
-                "CREATE CONSTRAINT titles_id_unique IF NOT EXISTS FOR (t:Title) REQUIRE t.TitleId IS UNIQUE",
 
-                // Characters
-                "CREATE CONSTRAINT characters_id_unique IF NOT EXISTS FOR (c:Character) REQUIRE c.CharacterId IS UNIQUE"
+                // Ratings
+
+                // Genres
+
+                // Persons
+
+                // Professions
+
+                // Comments
+
+                // Logs
+                
+                
             };
 
             await session.ExecuteWriteAsync(async tx =>
