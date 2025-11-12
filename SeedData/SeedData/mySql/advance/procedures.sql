@@ -45,36 +45,9 @@ CREATE PROCEDURE UpdatePrimaryTitle(
     IN p_new_primary_title VARCHAR(255)
 )
 BEGIN
-    DECLARE v_old_primary_title VARCHAR(255);
-    DECLARE v_old_value JSON;
-    DECLARE v_new_value JSON;
-
-    -- Fetch the old value
-    SELECT primary_title
-    INTO v_old_primary_title
-    FROM Titles
-    WHERE title_id = p_title_id;
-
     -- Perform the update
     UPDATE Titles
     SET primary_title = p_new_primary_title
     WHERE title_id = p_title_id;
 
-    -- Prepare JSON values for logging
-    SET v_old_value = JSON_OBJECT('primary_title', v_old_primary_title);
-    SET v_new_value = JSON_OBJECT('primary_title', p_new_primary_title);
-
-    -- Insert a log entry using CURRENT_USER()
-    INSERT INTO Loggings (logging_id,
-                          table_name,
-                          command,
-                          new_value,
-                          old_value,
-                          executed_by)
-    VALUES (UUID_TO_BIN(UUID(), 1),
-            'Titles',
-            'UPDATE',
-            v_new_value,
-            v_old_value,
-            SUBSTRING_INDEX(USER(), '@', 1));
 END;

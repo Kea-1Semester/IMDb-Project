@@ -13,7 +13,15 @@ GROUP BY t.title_id, t.primary_title, t.original_title, t.start_year, average_ra
 
 DROP VIEW IF EXISTS titles_view;
 CREATE VIEW titles_view AS
-SELECT *
+SELECT
+    T.title_id,
+    T.title_type,
+    T.primary_title,
+    T.original_title,
+    T.is_adult,
+    T.start_year,
+    T.runtime_minutes
+
 FROM (SELECT title_id,
              title_type,
              primary_title,
@@ -23,5 +31,3 @@ FROM (SELECT title_id,
              runtime_minutes
       FROM Titles
       GROUP BY title_id, primary_title, original_title, start_year) T;
-
-
