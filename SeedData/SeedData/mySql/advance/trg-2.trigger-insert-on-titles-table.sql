@@ -1,5 +1,7 @@
--- Trigger to log changes in the Titles table
 DROP TRIGGER IF EXISTS trg_after_insert_titles;
+DROP TRIGGER IF EXISTS trg_before_insert_titles_check_title_type;
+
+-- Trigger to log changes in the Titles table
 CREATE TRIGGER trg_after_insert_titles
     AFTER INSERT
     ON Titles
@@ -28,7 +30,6 @@ END;
 
 
 -- Trigger to check the validity of the inserted title type
-DROP TRIGGER IF EXISTS trg_before_insert_titles_check_title_type;
 CREATE TRIGGER trg_before_insert_titles_check_title_type
     BEFORE INSERT
     ON Titles
@@ -63,18 +64,6 @@ VALUES (UUID(),
         2023,
         NULL,
         120);
-
--- Checking the results
-SELECT *
-FROM imdb.Loggings;
-
-SELECT *
-FROM Titles
-WHERE primary_title = 'Galadrielaptor';
-
-DELETE
-FROM Titles
-WHERE primary_title = 'Galadrielaptor';
 
 
 

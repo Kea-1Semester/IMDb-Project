@@ -1,5 +1,6 @@
--- Modifying the Loggings table to avoid errors with the UUID_TO_BIN function
 DROP TABLE IF EXISTS Loggings;
+
+-- Modifying the Loggings table to avoid errors with the UUID_TO_BIN function
 CREATE TABLE Loggings
 (
     -- I have changed a type of colum from char(36) to binary(16) to avoid errors with the UUID_TO_BIN function
