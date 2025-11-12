@@ -9,5 +9,5 @@ public class KnownForTitle
     [BsonRepresentation(BsonType.String)]
     public Guid TitleId { get; set; }
     [BsonElement("titleName")]
-    public string TitleName { get; set; } = string.Empty;
+    public string TitleName { get; set; } = null!;
 }
