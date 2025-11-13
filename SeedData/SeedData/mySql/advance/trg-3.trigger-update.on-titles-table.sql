@@ -22,13 +22,15 @@ BEGIN
     END IF;
 
     -- start_year must be before end_year
-    IF NEW.start_year IS NOT NULL AND NEW.end_year IS NOT NULL AND NEW.start_year > NEW.end_year THEN
+    IF NEW.start_year IS NOT NULL AND
+       NEW.end_year IS NOT NULL AND
+       NEW.start_year > NEW.end_year THEN
         SIGNAL sql_state SET MESSAGE_TEXT = 'start_year must be before end_year';
     END IF;
 
-    -- start_year must be after 1900
-    IF NEW.start_year < 1900 THEN
-        SIGNAL sql_state SET MESSAGE_TEXT = 'start_year must be after 1900';
+    -- start_year must not be null and must be after 1900
+    IF New.start_year IS NULL OR NEW.start_year < 1900 THEN
+        SIGNAL sql_state SET MESSAGE_TEXT = 'start_year must not be null and must be after 1900';
     END IF;
 
     -- runtime_minutes must be between 0 and 1440 (24 hours)
@@ -43,7 +45,7 @@ CREATE TRIGGER trg_after_update_titles
     ON Titles
     FOR EACH ROW
 BEGIN
-    DECLARE  v_table_name VARCHAR(100) DEFAULT 'Titles';
+    DECLARE v_table_name VARCHAR(100) DEFAULT 'Titles';
     DECLARE v_command VARCHAR(10) DEFAULT 'UPDATE';
 
     IF OLD.primary_title <> NEW.primary_title THEN
@@ -56,7 +58,9 @@ BEGIN
         VALUES (v_table_name, v_command, JSON_OBJECT('start_year', NEW.start_year),
                 JSON_OBJECT('start_year', OLD.start_year), SUBSTRING_INDEX(USER(), '@', 1));
     END IF;
-    IF OLD.end_year <> NEW.end_year THEN
+    IF (OLD.end_year <> NEW.end_year) OR
+       (OLD.end_year IS NULL AND NEW.end_year IS NOT NULL) OR
+       (OLD.end_year IS NOT NULL AND NEW.end_year IS NULL) THEN
         INSERT INTO Loggings(table_name, command, new_value, old_value, executed_by)
         VALUES (v_table_name, v_command, JSON_OBJECT('end_year', NEW.end_year),
                 JSON_OBJECT('end_year', OLD.end_year), SUBSTRING_INDEX(USER(), '@', 1));

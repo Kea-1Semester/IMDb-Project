@@ -83,7 +83,7 @@ BEGIN
 END;
 
 
--- Stored Procedure: Search Movies Flexible and Saving logs with JSON values within User().
+-- Stored Procedure: Flexible Search for Movies with Optional Filters
 CREATE PROCEDURE IF NOT EXISTS search_movies_flexible(
     IN p_primary_title VARCHAR(50),
     IN p_title_type VARCHAR(50), -- e.g., 'movie', 'tvMovie'
@@ -115,6 +115,9 @@ BEGIN
     UPDATE Titles
     SET primary_title = p_new_primary_title
     WHERE title_id = p_title_id;
+    IF ROW_COUNT() = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Title not found';
+    END IF;
 END;
 
 -- Create Movie with Genre
