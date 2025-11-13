@@ -1,5 +1,3 @@
-USE imdb;
-
 -- Stored Procedure: Search Movies by Primary Title Keyword
 DROP PROCEDURE IF EXISTS search_movies_by_primaryTitle;
 CREATE PROCEDURE search_movies_by_primaryTitle(IN p_primary_title VARCHAR(50))

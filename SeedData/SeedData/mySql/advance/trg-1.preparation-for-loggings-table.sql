@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS Loggings;
 -- Modifying the Loggings table to avoid errors with the UUID_TO_BIN function
 CREATE TABLE Loggings
 (
-    -- I have changed a type of colum from char(36) to binary(16) to avoid errors with the UUID_TO_BIN function
+    -- I have changed a type of column from char(36) to binary(16) to avoid errors with the UUID_TO_BIN function
     logging_id  binary(16)  DEFAULT (UUID_TO_BIN(UUID(), 1)) NOT NULL
         PRIMARY KEY,
     table_name  char(36) CHARSET ascii                       NOT NULL,

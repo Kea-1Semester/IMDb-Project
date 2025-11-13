@@ -19,7 +19,7 @@ BEGIN
                     'title_type', NEW.title_type,
                     'primary_title', NEW.primary_title,
                     'original_title', NEW.original_title,
-                    'is_adult', New.is_adult,
+                    'is_adult', NEW.is_adult,
                     'start_year', NEW.start_year,
                     'end_year', NEW.end_year,
                     'runtime_minutes', NEW.runtime_minutes
