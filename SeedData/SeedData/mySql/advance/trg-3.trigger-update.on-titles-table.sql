@@ -65,7 +65,8 @@ BEGIN
         VALUES (v_table_name, v_command, JSON_OBJECT('end_year', NEW.end_year),
                 JSON_OBJECT('end_year', OLD.end_year), SUBSTRING_INDEX(USER(), '@', 1));
     END IF;
-    IF OLD.runtime_minutes <> NEW.runtime_minutes THEN
+    IF( OLD.runtime_minutes <> NEW.runtime_minutes)
+        THEN
         INSERT INTO Loggings(table_name, command, new_value, old_value, executed_by)
         VALUES (v_table_name, v_command, JSON_OBJECT('runtime_minutes', NEW.runtime_minutes),
                 JSON_OBJECT('runtime_minutes', OLD.runtime_minutes), SUBSTRING_INDEX(USER(), '@', 1));

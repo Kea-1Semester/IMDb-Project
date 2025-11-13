@@ -2,10 +2,10 @@ USE imdb;
 
 DROP PROCEDURE IF EXISTS search_movies_by_primaryTitle_using_like_function;
 DROP PROCEDURE IF EXISTS get_top_rated_movies;
-DROP PROCEDURE IF EXISTS UpdatePrimaryTitle;
+DROP PROCEDURE IF EXISTS update_primary_title;
 DROP PROCEDURE IF EXISTS search_movies_flexible;
-DROP PROCEDURE IF EXISTS CreateMovieWithGenre;
-DROP PROCEDURE IF EXISTS search_movies_fulltext;
+DROP PROCEDURE IF EXISTS create_movie_with_genre;
+DROP PROCEDURE IF EXISTS search_movies_fulltext_on_primary_title_and_original_title;
 
 ALTER TABLE Titles
     DROP INDEX idx_Titles_primary_title_original_title;
@@ -121,8 +121,6 @@ BEGIN
 END;
 
 -- Create Movie with Genre
-DROP PROCEDURE IF EXISTS create_movie_with_genre;
-
 CREATE PROCEDURE IF NOT EXISTS create_movie_with_genre(
     IN p_primary_title VARCHAR(255),
     IN p_original_title VARCHAR(255),
