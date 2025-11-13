@@ -65,6 +65,7 @@ VALUES (UUID(),
         NULL,
         120);
 
+SELECT * FROM Loggings;
 
 
-
+SHOW TRIGGERS LIKE 'Titles';
