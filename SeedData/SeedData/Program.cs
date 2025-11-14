@@ -71,9 +71,9 @@ internal static class Program
 
         // 1) Schema (Community-safe UNIQUE constraints for alle labels du bruger)
         await EfCoreModelsLib.Models.Neo4J.Handler.Neo4jSchemaInitializer.EnsureConstraintsAsync(
-            Env.GetString("NEO4J_URI"),
-            Env.GetString("NEO4J_USER"),
-            Env.GetString("NEO4J_PASSWORD"));
+            Environment.GetEnvironmentVariable("NEO4J_URI")!,
+            Environment.GetEnvironmentVariable("NEO4J_USER")!,
+            Environment.GetEnvironmentVariable("NEO4J_PASSWORD")!);
 
         // 2) Eksempeldata (erstat evt. med dine data fra MySQL)
         var attrColor = new AttributesEntity { AttributeId = Guid.NewGuid(), Attribute = "Color" };

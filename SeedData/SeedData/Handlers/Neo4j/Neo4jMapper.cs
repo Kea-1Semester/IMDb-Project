@@ -9,9 +9,9 @@ namespace SeedData.Handlers.Neo4j
     {
         public static async Task WithWriteSession(Func<IAsyncSession, Task> action)
         {
-            var uri = Env.GetString("NEO4J_URI");
-            var user = Env.GetString("NEO4J_USER");
-            var password = Env.GetString("NEO4J_PASSWORD");
+            var uri = Environment.GetEnvironmentVariable("NEO4J_URI");
+            var user = Environment.GetEnvironmentVariable("NEO4J_USER");
+            var password = Environment.GetEnvironmentVariable("NEO4J_PASSWORD");
 
             await using var driver  = GraphDatabase.Driver(uri, AuthTokens.Basic(user, password));
             await using var session = driver.AsyncSession(o => o.WithDefaultAccessMode(AccessMode.Write));
