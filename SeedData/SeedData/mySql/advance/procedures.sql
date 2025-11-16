@@ -1,5 +1,5 @@
-USE imdb;
-
+########################PROCEDURES##########################
+############################################################
 DROP PROCEDURE IF EXISTS search_movies_by_primaryTitle_using_like_function;
 DROP PROCEDURE IF EXISTS get_top_rated_movies;
 DROP PROCEDURE IF EXISTS update_primary_title;
@@ -29,7 +29,7 @@ BEGIN
     LIMIT 10;
 END;
 
-
+-- TODO: Make PageNumber and PageSize optional with default values
 -- Stored Procedure: Search Movies Fulltext on Primary Title and Original Title using pagination
 CREATE PROCEDURE IF NOT EXISTS search_movies_fulltext_on_primary_title_and_original_title(
     IN p_keyword VARCHAR(50),
@@ -129,7 +129,7 @@ CREATE PROCEDURE IF NOT EXISTS create_movie_with_genre(
     IN p_start_year INT,
     IN p_end_year INT,
     IN p_runtime_minutes INT,
-    IN p_genre_name VARCHAR(100)
+    IN p_genre_name VARCHAR(50)
 )
 BEGIN
     DECLARE v_title_id CHAR(36);
@@ -174,9 +174,3 @@ BEGIN
     VALUES (v_title_id, v_genre_id);
     COMMIT;
 END;
-
-
-
-
-
-
