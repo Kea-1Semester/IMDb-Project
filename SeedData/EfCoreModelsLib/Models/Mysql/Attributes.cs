@@ -13,6 +13,8 @@ public partial class Attributes
 {
     [Key]
     [Column("attribute_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid AttributeId { get; set; }
 
     [Required]

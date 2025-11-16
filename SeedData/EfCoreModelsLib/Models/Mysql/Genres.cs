@@ -13,6 +13,8 @@ public partial class Genres
 {
     [Key]
     [Column("genre_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid GenreId { get; set; }
 
     [Required]

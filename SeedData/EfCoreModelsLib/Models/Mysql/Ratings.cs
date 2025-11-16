@@ -13,9 +13,13 @@ public partial class Ratings
 {
     [Key]
     [Column("rating_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid RatingId { get; set; }
 
     [Column("title_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid TitleId { get; set; }
 
     [Column("average_rating")]

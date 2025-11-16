@@ -14,9 +14,13 @@ public partial class Aliases
 {
     [Key]
     [Column("alias_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid AliasId { get; set; }
 
     [Column("title_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid TitleId { get; set; }
 
     [Required]

@@ -14,16 +14,21 @@ namespace EfCoreModelsLib.Models.Mysql;
 public partial class Directors
 {
     [Key]
-    //directors_id
     [Column("directors_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid DirectorsId { get; set; }
 
     [Key]
     [Column("Titles_title_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid TitlesTitleId { get; set; }
 
     [Key]
     [Column("Persons_person_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid PersonsPersonId { get; set; }
 
     [ForeignKey("PersonsPersonId")]
