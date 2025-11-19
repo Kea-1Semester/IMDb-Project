@@ -12,6 +12,8 @@ public partial class Persons
 {
     [Key]
     [Column("person_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid PersonId { get; set; }
 
     [Required]

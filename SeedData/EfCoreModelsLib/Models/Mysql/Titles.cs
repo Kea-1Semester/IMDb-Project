@@ -15,6 +15,8 @@ public partial class Titles
 {
     [Key]
     [Column("title_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid TitleId { get; set; }
 
     [Required]

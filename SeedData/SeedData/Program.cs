@@ -1,5 +1,6 @@
 ﻿using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using SeedData.DbConnection;
 using SeedData.Handlers;
 using SeedData.Handlers.MongoDb;
@@ -12,7 +13,7 @@ internal static class Program
     {
         Env.TraversePath().Load();
         await SeedData();
-         await TitleMongoDbMapper.MigrateToMongoDb(40000, 4);
+        await TitleMongoDbMapper.MigrateToMongoDb(40000, 4);
         //await MigrateToNeo4J();
     }
 
@@ -46,12 +47,27 @@ internal static class Program
                 var sqlFile = Path.Combine(dataRoot, "mysqldump.sql");
                 Console.WriteLine($"Data Root: {dataRoot}");
 
+
                 await context.Database.ExecuteSqlRawAsync(await File.ReadAllTextAsync(sqlFile));
+
+
+                // open file advance folder and execute all sql files except Drop.sql
+                foreach (var file in Directory.GetFiles(Path.Combine(dataRoot, "advance"), "*.sql"))
+                {
+                    if (Path.GetFileName(file) == "Drop.sql")
+                        continue;
+                    Console.WriteLine($"Executing Advanced File: {file}");
+                    await context.Database.ExecuteSqlRawAsync(await File.ReadAllTextAsync(file));
+
+                }
+
                 Console.WriteLine("Seeded Sample Data into MySQL Database.");
             }
             else
             {
                 var dataFolder = Path.Combine(projectRoot!, "data");
+                var mysqlFolder = Path.Combine(projectRoot!, "mysql");
+
                 var titleBasicPath = Path.Combine(dataFolder, "title.basics.tsv");
                 var titleRatingsPath = Path.Combine(dataFolder, "title.ratings.tsv");
                 var nameBasicPath = Path.Combine(dataFolder, "name.basics.tsv");
@@ -67,6 +83,24 @@ internal static class Program
                 await AddActor.AddActorToDb(context, titlePrincipalsPath, titleIdsDict, personIdsDict);
                 await AddRating.AddRatingToDb(context, titleRatingsPath, titleIdsDict);
                 await AddAkas.AddAkasToDb(context, titleAkasPath, 50000, titleIdsDict);
+
+                Console.WriteLine("Seeded Sample Data into MySQL Database.");
+
+                foreach (var file in Directory.GetFiles(Path.Combine(mysqlFolder, "advance"), "*.sql"))
+                {
+                    if (Path.GetFileName(file) == "Drop.sql")
+                        continue;
+
+                    Console.WriteLine($"Executing Advanced File: {file}");
+
+                    await context.Database.ExecuteSqlRawAsync(await File.ReadAllTextAsync(file));
+
+                }
+
+
+
+
+
             }
         }
 

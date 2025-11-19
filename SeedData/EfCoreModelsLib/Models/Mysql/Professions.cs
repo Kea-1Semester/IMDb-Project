@@ -14,9 +14,13 @@ public partial class Professions
 {
     [Key]
     [Column("profession_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid ProfessionId { get; set; }
 
     [Column("person_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid PersonId { get; set; }
 
     [Required]

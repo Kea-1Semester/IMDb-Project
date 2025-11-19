@@ -8,26 +8,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreModelsLib.Models.Mysql;
 
-[Index("TitleId", Name = "fk_title_comments_title_basics1_idx")]
-public partial class Comments
+[Keyless]
+public partial class MovieRatingSummary
 {
-    [Key]
-    [Column("comment_id")]
-    [MySqlCharSet("ascii")]
-    [MySqlCollation("ascii_general_ci")]
-    public Guid CommentId { get; set; }
-
     [Column("title_id")]
     [MySqlCharSet("ascii")]
     [MySqlCollation("ascii_general_ci")]
     public Guid TitleId { get; set; }
 
     [Required]
-    [Column("comment")]
+    [Column("primary_title")]
     [StringLength(255)]
-    public string Comment { get; set; }
+    public string PrimaryTitle { get; set; }
 
-    [ForeignKey("TitleId")]
-    [InverseProperty("Comments")]
-    public virtual Titles Title { get; set; }
+    [Required]
+    [Column("original_title")]
+    [StringLength(255)]
+    public string OriginalTitle { get; set; }
+
+    [Column("start_year")]
+    public int StartYear { get; set; }
+
+    [Column("average_rating")]
+    public double AverageRating { get; set; }
 }

@@ -14,9 +14,13 @@ public partial class Loggings
 {
     [Key]
     [Column("logging_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid LoggingId { get; set; }
 
     [Column("table_name")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid TableName { get; set; }
 
     [Required]
