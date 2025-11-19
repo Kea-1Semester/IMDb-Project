@@ -90,7 +90,9 @@ internal static class Program
                 {
                     if (Path.GetFileName(file) == "Drop.sql")
                         continue;
+
                     Console.WriteLine($"Executing Advanced File: {file}");
+
                     await context.Database.ExecuteSqlRawAsync(await File.ReadAllTextAsync(file));
 
                 }
