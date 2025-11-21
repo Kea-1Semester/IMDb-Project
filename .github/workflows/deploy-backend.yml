@@ -13,7 +13,7 @@ jobs:
     environment: secrets
     steps:
       - name: Deploy Backend via Deploy Hook
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/code/api'
+        if: github.ref == 'refs/heads/main'
         env:
           BREZOR_BACKEND_DEPLOY_HOOK: ${{ secrets.BREZOR_BACKEND_DEPLOY_HOOK }}
         run: |
