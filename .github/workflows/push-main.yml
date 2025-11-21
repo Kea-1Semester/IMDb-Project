@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - code/api
 
 jobs:
   test:
@@ -23,6 +24,14 @@ jobs:
   #   permissions:
   #     contents: read
   #     packages: write
+
+  deploy-backend:
+    name: CI Docker Build and Push GraphQL Docker Image
+    needs: test
+    uses: ./.github/workflows/ci-docker-builder-graphql.yml
+    permissions:
+      contents: read
+      packages: write
 
   deploy-frontend:
     name: Deploy Frontend Application
