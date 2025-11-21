@@ -14,6 +14,15 @@ services:
       VITE_API_URL: http://localhost:5000
       CHOKIDAR_USEPOLLING: "true" # Enables file watching in Docker on some systems
 
+  # -- Backend Service for Development Environment --
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: GraphQL/Dockerfile
+    ports:
+      - "5000:8080"
+
   seed_data:
     container_name: seeddata
     build:
