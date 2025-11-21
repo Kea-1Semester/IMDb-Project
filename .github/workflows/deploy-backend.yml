@@ -1,0 +1,20 @@
+name: Deploy Backend Workflow
+
+on:
+  workflow_call:
+    secrets:
+      BREZOR_BACKEND_DEPLOY_HOOK:
+        required: true
+
+jobs:
+  deploy-backend:
+    name: Deploy Backend Application
+    runs-on: ubuntu-latest
+    environment: secrets
+    steps:
+      - name: Deploy Backend via Deploy Hook
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/code/api'
+        env:
+          BREZOR_BACKEND_DEPLOY_HOOK: ${{ secrets.BREZOR_BACKEND_DEPLOY_HOOK }}
+        run: |
+          curl "$BREZOR_BACKEND_DEPLOY_HOOK"
