@@ -1,3 +1,5 @@
+using HotChocolate.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -17,7 +19,10 @@ builder.AddGraphQL()
 
 var app = builder.Build();
 
-app.MapGraphQL();
+app.MapGraphQL().WithOptions(new GraphQLServerOptions()
+{
+       EnableGetRequests = false
+});
 
 app.UseCors();
 
