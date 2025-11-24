@@ -1,9 +1,12 @@
-name: Merge to Main Workflow
+name: Merge to Main Workflow - Frontend
 
 on:
   push:
     branches:
       - main
+    paths:
+      - "frontend/**"
+      - ".github/workflows/push-main-frontend.yml"
 
 jobs:
   test:
@@ -23,21 +26,6 @@ jobs:
   #   permissions:
   #     contents: read
   #     packages: write
-
-  build-backend-image:
-    name: CI Docker Build and Push GraphQL Docker Image
-    needs: test
-    uses: ./.github/workflows/ci-docker-builder-graphql.yml
-    permissions:
-      contents: read
-      packages: write
-
-  deploy-backend:
-    name: Deploy Backend Application
-    needs: build-backend-image
-    uses: ./.github/workflows/deploy-backend.yml
-    secrets:
-      BREZOR_BACKEND_DEPLOY_HOOK: ${{ secrets.BREZOR_BACKEND_DEPLOY_HOOK }}
 
   deploy-frontend:
     name: Deploy Frontend Application
