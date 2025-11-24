@@ -1,0 +1,43 @@
+name: Merge to Main Workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+      - ".github/workflows/push-main-backend.yml"
+
+jobs:
+  test:
+    name: Just a Test Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Run a Simple Command
+        run: echo "This is a test job for push main."
+
+  # ci-docker-template:
+  #   name: CI Docker Build and Push Docker Image
+  #   needs: test
+  #   uses: ./.github/workflows/ci-docker-template.yml
+  #   permissions:
+  #     contents: read
+  #     packages: write
+
+  build-backend-image:
+    name: CI Docker Build and Push GraphQL Docker Image
+    needs: test
+    uses: ./.github/workflows/ci-docker-builder-graphql.yml
+    permissions:
+      contents: read
+      packages: write
+
+  deploy-backend:
+    name: Deploy Backend Application
+    needs: build-backend-image
+    uses: ./.github/workflows/deploy-backend.yml
+    secrets:
+      BREZOR_BACKEND_DEPLOY_HOOK: ${{ secrets.BREZOR_BACKEND_DEPLOY_HOOK }}
