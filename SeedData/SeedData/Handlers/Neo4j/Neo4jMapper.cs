@@ -42,6 +42,20 @@ namespace SeedData.Handlers.Neo4j
                 = Enumerable.Empty<TypesEntity>();
             public IEnumerable<AliasesEntity> Aliases { get; init; }
                 = Enumerable.Empty<AliasesEntity>();
+            public IEnumerable<TitlesEntity> Titles { get; init; }
+                = Enumerable.Empty<TitlesEntity>();
+            public IEnumerable<GenresEntity> Genres { get; init; }
+                = Enumerable.Empty<GenresEntity>();
+            public IEnumerable<RatingsEntity> Ratings { get; init; }
+                = Enumerable.Empty<RatingsEntity>();
+            public IEnumerable<PersonsEntity> Persons { get; init; }
+                = Enumerable.Empty<PersonsEntity>();
+            public IEnumerable<ProfessionsEntity> Professions { get; init; }
+                = Enumerable.Empty<ProfessionsEntity>();
+            public IEnumerable<CommentsEntity> Comments { get; init; }
+                = Enumerable.Empty<CommentsEntity>();
+            public IEnumerable<LogsEntity> Logs { get; init; }
+                = Enumerable.Empty<LogsEntity>();
         }
 
         public static async Task UpsertAll(UpsertPayload data, int batchSize = 1000)
@@ -51,7 +65,14 @@ namespace SeedData.Handlers.Neo4j
                 // Kør kun hvis der er data i den pågældende samling
                 if (data.Attributes.Any()) await Neo4jAttributesMapper.UpsertAttributes(session, data.Attributes, batchSize);
                 if (data.Types.Any())      await Neo4jTypesMapper.UpsertTypes(session, data.Types, batchSize);
-                if (data.Aliases.Any())    await Neo4jAliasesMapper.UpsertAliases(session, data.Aliases, batchSize);
+                if (data.Aliases.Any()) await Neo4jAliasesMapper.UpsertAliases(session, data.Aliases, batchSize);
+                if (data.Titles.Any()) await Neo4jTitlesMapper.UpsertTitles(session, data.Titles, batchSize);
+                if (data.Genres.Any()) await Neo4jGenresMapper.UpsertGenres(session, data.Genres, batchSize);
+                if (data.Ratings.Any()) await Neo4jRatingsMapper.UpsertRatings(session, data.Ratings, batchSize);
+                if (data.Persons.Any()) await Neo4jPersonsMapper.UpsertPersons(session, data.Persons, batchSize);
+                if (data.Professions.Any()) await Neo4jProfessionsMapper.UpsertProfessions(session, data.Professions, batchSize);
+                if (data.Comments.Any()) await Neo4jCommentsMapper.UpsertComments(session, data.Comments, batchSize);
+                if (data.Logs.Any()) await Neo4jLogsMapper.UpsertLogs(session, data.Logs, batchSize);
 
                 // Tilføj flere linjer her når du får nye entiteter
             });
