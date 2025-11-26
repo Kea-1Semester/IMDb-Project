@@ -1,4 +1,4 @@
-namespace EfCoreModelsLib.models.Neo4J.Neo4JModels
+namespace EfCoreModelsLib.Models.Neo4J.Neo4JModels
 {
     public partial class CharactersEntity
     {
