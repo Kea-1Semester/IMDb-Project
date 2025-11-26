@@ -169,11 +169,15 @@ internal static class Program
         titles_Serie.Episodes.Add(titles_Episode);
 
         person_1.KnownFor.Add(titles);
-        person_2.Wrote.Add(titles);
-        person_2.Directed.Add(titles);
 
-        titles.WrittenBy.Add(person_2);
-        titles.DirectedBy.Add(person_2);
+        titles.Writer.Add(person_2);
+        titles.Director.Add(person_2);
+        titles.Actor.Add(new ActedInRelationship
+        {
+            Person = person_1,
+            Title = titles,
+            Role = "Aquaman"
+        });
 
         // 3) Kør ALT i én call
         var payload = new Neo4jMapper.UpsertPayload
