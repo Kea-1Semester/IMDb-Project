@@ -23,41 +23,50 @@ namespace SeedData.Handlers.Neo4j
 
                 FOREACH (epId IN row.EpisodeIds |
                     MERGE (ep:Titles { TitleId: epId })
-                    MERGE (ti)-[:EPISODES]->(ep))
+                    MERGE (ti)-[:EPISODES]->(ep)
+                )
 
                 FOREACH (seriesId IN row.SeriesIds |
                     MERGE (s:Titles { TitleId: seriesId })
-                    MERGE (ti)-[:SERIES]->(s))
-
-                FOREACH (dirId IN row.DirectorIds |
-                    MERGE (p:Persons { PersonId: dirId })
-                    MERGE (ti)-[:DIRECTED_BY]->(p))
-
-                FOREACH (writerId IN row.WriterIds |
-                    MERGE (p:Persons { PersonId: writerId })
-                    MERGE (ti)-[:WRITTEN_BY]->(p))
+                    MERGE (ti)-[:SERIES]->(s)
+                )
 
                 FOREACH (genresId IN row.GenreIds |
                     MERGE (g:Genres { GenreId: genresId })
-                    MERGE (ti)-[:HAS_GENRES]->(g))
+                    MERGE (ti)-[:HAS_GENRES]->(g)
+                )
 
                 FOREACH (ratingId IN row.RatingIds |
                     MERGE (r:Ratings { RatingId: ratingId })
-                    MERGE (ti)-[:HAS_RATING]->(r))
-
-                FOREACH (aliasId IN row.AliasIds |
-                    MERGE (al:Aliases { AliasId: aliasId })
-                    MERGE (ti)-[:HAS_ALIASES]->(al))
+                    MERGE (ti)-[:HAS_RATING]->(r)
+                )
 
                 FOREACH (commentId IN row.CommentIds |
                     MERGE (c:Comments { CommentId: commentId })
-                    MERGE (ti)-[:HAS_COMMENTS]->(c))
+                    MERGE (ti)-[:HAS_COMMENTS]->(c)
+                )
+
+                FOREACH (aliasId IN row.AliasIds |
+                    MERGE (al:Aliases { AliasId: aliasId })
+                    MERGE (ti)-[:HAS_ALIASES]->(al)
+                )
                 
-                FOREACH (personId IN row.PlayedAsByIds |
-                    MERGE (p:Persons { PersonId: personId })
-                    MERGE (ti)-[:PLAYED_AS_BY]->(p)
-                    SET ti.PlayedAsByIds = row.PlayedAsByIds
-            )";
+                FOREACH (actor IN row.PlayedAsBy |
+                    MERGE (p:Persons { PersonId: actor.personId })
+                    MERGE (ti)-[r:ACTED]->(p)
+                    SET r.role = actor.role
+                )
+
+                FOREACH (dirId IN row.DirectorIds |
+                    MERGE (p:Persons { PersonId: dirId })
+                    MERGE (ti)-[:DIRECTOR]->(p)
+                )
+
+                FOREACH (writerId IN row.WriterIds |
+                    MERGE (p:Persons { PersonId: writerId })
+                    MERGE (ti)-[:WRITER]->(p)
+                )
+            ";
 
             foreach (var chunk in Neo4jMapper.Chunk(items, batchSize))
             {
@@ -71,23 +80,54 @@ namespace SeedData.Handlers.Neo4j
                     ti.StartYear,
                     ti.EndYear,
                     ti.RuntimeMinutes,
-                    EpisodeIds = ti.Episodes?.Select(x => x.TitleId.ToString()).Distinct().ToArray()
-                                 ?? Array.Empty<string>(),
-                    SeriesIds = ti.Series != null ? new[] { ti.Series.TitleId.ToString() } : Array.Empty<string>(),
-                    DirectorIds = ti.DirectedBy?.Select(x => x.PersonId.ToString()).Distinct().ToArray()
-                                  ?? Array.Empty<string>(),
-                    WriterIds = ti.WrittenBy?.Select(x => x.PersonId.ToString()).Distinct().ToArray()
-                                ?? Array.Empty<string>(),
-                    GenreIds = ti.HasGenres?.Select(x => x.GenreId.ToString()).Distinct().ToArray()
-                               ?? Array.Empty<string>(),
-                    RatingIds = ti.HasRating != null ? new[] { ti.HasRating.RatingId.ToString() } : Array.Empty<string>(),
-                    AliasIds = ti.HasAliases?.Select(x => x.AliasId.ToString()).Distinct().ToArray()
-                               ?? Array.Empty<string>(),
-                    CommentIds = ti.HasComments?.Select(x => x.CommentId.ToString()).Distinct().ToArray()
-                                 ?? Array.Empty<string>(),
-                    PlayedAsBy = ti.PlayedAsBy?
-                    .Select(x => new { personId = x.PlayedBy.ToString(), role = x.CharacterName }).Distinct().ToArray()
-                                    ?? Array.Empty<object>()
+
+                    // Title-To-Title Relationships
+                    EpisodeIds = ti.Episodes?
+                        .Select(x => x.TitleId.ToString())
+                        .Distinct()
+                        .ToArray() ?? Array.Empty<string>(),
+
+                    SeriesIds = ti.Series != null 
+                        ? new[] { ti.Series.TitleId.ToString() } 
+                        : Array.Empty<string>(),
+
+
+                    // Genres, Ratings, Comments, Aliases Relationships
+                    GenreIds = ti.HasGenres?
+                        .Select(x => x.GenreId.ToString())
+                        .Distinct()
+                        .ToArray() ?? Array.Empty<string>(),
+
+                    RatingIds = ti.HasRating != null 
+                        ? new[] { ti.HasRating.RatingId.ToString() } 
+                        : Array.Empty<string>(),
+
+                    CommentIds = ti.HasComments?
+                        .Select(x => x.CommentId.ToString())
+                        .Distinct()
+                        .ToArray() ?? Array.Empty<string>(),
+
+                    AliasIds = ti.HasAliases?
+                        .Select(x => x.AliasId.ToString())
+                        .Distinct()
+                        .ToArray() ?? Array.Empty<string>(),
+                    
+
+                    // Persons Relationships 
+                    WriterIds = ti.Writer?
+                        .Select(x => x.PersonId.ToString())
+                        .Distinct()
+                        .ToArray() ?? Array.Empty<string>(),
+
+                    DirectorIds = ti.Director?
+                        .Select(x => x.PersonId.ToString())
+                        .Distinct()
+                        .ToArray() ?? Array.Empty<string>(),
+
+                    PlayedAsBy = ti.Actor?
+                        .Select(x => new { personId = x.Person.PersonId.ToString(), role = x.Role })
+                        .Distinct()
+                        .ToArray() ?? Array.Empty<object>()
 
                 }).ToArray();
 

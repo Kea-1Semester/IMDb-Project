@@ -16,13 +16,12 @@ namespace EfCoreModelsLib.Models.Neo4J.Neo4JModels
         public TitlesEntity? Series { get; set; }
 
         // Persons Relationships
-        public List<PersonsEntity> DirectedBy { get; set; } = new();
-        public List<PersonsEntity> WrittenBy { get; set; } = new();
-        public List<CharactersEntity> PlayedAsBy { get; set; } = new();
+        public List<PersonsEntity> Director { get; set; } = new();
+        public List<PersonsEntity> Writer { get; set; } = new();
+        public List<ActedInRelationship> Actor { get; set; } = new();
 
         // Genres Relationships
         public List<GenresEntity> HasGenres { get; set; } = new();
-
 
         // Ratings, Aliases, Comments Relationships
         public RatingsEntity? HasRating { get; set; }

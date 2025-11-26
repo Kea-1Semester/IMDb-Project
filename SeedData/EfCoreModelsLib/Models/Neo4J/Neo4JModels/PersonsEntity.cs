@@ -11,11 +11,8 @@ namespace EfCoreModelsLib.Models.Neo4J.Neo4JModels
 
         // Professions Relationships
         public List<ProfessionsEntity> HasProfessions { get; set; } = new();
-
+        
         // Titles Relationships
         public List<TitlesEntity> KnownFor { get; set; } = new();
-        public List<TitlesEntity> Directed { get; set; } = new();
-        public List<TitlesEntity> Wrote { get; set; } = new();
-        public List<CharactersEntity> ActedInAs { get; set; } = new();
     }
 }
