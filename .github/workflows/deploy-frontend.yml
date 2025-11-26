@@ -1,4 +1,4 @@
-name: Deply Frontend Workflow
+name: Deploy Frontend Workflow
 
 on:
   workflow_call:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: secrets
     steps:
-      - name: Deploy Frontend
+      - name: Deploy Frontend via Deploy Hook
         if: github.ref == 'refs/heads/main'
         env:
           BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}

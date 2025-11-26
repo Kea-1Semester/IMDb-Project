@@ -11,7 +11,7 @@ namespace SeedData
         {
             Env.TraversePath().Load();
 
-            var connectionString = Env.GetString("ConnectionStringDocker");
+            var connectionString = Environment.GetEnvironmentVariable("MySqlConnectionString");
 
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new InvalidOperationException("Connection string is not set in environment variables.");

@@ -86,6 +86,14 @@
       {
          "Name": "Writers",
          "ObjectType": 0
+      },
+      {
+         "Name": "movie_rating_summary",
+         "ObjectType": 3
+      },
+      {
+         "Name": "titles_view",
+         "ObjectType": 3
       }
    ],
    "UiHint": null,

@@ -1,5 +1,5 @@
 services:
-  #-- Frontend Service for Development Environment --
+  # -- Frontend Service for Development Environment --
   frontend:
     container_name: frontend
     build:
@@ -12,6 +12,36 @@ services:
       - "3000:3000"
     environment:
       VITE_API_URL: http://localhost:5000
+      CHOKIDAR_USEPOLLING: "true" # Enables file watching in Docker on some systems
+
+  # -- Backend Service for Development Environment --
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: GraphQL/Dockerfile
+    ports:
+      - "5000:8080"
+
+  seed_data:
+    container_name: seeddata
+    build:
+      context: ./SeedData
+      dockerfile: SeedData/Dockerfile
+    depends_on:
+      - mysql
+      - mongodb1
+      - mongodb2
+      - mongodb3
+      - neo4j
+    environment:
+      SEED_SAMPLE_DATA: true
+      MySqlConnectionString: server=mysql;port=3306;database=imdb;user=root;password=admin;default command timeout=600
+      MongoDbConnectionString: mongodb://mongodb1:27017?replicaSet=rs0
+      MongoDbDatabase: imdb
+      DATA_ROOT: /mySql
+    volumes:
+      - ./SeedData/SeedData/mySql:/mySql
 
   #-- MySQL Service for Development Environment --
   mysql:
@@ -24,15 +54,49 @@ services:
       - "3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   #-- MongoDB Service for Development Environment --
-  mongodb:
+  mongodb1:
     image: mongo:8.0
-    container_name: mongodb
+    container_name: mongodb1
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
     ports:
-      - "27018:27017"
+      - 27017:27017
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb1:27017',priority:1},{_id:1,host:'mongodb2:27017',priority:0.5},{_id:2,host:'mongodb3:27017',priority:0.5}]}) }" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
     volumes:
-      - mongodb-data:/data/db
+      - "mongodb1_data:/data/db"
+      - "mongodb1_config:/data/configdb"
+
+  mongodb2:
+    image: mongo:8.0
+    container_name: mongodb2
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    ports:
+      - 27018:27017
+    volumes:
+      - "mongodb2_data:/data/db"
+      - "mongodb2_config:/data/configdb"
+
+  mongodb3:
+    image: mongo:8.0
+    container_name: mongodb3
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    ports:
+      - 27019:27017
+    volumes:
+      - "mongodb3_data:/data/db"
+      - "mongodb3_config:/data/configdb"
 
   #-- Neo4j Service for Development Environment --
   neo4j:
@@ -48,5 +112,11 @@ services:
 
 volumes:
   mysql-data:
-  mongodb-data:
   neo4j-data:
+  seeddata-data:
+  mongodb1_data:
+  mongodb2_data:
+  mongodb3_data:
+  mongodb1_config:
+  mongodb2_config:
+  mongodb3_config:

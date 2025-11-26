@@ -13,9 +13,13 @@ public partial class Comments
 {
     [Key]
     [Column("comment_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid CommentId { get; set; }
 
     [Column("title_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid TitleId { get; set; }
 
     [Required]
@@ -26,8 +30,4 @@ public partial class Comments
     [ForeignKey("TitleId")]
     [InverseProperty("Comments")]
     public virtual Titles Title { get; set; }
-
-    // Consider adding userId and CreateAt
-    // public Guid UserId { get; set; }
-    // public DateTime CreatedAt { get; set; }
 }

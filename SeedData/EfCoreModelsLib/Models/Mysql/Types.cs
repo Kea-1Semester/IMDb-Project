@@ -13,6 +13,8 @@ public partial class Types
 {
     [Key]
     [Column("type_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid TypeId { get; set; }
 
     [Required]

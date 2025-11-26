@@ -1,5 +1,4 @@
-﻿using DotNetEnv;
-using EfCoreModelsLib.Models.MongoDb;
+﻿using EfCoreModelsLib.Models.MongoDb;
 using EfCoreModelsLib.Models.MongoDb.Handler;
 using EfCoreModelsLib.Models.MongoDb.SchemaValidator;
 using EfCoreModelsLib.Models.MongoDb.SupportClasses;
@@ -98,9 +97,7 @@ public static class TitleMongoDbMapper
 
     private static async Task<List<TitleMongoDb>> ListTitleMongoData(ImdbContext imdbContext, int pageSize, int page)
     {
-
         List<Titles> alTitlesList = new();
-
         for (var i = 0; i < page; i++)
         {
             var titlesFromMysql = await imdbContext.Titles
@@ -133,32 +130,7 @@ public static class TitleMongoDbMapper
 
 
         }
-        /*var titlesList = alTitlesList
-            .Where(t =>
-                t.Aliases.Any() &&
-                t.Ratings != null &&
-                t.Actors.Any() &&
-                t.Directors.Any() &&
-                t.Writers.Any()
-            )
-            .ToList();
-
-        var listWithEpisodes = alTitlesList
-            .Where(t =>
-                (
-                    t.EpisodesTitleIdParentNavigation.Count != 0 ||
-                    t.EpisodesTitleIdChildNavigation.Count != 0
-                )
-            )
-            .ToList();*/
-
         return alTitlesList.Select(MapTitleMongoDb).DistinctBy(t => t.TitleId).ToList();
-
-        /*// combine both lists
-        return titlesList.Union(listWithEpisodes).Distinct()
-            .Select(MapTitleMongoDb)
-            .DistinctBy(t => t.TitleId)
-            .ToList();*/
     }
 
     /// <summary>
@@ -181,20 +153,21 @@ public static class TitleMongoDbMapper
     public static async Task MigrateToMongoDb(int pageSize = 1000, int page = 0, string? connectionString = null)
     {
         var mongoDbData = new List<TitleMongoDb>();
+        var mongoDbPersonData = new List<PersonsMongoDb>();
 
 
         // 1. Read from MySQL and join data that match the MongoDB Schema
-        await using var mysqlContext = MySqlSettings.MySqlConnectionToGetData(
-            connectionString ?? "ConnectionString");
+        await using var mysqlContext = MySqlSettings.MySqlConnectionToGetData();
+
         await using var contextMongo = MongoDbSettings.MongoDbConnection();
 
 
         await contextMongo.Database.EnsureDeletedAsync();
 
         mongoDbData.AddRange(await ListTitleMongoData(mysqlContext, pageSize: pageSize, page: page));
+        mongoDbPersonData.AddRange(await ListPersonsMongoData(mysqlContext, pageSize: pageSize, page: page));
 
-        // 2. Validate / Create MongoDB and Collections
-        // Validate Titles Collection Schema
+        // 2. Validate / Create MongoDB and Collections with indexes
 
         var compoundIndex = new List<BsonDocument>
         {
@@ -213,20 +186,27 @@ public static class TitleMongoDbMapper
         };
 
         await MongoSchemaInitializer<TitleMongoDb>.EnsureCollectionSchema(
-            Env.GetString("MongoDbConnectionStr"),
-            databaseName: Env.GetString("MongoDbDatabase"),
+            connectionString: Environment.GetEnvironmentVariable("MongoDbConnectionString")!,
+            databaseName: Environment.GetEnvironmentVariable("MongoDbDatabase")!,
             nameof(SchemaName.Titles),
             TitlesValidator.GetSchema(),
             compoundIndex,
             singleFieldIndex
         );
 
+        var singleFieldIndexPerson = new BsonDocument
+        {
+            { "name", 1 }
+        };
+
         //Validate Persons Collection Schema
-        //MongoSchemaInitializer.EnsureCollectionSchema(
-        //    Env.GetString("MongoDbConnectionStr"),
-        //    "imdb-mongo-db",
-        //    "Persons",
-        //    PersonsValidator.GetSchema());
+        await MongoSchemaInitializer<PersonsMongoDb>.EnsureCollectionSchema(
+           Environment.GetEnvironmentVariable("MongoDbConnectionString")!,
+           databaseName: Environment.GetEnvironmentVariable("MongoDbDatabase")!,
+           nameof(SchemaName.Persons),
+            PersonValidator.GetSchema(),
+           singleFieldIndex: singleFieldIndexPerson
+           );
 
 
         Console.WriteLine("Ensuring the MongoDB database exists...");
@@ -256,11 +236,79 @@ public static class TitleMongoDbMapper
             await contextMongo.SaveChangesAsync();
             await Task.Delay(2000);
 
-            Console.WriteLine($"Inserted {Math.Min((i + 1) * batchSize, mongoDbData.Count)} of {mongoDbData.Count} titles into MongoDB...");
+            Console.WriteLine(
+                $"Inserted {Math.Min((i + 1) * batchSize, mongoDbData.Count)} of {mongoDbData.Count} titles into MongoDB...");
+        }
+
+        for (var i = 0; i < mongoDbPersonData.Count; i++)
+        {
+            var batch = mongoDbPersonData
+                .Skip(i * batchSize)
+                .Take(batchSize).ToList();
+            if (batch.Count == 0)
+                break;
+            await contextMongo.Persons.AddRangeAsync(batch);
+            await contextMongo.SaveChangesAsync();
+            await Task.Delay(2000);
+
+            Console.WriteLine(
+                $"Inserted {Math.Min((i + 1) * batchSize, mongoDbPersonData.Count)} of {mongoDbPersonData.Count} persons into MongoDB...");
         }
 
 
 
+    }
+
+    private static PersonsMongoDb MapPersonsMongoDb(Persons persons)
+    {
+        return new PersonsMongoDb
+        {
+            Id = ObjectId.GenerateNewId(),
+            Guid = persons.PersonId,
+            Name = persons.Name,
+            BirthYear = persons.BirthYear,
+            EndYear = persons.EndYear,
+            Professions = persons.Professions?
+                .Where(p => p != null && !string.IsNullOrWhiteSpace(p.Profession))
+                .Select(p => p.Profession)
+                .ToList() ?? [],
+            KnownFor = persons.KnownFor?
+                .Where(k => k is { TitlesTitle: not null })
+                .Select(k => new KnownForTitle
+                {
+                    TitleId = k.TitlesTitleId,
+                    TitleName = k.TitlesTitle!.PrimaryTitle
+                })
+                .ToList() ?? []
+        };
+    }
+
+    private static async Task<List<PersonsMongoDb>> ListPersonsMongoData(ImdbContext imdbContext, int pageSize, int page)
+    {
+        List<Persons> allPersonsList = [];
+        for (var i = 0; i < page; i++)
+        {
+            var personsFromMysql = await imdbContext.Persons
+                .Include(p => p.Professions)
+                .Include(p => p.KnownFor)
+                .ThenInclude(k => k.TitlesTitle)
+                .AsNoTracking()
+                .AsSplitQuery()
+                .OrderBy(p => p.PersonId)
+                .ThenBy(p => p.BirthYear)
+                .Skip(i * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+
+            if (personsFromMysql.Count == 0)
+                break;
+
+            allPersonsList.AddRange(personsFromMysql);
+            Console.WriteLine($"Fetched {allPersonsList.Count} persons from MySQL.. page {i + 1}/{page}");
+            await Task.Delay(1000);
+        }
+        return allPersonsList.Select(MapPersonsMongoDb).DistinctBy(p => p.Guid).ToList();
     }
 }
 

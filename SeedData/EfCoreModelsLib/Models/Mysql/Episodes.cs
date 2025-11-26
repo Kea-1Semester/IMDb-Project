@@ -14,12 +14,18 @@ public partial class Episodes
 {
     [Key]
     [Column("episode_id")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid EpisodeId { get; set; }
 
     [Column("title_id_parent")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid TitleIdParent { get; set; }
 
     [Column("title_id_child")]
+    [MySqlCharSet("ascii")]
+    [MySqlCollation("ascii_general_ci")]
     public Guid TitleIdChild { get; set; }
 
     [Column("season_number")]
