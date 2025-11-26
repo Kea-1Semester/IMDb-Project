@@ -76,8 +76,39 @@ internal static class Program
             Environment.GetEnvironmentVariable("NEO4J_PASSWORD")!);
 
         // 2) Eksempeldata (erstat evt. med dine data fra MySQL)
+
+        // Attributes og Types relateret data
         var attrColor = new AttributesEntity { AttributeId = Guid.NewGuid(), Attribute = "Color" };
-        var typeMovie = new TypesEntity       { TypeId = Guid.NewGuid(),     Type      = "movie" };
+        var typeMovie = new TypesEntity { TypeId = Guid.NewGuid(), Type = "movie" };
+
+        //Titles relateret data
+        var genre = new GenresEntity { GenreId = Guid.NewGuid(), Genre = "Comedy" };
+        var rating = new RatingsEntity { RatingId = Guid.NewGuid(), AverageRating = 7.5, NumVotes = 1500 };
+        var Comment = new CommentsEntity { CommentId = Guid.NewGuid(), Comment = "This is a comment" };
+
+        //Persons relateret data
+        var profession_actor = new ProfessionsEntity { ProfessionId = Guid.NewGuid(), Profession = "actor" };
+        var profession_writer = new ProfessionsEntity { ProfessionId = Guid.NewGuid(), Profession = "writer" };
+        var profession_director = new ProfessionsEntity { ProfessionId = Guid.NewGuid(), Profession = "director" };
+
+        // Persons
+        var person_1 = new PersonsEntity
+        {
+            PersonId = Guid.NewGuid(),
+            Name = "John Doe",
+            BirthYear = 1980,
+            EndYear = null,
+            HasProfessions = new() { profession_actor },
+        };
+
+        var person_2 = new PersonsEntity
+        {
+            PersonId = Guid.NewGuid(),
+            Name = "Jane Smith",
+            BirthYear = 1988,
+            EndYear = null,
+            HasProfessions = new() { profession_director, profession_writer },
+        };
 
         var alias = new AliasesEntity
         {
@@ -87,20 +118,80 @@ internal static class Program
             IsOriginalTitle = false,
             Title = "Den danske titel",
             HasAttributes = new() { attrColor },
-            HasTypes      = new() { typeMovie }
+            HasTypes = new() { typeMovie }
         };
+
+        var titles = new TitlesEntity
+        {
+            TitleId = Guid.NewGuid(),
+            TitleType = "movie",
+            PrimaryTitle = "The Primary Title",
+            OriginalTitle = "The Original Title",
+            IsAdult = false,
+            StartYear = 2020,
+            EndYear = 2021,
+            RuntimeMinutes = 120,
+            HasAliases = new() { alias },
+            HasGenres = new() { genre },
+            HasComments = new() { Comment },
+            HasRating = rating,
+        };
+
+        var titles_Serie = new TitlesEntity
+        {
+            TitleId = Guid.NewGuid(),
+            TitleType = "tvSeries",
+            PrimaryTitle = "Another Movie",
+            OriginalTitle = "Another Original Title",
+            IsAdult = false,
+            StartYear = 2021,
+            EndYear = 2022,
+            RuntimeMinutes = null,
+            HasGenres = new() { genre },
+            HasRating = rating,
+        };
+
+        var titles_Episode = new TitlesEntity
+        {
+            TitleId = Guid.NewGuid(),
+            TitleType = "tvEpisode",
+            PrimaryTitle = "Another Movie",
+            OriginalTitle = "Another Original Title",
+            IsAdult = false,
+            StartYear = 2021,
+            EndYear = 2022,
+            RuntimeMinutes = 90,
+            HasGenres = new() { genre },
+            HasRating = rating,
+        };
+        
+        titles_Episode.Series = titles_Serie;
+        titles_Serie.Episodes.Add(titles_Episode);
+
+        person_1.KnownFor.Add(titles);
+        person_2.Wrote.Add(titles);
+        person_2.Directed.Add(titles);
+
+        titles.WrittenBy.Add(person_2);
+        titles.DirectedBy.Add(person_2);
 
         // 3) Kør ALT i én call
         var payload = new Neo4jMapper.UpsertPayload
         {
             Attributes = new[] { attrColor },
-            Types      = new[] { typeMovie },
-            Aliases    = new[] { alias }
+            Types = new[] { typeMovie },
+            Aliases = new[] { alias },
+            Genres = new[] { genre },
+            Titles = new[] { titles, titles_Serie, titles_Episode },
+            Ratings = new[] { rating },
+            Comments = new[] { Comment },
+            Professions = new[] { profession_actor, profession_writer, profession_director },
+            Persons = new[] { person_1, person_2}
         };
 
         await Neo4jMapper.UpsertAll(payload, batchSize: 1000);
 
-        Console.WriteLine("✅ Neo4j upsert complete (Attributes, Types, Aliases).");
+        Console.WriteLine("✅ Neo4j upsert complete.");
     
     }
 }
