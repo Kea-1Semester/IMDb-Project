@@ -17,13 +17,9 @@ internal static class Program
     static async Task Main(string[] args)
     {
         Env.TraversePath().Load();
-        //await SeedData();
-        //ConnectionStringDocker
-        //await TitleMongoDbMapper.MigrateToMongoDb(40000, 100);
-        await MigrateToNeo4J();
         await SeedData();
         await TitleMongoDbMapper.MigrateToMongoDb(40000, 4);
-        //await MigrateToNeo4J();
+        await MigrateToNeo4J();
     }
 
     private static async Task SeedData()
