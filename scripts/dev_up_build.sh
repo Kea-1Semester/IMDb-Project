@@ -20,4 +20,4 @@ echo "Navigating to root..."
 cd .. || exit 1
 
 # Start Docker containers in development mode
-docker-compose -f docker-compose.dev.yml up -d
+docker-compose -f docker-compose.dev.yml up -d --build
