@@ -28,17 +28,17 @@ The application aims to create an engaging user experience while ensuring robust
 The data entry will require the user to input information according to the following template:
 
 - Title
-  - TitleType: Max. 100 char and dash allowed
-  - PrimaryTitle: Max. 255 char and dash allowed
-  - OriginalTitle: Max. 255 char and dash allowed
-  - StartYear: Max. 4 numeric digits positive
-  - EndYear: Max. 4 numeric digits positive or ``NULL``
-  - RuntimeMinutes: Max. 1440 minutes positive or ``NULL``
+  - TitleType: Min. 5 Max. 25 char and does not allow any special characters
+  - PrimaryTitle: Min. 5, Max. 255 char and dash allowed
+  - OriginalTitle: Min. 5, Max. 255 char and dash allowed
+  - StartYear: Max. 4 numeric digits positive and Range 1888-newest year
+  - EndYear: 4 numeric digits positive or ``NULL`` and greater than StartYear
+  - RuntimeMinutes: Min. 60 Min Max. 1440 minutes positive or ``NULL``
 - Genres
-  - Genre: Max. 100 char and not allow any special characters
+  - Genre: Min. 6 Max. 50 char and does not allow any special characters
 - Episodes
-  - EpisodeNumber: Max. three numeric digits positive between 01 and 999
-  - SeasonNumber: Max. 2 numeric digits positive between 01 and 99
+  - EpisodeNumber: Min. 1 Max. three numeric digits positive between 1 and 999 and does not allow 0
+  - SeasonNumber: Min. 1 Max. 2 numeric digits positive between 1 and 99
 - Aliases
   - Region: Max. 100 char and not allow any special characters
   - Language: Max. 5 char and dash allowed
