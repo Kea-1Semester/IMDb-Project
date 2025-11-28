@@ -28,7 +28,7 @@ internal static class Program
 
 
         // MySqlConnection default connection is connected to the cloud sql instance
-        await using (var context = MySqlSettings.MySqlConnection("ConnectionStringAiven"))
+        await using (var context = MySqlSettings.MySqlConnection())
         {
             Console.WriteLine("Ensuring the database exists...");
 
@@ -212,7 +212,7 @@ internal static class Program
             HasGenres = new() { genre },
             HasRating = rating,
         };
-        
+
         titles_Episode.Series = titles_Serie;
         titles_Serie.Episodes.Add(titles_Episode);
 
@@ -238,13 +238,13 @@ internal static class Program
             Ratings = new[] { rating },
             Comments = new[] { Comment },
             Professions = new[] { profession_actor, profession_writer, profession_director },
-            Persons = new[] { person_1, person_2}
+            Persons = new[] { person_1, person_2 }
         };
 
         await Neo4jMapper.UpsertAll(payload, batchSize: 1000);
 
         Console.WriteLine("✅ Neo4j upsert complete.");
-    
+
     }
 }
 
