@@ -27,3 +27,9 @@ cd ../SeedData || exit 1
 
 # Run dotnet build
 dotnet build
+
+# Navigate to backend project
+cd ../backend || exit 1
+
+# Run dotnet build
+dotnet build
