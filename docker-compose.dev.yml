@@ -18,8 +18,8 @@ services:
   backend:
     container_name: backend
     build:
-      context: ./backend
-      dockerfile: GraphQL/Dockerfile
+      context: .
+      dockerfile: backend/GraphQL/Dockerfile
     ports:
       - "5000:8080"
     environment:
@@ -28,8 +28,8 @@ services:
   seed_data:
     container_name: seeddata
     build:
-      context: ./SeedData
-      dockerfile: SeedData/Dockerfile
+      context: .
+      dockerfile: SeedData/SeedData/Dockerfile
     depends_on:
       - mysql
       - mongodb1

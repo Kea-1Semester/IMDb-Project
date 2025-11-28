@@ -11,11 +11,16 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["GraphQL/GraphQL.csproj", "GraphQL/"]
-COPY ["EfCoreModelsLib/EfCoreModelsLib.csproj", "EfCoreModelsLib/"]
-RUN dotnet restore "./GraphQL/GraphQL.csproj"
-COPY . .
-WORKDIR "/src/GraphQL"
+
+COPY ["backend/GraphQL/GraphQL.csproj", "backend/GraphQL/"]
+COPY ["ef-models/EfCoreModelsLib/EfCoreModelsLib.csproj", "models/EfCoreModelsLib/"]
+
+RUN dotnet restore "backend/GraphQL/GraphQL.csproj"
+
+COPY ["backend/GraphQL", "backend/GraphQL"]
+COPY ["ef-models/EfCoreModelsLib", "ef-models/EfCoreModelsLib"]
+
+WORKDIR "/src/backend/GraphQL"
 RUN dotnet build "./GraphQL.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
