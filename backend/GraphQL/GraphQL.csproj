@@ -13,6 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.11" />
     <PackageReference Include="HotChocolate.AspNetCore.CommandLine" Version="15.1.11" />
     <PackageReference Include="HotChocolate.Types.Analyzers" Version="15.1.11">

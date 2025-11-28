@@ -22,6 +22,8 @@ services:
       dockerfile: GraphQL/Dockerfile
     ports:
       - "5000:8080"
+    environment:
+      MySqlConnectionString: server=mysql;port=3306;database=imdb;user=root;password=admin;default command timeout=600
 
   seed_data:
     container_name: seeddata

@@ -12,6 +12,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["GraphQL/GraphQL.csproj", "GraphQL/"]
+COPY ["EfCoreModelsLib/EfCoreModelsLib.csproj", "EfCoreModelsLib/"]
 RUN dotnet restore "./GraphQL/GraphQL.csproj"
 COPY . .
 WORKDIR "/src/GraphQL"
