@@ -35,14 +35,14 @@ The data entry will require the user to input information according to the follo
   - EndYear: 4 numeric digits positive or ``NULL`` and greater than StartYear
   - RuntimeMinutes: Min. 60 Min Max. 1440 minutes positive or ``NULL``
 - Genres
-  - Genre: Min. 6 Max. 50 char and does not allow any special characters
+  - Genre: Min. 3 Max. 50 char and dash allowed
 - Episodes
   - EpisodeNumber: Min. 1 Max. three numeric digits positive between 1 and 999 and does not allow 0
   - SeasonNumber: Min. 1 Max. 2 numeric digits positive between 1 and 99
 - Aliases
-  - Region: Max. 100 char and not allow any special characters
-  - Language: Max. 5 char and dash allowed
-  - Title: Max. 255 char and dash allowed
+  - Region: Min. 2 char Max. 100 char and not allow any special characters
+  - Language: Min. 2 char Max. 5 char and dash allowed
+  - Title: Min. 5 char and Max. 255 char and dash allowed
 - Attributes
   - Attribute: Max. 100 char and does not allow any special characters
 - Comments
@@ -55,9 +55,9 @@ The data entry will require the user to input information according to the follo
 - Professions
   - Profession: Max. 45 char and does not allow any special characters
 - Persons
-  - Name: Max. 255 char and does not allow any special characters
+  - Name: Min. 2 and Max. 100 char and does not allow any special characters
   - BirthYear: Max. 4 numeric digits positive
-  - EndYear: Max. 4 numeric digits positive or ``NULL``
+  - EndYear: Max. 4 numeric digits positive or ``NULL`` and greater than BirthYear
 
 ## Navigation
 
