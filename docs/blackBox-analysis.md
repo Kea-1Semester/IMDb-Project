@@ -7,51 +7,58 @@
 
 ### Title Test Cases
 
-| Partition Type           | Partition                         | Test Case Values                     |
-|--------------------------|-----------------------------------|--------------------------------------|
-| Equivalence Partitioning | Valid TitleType                   | 6-char, 7-char, 24-char              |
-| Equivalence Partitioning | Invalid TitleType                 | movi, 50-char                        |
-| Boundary Value Analysis  | TitleType Valid Lower Bound       | 5-char                               |
-|                          | TitleType Valid Upper Bound       | 25-char                              |
-|                          | TitleType InValid Lower Bound     | 1-char, 4-char                       |
-|                          | TitleType Invalid Upper Bound     | 26-char                              |
-| Edges                    | TitleType edges cases             | NULL, "", " ", #asbas-char etc.      |
-| Equivalence Partitioning | Valid PrimaryTitle                | 6-char, 50-char, 254-char, star-wars |
-| Equivalence Partitioning | Invalid PrimaryTitle              | 4-char, 400-char                     |
-| Boundary Value Analysis  | PrimaryTitle Valid Lower Bound    | 5-char                               |
-|                          | PrimaryTitle Valid Upper Bound    | 255-char                             |
-|                          | PrimaryTitle Invalid Lower Bound  | 1-char , 4-char                      |
-|                          | PrimaryTitle Invalid Upper Bound  | 256-char , char.max                  |
-| Edges                    | PrimaryTitle edges cases          | NULL, "", " ", #asbas-char etc.      |
-| Equivalence Partitioning | Valid OriginalTitle               | 6-char, 50-char. 254-char, star-wars |
-| Equivalence Partitioning | Invalid OriginalTitle             | 4-char, 400-char                     |
-| Boundary Value Analysis  | OriginalTitle Valid Lower Bound   | 5-char                               |
-|                          | OriginalTitle Valid Upper Bound   | 255-char                             |
-|                          | OriginalTitle Invalid Lower Bound | 1-char , 4-char                      |
-|                          | OriginalTitle Invalid Upper Bound | 256-char , char.max                  |
-| Edges                    | OriginalTitle edges cases         | NULL, "", " ", #asbas-char etc.      |
-| Equivalence Partitioning | Valid StartYear                   | 1999, 2024                           |
-| Equivalence Partitioning | Invalid StartYear                 | 999, -2020                           |
-| Boundary Value Analysis  | StartYear Lower Bound             | 1888                                 |
-|                          | StartYear Upper Bound             | newest year                          |
-| Edges                    | StartYear edges cases             | 0000                                 |
-| Equivalence Partitioning | Valid EndYear                     | 2005, 2023, 2026 > 2025, NULL        |
-| Equivalence Partitioning | Invalid EndYear                   | 99, -2010                            |
-| Boundary Value Analysis  | EndYear Lower Bound               | endYear 2025 = 2025 startYear        |
-|                          | EndYear Upper Bound               | 9999                                 |
-| Edges                    | EndYear edges cases               | 0000                                 |
-| Equivalence Partitioning | Valid RuntimeMinutes              | 61, 1000, 1439, NULL                 |
-| Equivalence Partitioning | Invalid RuntimeMinutes            | 50                                   |
-|                          | Valid Lower Bound                 | 60                                   |
-|                          | Valid Upper Bound                 | 1440                                 |
-|                          | InValid Lower Bound               | 0                                    |
-|                          | InValid Upper Bound               | 1441                                 |
-| Edges                    | RuntimeMinutes edges cases        | -1, int.max                          |
+| Field          | Valid Range          | Type    | Notes                   |
+|----------------|----------------------|---------|-------------------------|
+| TitleType      | 6-25 chars           | string  |                         |
+| PrimaryTitle   | 5-255 chars          | string  |                         |
+| OriginalTitle  | 5-255 chars          | string  |                         |
+| StartYear      | 1888-2025            | integer | Current year = 2025     |
+| EndYear        | NULL or >= StartYear | integer | Dependency on StartYear |
+| RuntimeMinutes | 60-1440 or NULL      | integer |                         |
 
+
+
+| Partition Type           | Partition                  | Valid Range                | Test Case Values                             |
+|--------------------------|----------------------------|----------------------------|----------------------------------------------|
+| Equivalence Partitioning | Valid ``TitleType``        | 6-25 chars                 | 5-char, 6-char, 7-char, 24-char, 25-char     |
+| Equivalence Partitioning | Invalid ``TitleType``      | <6 or >25 chars            | movi, 50-char                                |
+| Boundary Value Analysis  | Valid Lower Bound          |                            | 5-char                                       |
+|                          | Valid Upper Bound          |                            | 25-char                                      |
+|                          | InValid Lower Bound        |                            | 1-char, 4-char                               |
+|                          | Invalid Upper Bound        |                            | 26-char, str.max                             |
+| Edges                    | edges cases                |                            | NULL, "", " ", #asbas-char etc.              |
+| Equivalence Partitioning | Valid ``PrimaryTitle``     | 5-255 chars                | 6-char, 50-char, 254-char, star-wars         |
+| Equivalence Partitioning | Invalid ``PrimaryTitle``   | <5 or >255 chars           | 4-char, 400-char                             |
+| Boundary Value Analysis  | Valid Lower Bound          |                            | 5-char                                       |
+|                          | Valid Upper Bound          |                            | 255-char                                     |
+|                          | Invalid Lower Bound        |                            | 1-char , 4-char                              |
+|                          | Invalid Upper Bound        |                            | 256-char , char.max                          |
+| Edges                    | edges cases                |                            | NULL, "", " ", #asbas-char etc.              |
+| Equivalence Partitioning | Valid ``OriginalTitle``    | 5-255 chars                | Same as PrimaryTitle (identical constraints) |
+| Equivalence Partitioning | Valid ``StartYear``        | 1888-2025	                 | 1888, 1889, 1999, 2024, 2025                 |
+| Equivalence Partitioning | Invalid ``StartYear``      | <1888 or >2025             | 999, -2020, 2026                             |
+| Boundary Value Analysis  | Valid Lower Bound          |                            | 1888                                         |
+|                          | Valid Upper Bound          |                            | 2025                                         |
+|                          | InValid Lower Bound        | 0 - 1887                   | 999, 1887                                    |
+|                          | InValid Upper Bound        | 2026 - feature             | 2026 - feature                               |
+| Edges                    | edges cases                |                            | 0000 ,-2020                                  |
+| Equivalence Partitioning | Valid ``EndYear``          | NULL or >=StartYear        | 2026 > 2025, NULL                            |
+| Equivalence Partitioning | Invalid ``EndYear``        | <StartYear or invalid year | 9, 99, 999, 2010(with startYear=2025)        |
+| Boundary Value Analysis  | Valid Lower Bound          | EndYear>=StartYear         | Start=2025/End=2025                          |
+|                          | Valid Upper Bound          |                            | Start=2025/End=2026                          |
+|                          | InValid Lower Bound        |                            | Start=2025/End=2024                          |
+| Edges                    | edges cases                |                            | 0000,9999, 2026                              |
+| Equivalence Partitioning | Valid ``RuntimeMinutes``   | 60-1440 or NULL            | 60, 61, 1000, 1439, NULL                     |
+| Equivalence Partitioning | Invalid ``RuntimeMinutes`` |                            | 50                                           |
+|                          | Valid Lower Bound          | 60-1440                    | 60                                           |
+|                          | Valid Upper Bound          |                            | 1440                                         |
+|                          | InValid Bound              | 0-59                       | 0, 59                                        |
+|                          | InValid Bound              | 1441 - max                 | 1441, max                                    |
+| Edges                    | edges cases                |                            | -1, int.max                                  |
 
 
 - List of test cases:
-  - **TitleType:**
+  - **``TitleType``:**
     - Valid:
       - 5 characters (lower valid boundary)
       - 6 characters
@@ -68,7 +75,7 @@
       - ""
       - " "
       - "#5-char"
-  - **PrimaryTitle & OriginalTitle:**
+  - **``PrimaryTitle`` & ``OriginalTitle``:**
     - Valid:
       - 5-character 
       - 6-character 
@@ -86,50 +93,59 @@
       - ""
       - " "
       - "#5-char"
-  - **StartYear:**
+  - **``StartYear``:**
     - Valid:
+      - 1888
+      - 1889
       - 1999
       - 2024
-      - new year = 2025 
+      - 2025
     - Invalid:
       - 999
+      - 1887
       - -2020
+      - 2026
     - Edge Cases:
       - 0000
-  - **EndYear:**
+  - **``EndYear``:**
     - Valid:
-      - -2005
-      - 2026 > 2025 (endYear < startYear)
-      - NULL
+        - 2026 endYear > 2025 startYear
+        - NULL
     - Invalid:
-      - 99
-      - -2010
+        - 9
+        - 99
+        - 999
+        - 2010 (with startYear=2025)
     - Edge Cases:
-      - 0000
-  - **RuntimeMinutes:**
+        - 0000
+        - 9999
+        - 2026 (when startYear=2025)
+  - **``RuntimeMinutes``:**
     - Valid:
-      - 60 ``lower valid boundary``
+      - 60 
       - 61
       - 1000
       - 1439
-      - 1440 ``upper valid boundary``
+      - 1440 
       - NULL
     - Invalid:
-      - 0 ``invalid lower boundary``
+      - 0 
       - 50
-      - 1441 ``invalid upper boundary``
+      - 1441 
     - Edge Cases:
       - -1
       - int.max
 ## Genres
 
-| Partition Type           | Partition         | Test Case Values                                 |
-|--------------------------|-------------------|--------------------------------------------------|
-| Equivalence Partitioning | Valid Genre       | 3-char, 2.char, 10-char, 49-char, 50-char Sci-Fi |
-|                          | Invalid Genre     | 1-char, 2-char, 51-char 60-char                  |
-| Boundary Value Analysis  | Valid Lower Bound | 3-char                                           |
-|                          | Valid Upper Bound | 50-char                                          |
-| Edges                    | Genre edges       | NULL, "", " ", #5char                            |
+| Partition Type           | Partition         | Valid Range     | Test Case Values                                 |
+|--------------------------|-------------------|-----------------|--------------------------------------------------|
+| Equivalence Partitioning | Valid Genre       | 3-50 char       | 3-char, 2.char, 10-char, 49-char, 50-char Sci-Fi |
+|                          | Invalid Genre     | <3 or >50 chars | 1-char, 2-char, 51-char 60-char                  |
+| Boundary Value Analysis  | Valid Lower Bound |                 | 3-char                                           |
+|                          | Valid Upper Bound |                 | 50-char                                          |
+|                          | Invalid  Bound    | 1 - 2           | 1-char, 2-char                                   |
+|                          | Invalid  Bound    | 51 - string.max | 51-char, string.max                              |
+| Edges                    | Genre edges       |                 | NULL, "", " ", #5char                            |
 
 - list of test cases:
 - **Genre:**
@@ -144,7 +160,7 @@
       - 1 character 
       - 2 characters 
       - 51 characters 
-      - 60 characters
+      - 60 characters 
     - Edge Cases:
       - NULL
       - ""
@@ -167,6 +183,8 @@
 | Boundary Value Analysis  | Valid Lower Bound   | 1                           |
 |                          | Valid Upper Bound   | 99                          |
 | Edges                    | Season edges        | NULL, 5.5, -5.5             |
+
+
 - list of test cases:
   - **EpisodeNumber:**
     - Valid:
@@ -237,9 +255,9 @@
 | Equivalence Partitioning | Valid BirthYear   | 1995                                                 |
 |                          | Invalid BirthYear | 1, 19, 199 , 19999                                   |
 | Edges                    | BirthYear edges   | NULL, 0000                                           |
-| Equivalence Partitioning | Valid EndYear     | 2020                                                 |
-|                          | Invalid EndYear   | 1, 19, 199, 19999, EndYear (2025) > BirthYear (1945) |
-| Edges                    | EndYear edges     | NULL, 0000                                           |
+| Equivalence Partitioning | Valid ``EndYear``     | 2020                                                 |
+|                          | Invalid ``EndYear``   | 1, 19, 199, 19999, ``EndYear`` (2025) > BirthYear (1945) |
+| Edges                    | ``EndYear`` edges     | NULL, 0000                                           |
 
 - list of test cases:
 - **Name:**
@@ -270,7 +288,7 @@
   - Edge Cases:
     - 0000
     - Null
-- **EndYear:**
+- **``EndYear``:**
   - Valid:
     - 2020
   - Invalid:
@@ -278,7 +296,7 @@
     - 19
     - 199 
     - 19999
-    - EndYear (2025) > BirthYear (1945)
+    - ``EndYear`` (2025) > BirthYear (1945)
   - Edge Cases:
     - 0000
     - Null
