@@ -57,7 +57,7 @@ namespace EfCoreModelsLib.Models.MongoDb.Handler
                     }
                 }
 
-                if (compoundIndex != null && compoundIndex.ToList().Count() > 0)
+                if (compoundIndex != null && compoundIndex.Any() && compoundIndex.Count() > 0)
                 {
                     var collection = database?.GetCollection<T>(collectionName);
                     var indexes = compoundIndex
@@ -67,9 +67,9 @@ namespace EfCoreModelsLib.Models.MongoDb.Handler
 
                     if (indexes.Count > 0)
                         await collection?.Indexes.CreateManyAsync(indexes, cancellationToken)!;
-                    
+
                     Console.WriteLine($"Ensured indexes on collection '{collectionName}'.");
-                    
+
                 }
                 if (singleFieldIndex != null)
                 {
@@ -80,9 +80,11 @@ namespace EfCoreModelsLib.Models.MongoDb.Handler
                     Console.WriteLine($"Ensured single field index on collection '{collectionName}'.");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception($"Error ensuring collection schema for '{collectionName}': {ex.Message}", ex);
+                // throw new Exception($"Error ensuring collection schema for '{collectionName}': {ex.Message}", ex);
+
+                throw;
             }
         }
     }
