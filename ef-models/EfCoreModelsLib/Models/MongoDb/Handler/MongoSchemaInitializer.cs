@@ -63,8 +63,7 @@ namespace EfCoreModelsLib.Models.MongoDb.Handler
                         new CreateIndexModel<T>(new BsonDocumentIndexKeysDefinition<T>(indexDoc)))
                     .ToList();
 
-                if (indexes.Any())
-                    await collection?.Indexes.CreateManyAsync(indexes, cancellationToken)!;
+                await collection?.Indexes.CreateManyAsync(indexes, cancellationToken)!;
 
                 Console.WriteLine($"Ensured indexes on collection '{collectionName}'.");
 
