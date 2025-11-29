@@ -21,9 +21,12 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContextFactory<ImdbContext>(options =>
 {
        options.UseMySql(Env.GetString("MySqlConnectionString"), ServerVersion.AutoDetect(Env.GetString("MySqlConnectionString")));
-       options.LogTo(Console.WriteLine);
-       options.EnableSensitiveDataLogging();
-       options.EnableDetailedErrors();
+       if (builder.Environment.IsDevelopment())
+       {
+              options.LogTo(Console.WriteLine);
+              options.EnableSensitiveDataLogging();
+              options.EnableDetailedErrors();
+       }
 });
 
 builder.Services.AddScoped<ITitlesService, TitlesService>();
