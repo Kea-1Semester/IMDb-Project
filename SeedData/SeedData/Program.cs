@@ -118,7 +118,7 @@ internal static class Program
         Env.TraversePath().Load();
 
         // 1) Schema (Community-safe UNIQUE constraints for alle labels du bruger)
-        await EfCoreModelsLib.Models.Neo4J.Handler.Neo4jSchemaInitializer.EnsureConstraintsAsync(
+        await EfCoreModelsLib.Models.Neo4J.Handler.Neo4JSchemaInitializer.EnsureConstraintsAsync(
             Environment.GetEnvironmentVariable("NEO4J_URI")!,
             Environment.GetEnvironmentVariable("NEO4J_USER")!,
             Environment.GetEnvironmentVariable("NEO4J_PASSWORD")!);
