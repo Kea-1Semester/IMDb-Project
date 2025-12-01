@@ -1,6 +1,5 @@
 # BackBox Analysis
 
-
 ## Black-box design techniques (manual analysis)
 
 - Based on requirements, we are building Equivalence partitioning analysis and Boundary Value Analysis with 3 Boundary Values.
@@ -9,19 +8,17 @@
 
 | Field          | Valid Range          | Type    | Notes                   |
 |----------------|----------------------|---------|-------------------------|
-| TitleType      | 6-25 chars           | string  |                         |
+| TitleType      | 5-25 chars           | string  |                         |
 | PrimaryTitle   | 5-255 chars          | string  |                         |
 | OriginalTitle  | 5-255 chars          | string  |                         |
 | StartYear      | 1888-2025            | integer | Current year = 2025     |
 | EndYear        | NULL or >= StartYear | integer | Dependency on StartYear |
 | RuntimeMinutes | 60-1440 or NULL      | integer |                         |
 
-
-
 | Partition Type           | Partition                  | Valid Range                | Test Case Values                             |
 |--------------------------|----------------------------|----------------------------|----------------------------------------------|
-| Equivalence Partitioning | Valid ``TitleType``        | 6-25 chars                 | 5-char, 6-char, 7-char, 24-char, 25-char     |
-| Equivalence Partitioning | Invalid ``TitleType``      | <6 or >25 chars            | movi, 50-char                                |
+| Equivalence Partitioning | Valid ``TitleType``        | 5-25 chars                 | 5-char, 6-char, 15-char, 24-char, 25-char     |
+| Equivalence Partitioning | Invalid ``TitleType``      | <5 or >25 chars            | movi, 50-char                                |
 | Boundary Value Analysis  | Valid Lower Bound          |                            | 5-char                                       |
 |                          | Valid Upper Bound          |                            | 25-char                                      |
 |                          | InValid Lower Bound        |                            | 1-char, 4-char                               |
@@ -35,7 +32,7 @@
 |                          | Invalid Upper Bound        |                            | 256-char , char.max                          |
 | Edges                    | edges cases                |                            | NULL, "", " ", #asbas-char etc.              |
 | Equivalence Partitioning | Valid ``OriginalTitle``    | 5-255 chars                | Same as PrimaryTitle (identical constraints) |
-| Equivalence Partitioning | Valid ``StartYear``        | 1888-2025	                 | 1888, 1889, 1999, 2024, 2025                 |
+| Equivalence Partitioning | Valid ``StartYear``        | 1888-2025                  | 1888, 1889, 1999, 2024, 2025                 |
 | Equivalence Partitioning | Invalid ``StartYear``      | <1888 or >2025             | 999, -2020, 2026                             |
 | Boundary Value Analysis  | Valid Lower Bound          |                            | 1888                                         |
 |                          | Valid Upper Bound          |                            | 2025                                         |
@@ -56,7 +53,6 @@
 |                          | InValid Bound              | 1441 - max                 | 1441, max                                    |
 | Edges                    | edges cases                |                            | -1, int.max                                  |
 
-
 - List of test cases:
   - **``TitleType``:**
     - Valid:
@@ -66,7 +62,7 @@
       - 24 characters
       - 25 characters (upper valid boundary)
     - Invalid
-      - 1 character 
+      - 1 character
       - 4 characters
       - 26 characters
       - 50 characters
@@ -77,16 +73,16 @@
       - "#5-char"
   - **``PrimaryTitle`` & ``OriginalTitle``:**
     - Valid:
-      - 5-character 
-      - 6-character 
-      - 50-character 
-      - 254-character 
-      - 255-character 
+      - 5-character
+      - 6-character
+      - 50-character
+      - 254-character
+      - 255-character
     - Invalid:
-      - 1-character 
-      - 4-character 
-      - 256-character 
-      - 400-character 
+      - 1-character
+      - 4-character
+      - 256-character
+      - 400-character
       - char.max (maximum representable length)
     - Edge Cases:
       - NULL
@@ -109,38 +105,39 @@
       - 0000
   - **``EndYear``:**
     - Valid:
-        - 2026 endYear > 2025 startYear
-        - NULL
+      - 2026 endYear > 2025 startYear
+      - NULL
     - Invalid:
-        - 9
-        - 99
-        - 999
-        - 2010 (with startYear=2025)
+      - 9
+      - 99
+      - 999
+      - 2010 (with startYear=2025)
     - Edge Cases:
-        - 0000
-        - 9999
-        - 2026 (when startYear=2025)
+      - 0000
+      - 9999
+      - 2026 (when startYear=2025)
   - **``RuntimeMinutes``:**
     - Valid:
-      - 60 
+      - 60
       - 61
       - 1000
       - 1439
-      - 1440 
+      - 1440
       - NULL
     - Invalid:
-      - 0 
+      - 0
       - 50
-      - 1441 
+      - 1441
     - Edge Cases:
       - -1
       - int.max
+
 ## Genres
 
 | Partition Type           | Partition         | Valid Range     | Test Case Values                                 |
 |--------------------------|-------------------|-----------------|--------------------------------------------------|
 | Equivalence Partitioning | Valid Genre       | 3-50 char       | 3-char, 2.char, 10-char, 49-char, 50-char Sci-Fi |
-|                          | Invalid Genre     | <3 or >50 chars | 1-char, 2-char, 51-char 60-char                  |
+|                          | Invalid Genre     | < 3 or >50 chars | 1-char, 2-char, 51-char 60-char                  |
 | Boundary Value Analysis  | Valid Lower Bound |                 | 3-char                                           |
 |                          | Valid Upper Bound |                 | 50-char                                          |
 |                          | Invalid  Bound    | 1 - 2           | 1-char, 2-char                                   |
@@ -149,23 +146,23 @@
 
 - list of test cases:
 - **Genre:**
-    - Valid:
-      - 3 characters (lower valid boundary)
-      - 2 characters
-      - 10 characters
-      - Sci-Fi
-      - 49 characters
-      - 50 characters (upper valid boundary)
-    - Invalid:
-      - 1 character 
-      - 2 characters 
-      - 51 characters 
-      - 60 characters 
-    - Edge Cases:
-      - NULL
-      - ""
-      - " "
-      - "#5-char"
+  - Valid:
+    - 3 characters (lower valid boundary)
+    - 2 characters
+    - 10 characters
+    - Sci-Fi
+    - 49 characters
+    - 50 characters (upper valid boundary)
+  - Invalid:
+    - 1 character
+    - 2 characters
+    - 51 characters
+    - 60 characters
+  - Edge Cases:
+    - NULL
+    - ""
+    - " "
+    - "#5-char"
 
 ## Episodes
 
@@ -183,7 +180,6 @@
 | Boundary Value Analysis  | Valid Lower Bound   | 1                           |
 |                          | Valid Upper Bound   | 99                          |
 | Edges                    | Season edges        | NULL, 5.5, -5.5             |
-
 
 - list of test cases:
   - **EpisodeNumber:**
@@ -219,7 +215,8 @@
   - Edge Cases:
     - Null
 
-## Aliases 
+## Aliases
+
 | Partition Type           | Partition            | Test Case Values                     |
 |--------------------------|----------------------|--------------------------------------|
 | Equivalence Partitioning | Valid Region         | 3-char, 50-char ,99-char             |
@@ -239,9 +236,6 @@
 | Boundary Value Analysis  | Title Lower Bound    | 5-char                               |
 |                          | Title Upper Bound    | 255-char                             |
 | Edges                    | Title edges          | NULL, "", " ", #asbas-char etc.      |
-
-
-
 
 ## Person
 
@@ -267,10 +261,10 @@
     - 50 characters
     - 99 characters
   - Invalid:
-    - 1 character 
-    - 100 characters 
-    - 101 characters 
-    - 150 characters 
+    - 1 character
+    - 100 characters
+    - 101 characters
+    - 150 characters
     - string.max (maximum representable length)
   - Edge Cases:
     - NULL
@@ -283,7 +277,7 @@
   - Invalid:
     - 1
     - 19
-    - 199 
+    - 199
     - 19999
   - Edge Cases:
     - 0000
@@ -294,19 +288,10 @@
   - Invalid:
     - 1
     - 19
-    - 199 
+    - 199
     - 19999
     - ``EndYear`` (2025) > BirthYear (1945)
   - Edge Cases:
     - 0000
     - Null
   
-
-
-
-
-
-
-
-
-
