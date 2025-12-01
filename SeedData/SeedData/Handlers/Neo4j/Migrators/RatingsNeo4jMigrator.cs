@@ -7,18 +7,19 @@ using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData.Handlers.Neo4j.Migrators
 {
-    public static class AttributesNeo4jMigrator
+    public static class RatingsNeo4jMigrator
     {
-        private static AttributesEntity MapAttributesEntity(Attributes src)
+        private static RatingsEntity MapRatingsEntity(Ratings src)
         {
-            return new AttributesEntity
+            return new RatingsEntity
             {
-                AttributeId = src.AttributeId,
-                Attribute   = src.Attribute
+                RatingId = src.RatingId,
+                AverageRating   = src.AverageRating,
+                NumVotes = src.NumVotes
             };
         }
 
-        public static async Task MigrateAttributesToNeo4j(
+        public static async Task MigrateRatingsToNeo4j(
             int pageSize = 1000,
             int pages = 0   // 0 = kør til der ikke er flere rækker
         )
@@ -28,30 +29,30 @@ namespace SeedData.Handlers.Neo4j.Migrators
             var pageIndex = 0;
             while (pages == 0 || pageIndex < pages)
             {
-                var batchFromMySql = mysqlContext.Attributes
+                var batchFromMySql = mysqlContext.Ratings
                     .AsNoTracking()
-                    .OrderBy(a => a.AttributeId)
+                    .OrderBy(a => a.RatingId)
                     .Skip(pageIndex * pageSize)
                     .Take(pageSize)
                     .AsEnumerable()
-                    .Select(MapAttributesEntity)
+                    .Select(MapRatingsEntity)
                     .ToList();
 
                 if (batchFromMySql.Count == 0)
                 {
-                    Console.WriteLine("No more attributes found, stopping.");
+                    Console.WriteLine("No more Ratings found, stopping.");
                     break;
                 }
 
-                await Neo4jAttributesMapper.UpsertAttributes(batchFromMySql, batchSize: 1000);
+                await Neo4jRatingsMapper.UpsertRatings(batchFromMySql, batchSize: 1000);
 
                 Console.WriteLine(
-                    $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} attributes to Neo4j...");
+                    $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} Ratings to Neo4j...");
 
                 pageIndex++;
             }
 
-            Console.WriteLine("✅ Attributes migration to Neo4j done.");
+            Console.WriteLine("✅ Ratings migration to Neo4j done.");
         }
     }
 }

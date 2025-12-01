@@ -17,8 +17,8 @@ internal static class Program
     static async Task Main(string[] args)
     {
         Env.TraversePath().Load();
-        await SeedData();
-        await TitleMongoDbMapper.MigrateToMongoDb(40000, 4);
+        //await SeedData();
+        //await TitleMongoDbMapper.MigrateToMongoDb(40000, 4);
         await MigrateToNeo4J();
     }
 
@@ -112,7 +112,6 @@ internal static class Program
         Console.WriteLine("Program Completed");
     }
 
-
     private static async Task MigrateToNeo4J()
     {
         Env.TraversePath().Load();
@@ -123,6 +122,16 @@ internal static class Program
             Environment.GetEnvironmentVariable("NEO4J_USER")!,
             Environment.GetEnvironmentVariable("NEO4J_PASSWORD")!);
 
+        await Handlers.Neo4j.Migrators.AttributesNeo4jMigrator.MigrateAttributesToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.TypesNeo4jMigrator.MigrateTypesToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.ProfessionsNeo4jMigrator.MigrateProfessionsToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.GenresNeo4jMigrator.MigrateGenresToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.RatingsNeo4jMigrator.MigrateRatingsToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.CommentsNeo4jMigrator.MigrateCommentsToNeo4j(1000, 0);
+
+        Console.WriteLine("✅ migrations to Neo4j done.");
+
+        /* Test data for Neo4j upsert - fjern kommentar for at køre
         // 2) Eksempeldata (erstat evt. med dine data fra MySQL)
 
         // Attributes og Types relateret data
@@ -244,6 +253,8 @@ internal static class Program
         await Neo4jMapper.UpsertAll(payload, batchSize: 1000);
 
         Console.WriteLine("✅ Neo4j upsert complete.");
+
+        */
     
     }
 }

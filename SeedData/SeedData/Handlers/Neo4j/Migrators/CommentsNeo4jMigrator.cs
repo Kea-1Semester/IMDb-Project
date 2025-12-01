@@ -7,18 +7,18 @@ using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData.Handlers.Neo4j.Migrators
 {
-    public static class AttributesNeo4jMigrator
+    public static class CommentsNeo4jMigrator
     {
-        private static AttributesEntity MapAttributesEntity(Attributes src)
+        private static CommentsEntity MapCommentsEntity(Comments src)
         {
-            return new AttributesEntity
+            return new CommentsEntity
             {
-                AttributeId = src.AttributeId,
-                Attribute   = src.Attribute
+                CommentId = src.CommentId,
+                Comment   = src.Comment
             };
         }
 
-        public static async Task MigrateAttributesToNeo4j(
+        public static async Task MigrateCommentsToNeo4j(
             int pageSize = 1000,
             int pages = 0   // 0 = kør til der ikke er flere rækker
         )
@@ -28,30 +28,30 @@ namespace SeedData.Handlers.Neo4j.Migrators
             var pageIndex = 0;
             while (pages == 0 || pageIndex < pages)
             {
-                var batchFromMySql = mysqlContext.Attributes
+                var batchFromMySql = mysqlContext.Comments
                     .AsNoTracking()
-                    .OrderBy(a => a.AttributeId)
+                    .OrderBy(a => a.CommentId)
                     .Skip(pageIndex * pageSize)
                     .Take(pageSize)
                     .AsEnumerable()
-                    .Select(MapAttributesEntity)
+                    .Select(MapCommentsEntity)
                     .ToList();
 
                 if (batchFromMySql.Count == 0)
                 {
-                    Console.WriteLine("No more attributes found, stopping.");
+                    Console.WriteLine("No more Comments found, stopping.");
                     break;
                 }
 
-                await Neo4jAttributesMapper.UpsertAttributes(batchFromMySql, batchSize: 1000);
+                await Neo4jCommentsMapper.UpsertComments(batchFromMySql, batchSize: 1000);
 
                 Console.WriteLine(
-                    $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} attributes to Neo4j...");
+                    $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} Comments to Neo4j...");
 
                 pageIndex++;
             }
 
-            Console.WriteLine("✅ Attributes migration to Neo4j done.");
+            Console.WriteLine("✅ Comments migration to Neo4j done.");
         }
     }
 }
