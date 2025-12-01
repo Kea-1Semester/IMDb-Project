@@ -42,4 +42,30 @@ README.md
 
 # Ignore charts and data folders
 charts/
+charts/**
+./charts/**
 SeedData/data/
+./SeedData/data/**
+./charts/**
+**/charts/**
+data/
+data/**
+./data/**
+**/data
+**/data/
+**/data/*
+**/data/**
+./DbDesign/**
+**/DbDesign/**
+SeedData/data/**
+**/SeedData/data/**
+./efpt.config.json.user
+**/efpt.config.json.user
+
+*.tsv
+*.*.tsv
+**.tsv
+**.**.tsv
+*.**.tsv
+**.*.tsv
+**/*.tsv
