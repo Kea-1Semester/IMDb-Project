@@ -1,11 +1,11 @@
 using EfCoreModelsLib.Models.Neo4J.Neo4JModels;
 using Neo4j.Driver;
 
-namespace SeedData.Handlers.Neo4j
+namespace SeedData.Handlers.Neo4j.Mappers
 {
     public static partial class Neo4jTitlesMapper
     {
-        public static Task UpsertAliases(IEnumerable<TitlesEntity> items, int batchSize = 1000)
+        public static Task UpsertTitles(IEnumerable<TitlesEntity> items, int batchSize = 1000)
             => Neo4jMapper.WithWriteSession(session => UpsertTitles(session, items, batchSize));
 
         public static async Task UpsertTitles(IAsyncSession session, IEnumerable<TitlesEntity> items, int batchSize)

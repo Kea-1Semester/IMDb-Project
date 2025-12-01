@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using SeedData.DbConnection;
 using SeedData.Handlers;
 using SeedData.Handlers.MongoDb;
-using SeedData.Handlers.Neo4j;
+using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData;
 

@@ -3,7 +3,7 @@ using DotNetEnv;
 using EfCoreModelsLib.Models.Neo4J.Neo4JModels;
 using Neo4j.Driver;
 
-namespace SeedData.Handlers.Neo4j
+namespace SeedData.Handlers.Neo4j.Mappers
 {
     public static class Neo4jMapper
     {

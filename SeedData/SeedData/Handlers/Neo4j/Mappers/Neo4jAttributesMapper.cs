@@ -1,7 +1,7 @@
 using Neo4j.Driver; // <- vigtigt
 using EfCoreModelsLib.Models.Neo4J.Neo4JModels;
 
-namespace SeedData.Handlers.Neo4j
+namespace SeedData.Handlers.Neo4j.Mappers
 {
     public static partial class Neo4jAttributesMapper
     {
