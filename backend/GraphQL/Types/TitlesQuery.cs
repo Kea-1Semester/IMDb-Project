@@ -1,5 +1,6 @@
 using EfCoreModelsLib.Models.Mysql;
 using GraphQL.Services;
+using HotChocolate.Authorization;
 
 namespace GraphQL.Types;
 
@@ -10,6 +11,7 @@ public static class TitlesQuery
     [UseProjection]
     [UseFiltering]
     [UseSorting]
+    [Authorize]
     public static IQueryable<Titles> GetTitles([Service] ITitlesService titlesService)
     {
         return titlesService.GetTitles();

@@ -25,7 +25,10 @@ services:
     environment:
       MySqlConnectionString: server=mysql;port=3306;database=imdb;user=root;password=admin;default command timeout=600
       ASPNETCORE_ENVIRONMENT: Development
-
+      Auth0Audience: ${Auth0Audience}
+      Auth0Domain: ${Auth0Domain}
+      ValidIssuer: ${ValidIssuer}
+      IssuerSigningKey: ${IssuerSigningKey} 
   seed_data:
     container_name: seeddata
     build:
