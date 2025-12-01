@@ -13,7 +13,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 COPY ["backend/GraphQL/GraphQL.csproj", "backend/GraphQL/"]
-COPY ["ef-models/EfCoreModelsLib/EfCoreModelsLib.csproj", "models/EfCoreModelsLib/"]
+COPY ["ef-models/EfCoreModelsLib/EfCoreModelsLib.csproj", "ef-models/EfCoreModelsLib/"]
 
 RUN dotnet restore "backend/GraphQL/GraphQL.csproj"
 
