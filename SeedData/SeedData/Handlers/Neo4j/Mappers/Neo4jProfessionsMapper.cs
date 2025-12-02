@@ -3,7 +3,7 @@ using Neo4j.Driver;
 
 namespace SeedData.Handlers.Neo4j.Mappers
 {
-    public static partial class Neo4jProfessionsMapper
+    public static partial class Neo4JProfessionsMapper
     {
         public static Task UpsertProfessions(IEnumerable<ProfessionsEntity> items, int batchSize = 1000)
             => Neo4JMapper.WithWriteSession(session => UpsertProfessions(session, items, batchSize));

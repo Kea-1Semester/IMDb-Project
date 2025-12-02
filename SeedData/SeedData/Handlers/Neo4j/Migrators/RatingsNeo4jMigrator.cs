@@ -7,7 +7,7 @@ using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData.Handlers.Neo4j.Migrators
 {
-    public static class RatingsNeo4jMigrator
+    public static class RatingsNeo4JMigrator
     {
         private static RatingsEntity MapRatingsEntity(Ratings src)
         {
@@ -44,7 +44,7 @@ namespace SeedData.Handlers.Neo4j.Migrators
                     break;
                 }
 
-                await Neo4jRatingsMapper.UpsertRatings(batchFromMySql, batchSize: 1000);
+                await Neo4JRatingsMapper.UpsertRatings(batchFromMySql, batchSize: 1000);
 
                 Console.WriteLine(
                     $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} Ratings to Neo4j...");

@@ -7,7 +7,7 @@ using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData.Handlers.Neo4j.Migrators
 {
-    public static class ProfessionsNeo4jMigrator
+    public static class ProfessionsNeo4JMigrator
     {
         private static ProfessionsEntity MapProfessionsEntity(Professions src)
         {
@@ -43,7 +43,7 @@ namespace SeedData.Handlers.Neo4j.Migrators
                     break;
                 }
 
-                await Neo4jProfessionsMapper.UpsertProfessions(batchFromMySql, batchSize: 1000);
+                await Neo4JProfessionsMapper.UpsertProfessions(batchFromMySql, batchSize: 1000);
 
                 Console.WriteLine(
                     $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} Professions to Neo4j...");

@@ -7,7 +7,7 @@ using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData.Handlers.Neo4j.Migrators
 {
-    public static class AliasesNeo4jMigrator
+    public static class AliasesNeo4JMigrator
     {
         private static AliasesEntity MapAliasesEntity(Aliases src)
         {
@@ -74,7 +74,7 @@ namespace SeedData.Handlers.Neo4j.Migrators
                     break;
                 }
 
-                await Neo4jAliasesMapper.UpsertAliases(batchFromMySql, batchSize: 1000);
+                await Neo4JAliasesMapper.UpsertAliases(batchFromMySql, batchSize: 1000);
 
                 Console.WriteLine(
                     $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} Aliases to Neo4j...");

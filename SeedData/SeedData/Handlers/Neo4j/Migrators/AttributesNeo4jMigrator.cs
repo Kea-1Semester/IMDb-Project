@@ -7,7 +7,7 @@ using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData.Handlers.Neo4j.Migrators
 {
-    public static class AttributesNeo4jMigrator
+    public static class AttributesNeo4JMigrator
     {
         private static AttributesEntity MapAttributesEntity(Attributes src)
         {
@@ -43,7 +43,7 @@ namespace SeedData.Handlers.Neo4j.Migrators
                     break;
                 }
 
-                await Neo4jAttributesMapper.UpsertAttributes(batchFromMySql, batchSize: 1000);
+                await Neo4JAttributesMapper.UpsertAttributes(batchFromMySql, batchSize: 1000);
 
                 Console.WriteLine(
                     $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} attributes to Neo4j...");

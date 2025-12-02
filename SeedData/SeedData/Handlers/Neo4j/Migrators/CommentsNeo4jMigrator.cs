@@ -7,7 +7,7 @@ using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData.Handlers.Neo4j.Migrators
 {
-    public static class CommentsNeo4jMigrator
+    public static class CommentsNeo4JMigrator
     {
         private static CommentsEntity MapCommentsEntity(Comments src)
         {
@@ -43,7 +43,7 @@ namespace SeedData.Handlers.Neo4j.Migrators
                     break;
                 }
 
-                await Neo4jCommentsMapper.UpsertComments(batchFromMySql, batchSize: 1000);
+                await Neo4JCommentsMapper.UpsertComments(batchFromMySql, batchSize: 1000);
 
                 Console.WriteLine(
                     $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} Comments to Neo4j...");

@@ -117,143 +117,17 @@ internal static class Program
             Environment.GetEnvironmentVariable("NEO4J_USER")!,
             Environment.GetEnvironmentVariable("NEO4J_PASSWORD")!);
 
-        await Handlers.Neo4j.Migrators.AttributesNeo4jMigrator.MigrateAttributesToNeo4j(1000, 0);
-        await Handlers.Neo4j.Migrators.TypesNeo4jMigrator.MigrateTypesToNeo4j(1000, 0);
-        await Handlers.Neo4j.Migrators.ProfessionsNeo4jMigrator.MigrateProfessionsToNeo4j(1000, 0);
-        await Handlers.Neo4j.Migrators.GenresNeo4jMigrator.MigrateGenresToNeo4j(1000, 0);
-        await Handlers.Neo4j.Migrators.RatingsNeo4jMigrator.MigrateRatingsToNeo4j(1000, 0);
-        await Handlers.Neo4j.Migrators.CommentsNeo4jMigrator.MigrateCommentsToNeo4j(1000, 0);
-        await Handlers.Neo4j.Migrators.AliasesNeo4jMigrator.MigrateAliasesToNeo4j(1000, 0);
-        await Handlers.Neo4j.Migrators.PersonsNeo4jMigrator.MigratePersonsToNeo4j(1000, 50);
-        await Handlers.Neo4j.Migrators.TitlesNeo4jMigrator.MigrateTitlesToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.AttributesNeo4JMigrator.MigrateAttributesToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.TypesNeo4JMigrator.MigrateTypesToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.ProfessionsNeo4JMigrator.MigrateProfessionsToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.GenresNeo4JMigrator.MigrateGenresToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.RatingsNeo4JMigrator.MigrateRatingsToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.CommentsNeo4JMigrator.MigrateCommentsToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.AliasesNeo4JMigrator.MigrateAliasesToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.PersonsNeo4JMigrator.MigratePersonsToNeo4j(1000, 50);
+        await Handlers.Neo4j.Migrators.TitlesNeo4JMigrator.MigrateTitlesToNeo4j(1000, 0);
 
         Console.WriteLine("✅ migrations to Neo4j done.");
-
-        /* Test data for Neo4j upsert - fjern kommentar for at køre
-        // 2) Eksempeldata (erstat evt. med dine data fra MySQL)
-
-        // Attributes og Types relateret data
-        var attrColor = new AttributesEntity { AttributeId = Guid.NewGuid(), Attribute = "Color" };
-        var typeMovie = new TypesEntity { TypeId = Guid.NewGuid(), Type = "movie" };
-
-        //Titles relateret data
-        var genre = new GenresEntity { GenreId = Guid.NewGuid(), Genre = "Comedy" };
-        var rating = new RatingsEntity { RatingId = Guid.NewGuid(), AverageRating = 7.5, NumVotes = 1500 };
-        var Comment = new CommentsEntity { CommentId = Guid.NewGuid(), Comment = "This is a comment" };
-
-        //Persons relateret data
-        var profession_actor = new ProfessionsEntity { ProfessionId = Guid.NewGuid(), Profession = "actor" };
-        var profession_writer = new ProfessionsEntity { ProfessionId = Guid.NewGuid(), Profession = "writer" };
-        var profession_director = new ProfessionsEntity { ProfessionId = Guid.NewGuid(), Profession = "director" };
-
-        // Persons
-        var person_1 = new PersonsEntity
-        {
-            PersonId = Guid.NewGuid(),
-            Name = "John Doe",
-            BirthYear = 1980,
-            EndYear = null,
-            HasProfessions = new() { profession_actor },
-        };
-
-        var person_2 = new PersonsEntity
-        {
-            PersonId = Guid.NewGuid(),
-            Name = "Jane Smith",
-            BirthYear = 1988,
-            EndYear = null,
-            HasProfessions = new() { profession_director, profession_writer },
-        };
-
-        var alias = new AliasesEntity
-        {
-            AliasId = Guid.NewGuid(),
-            Region = "DK",
-            Language = "da",
-            IsOriginalTitle = false,
-            Title = "Den danske titel",
-            HasAttributes = new() { attrColor },
-            HasTypes = new() { typeMovie }
-        };
-
-        var titles = new TitlesEntity
-        {
-            TitleId = Guid.NewGuid(),
-            TitleType = "movie",
-            PrimaryTitle = "The Primary Title",
-            OriginalTitle = "The Original Title",
-            IsAdult = false,
-            StartYear = 2020,
-            EndYear = 2021,
-            RuntimeMinutes = 120,
-            HasAliases = new() { alias },
-            HasGenres = new() { genre },
-            HasComments = new() { Comment },
-            HasRating = rating,
-        };
-
-        var titles_Serie = new TitlesEntity
-        {
-            TitleId = Guid.NewGuid(),
-            TitleType = "tvSeries",
-            PrimaryTitle = "Another Movie",
-            OriginalTitle = "Another Original Title",
-            IsAdult = false,
-            StartYear = 2021,
-            EndYear = 2022,
-            RuntimeMinutes = null,
-            HasGenres = new() { genre },
-            HasRating = rating,
-        };
-
-        var titles_Episode = new TitlesEntity
-        {
-            TitleId = Guid.NewGuid(),
-            TitleType = "tvEpisode",
-            PrimaryTitle = "Another Movie",
-            OriginalTitle = "Another Original Title",
-            IsAdult = false,
-            StartYear = 2021,
-            EndYear = 2022,
-            RuntimeMinutes = 90,
-            HasGenres = new() { genre },
-            HasRating = rating,
-        };
-
-        titles_Episode.Series = titles_Serie;
-        titles_Serie.Episodes.Add(titles_Episode);
-
-        person_1.KnownFor.Add(titles);
-
-        titles.Writer.Add(person_2);
-        titles.Director.Add(person_2);
-        titles.Actor.Add(new ActedInRelationship
-        {
-            Person = person_1,
-            Title = titles,
-            Role = "Aquaman"
-        });
-
-        // 3) Kør ALT i én call
-        var payload = new Neo4jMapper.UpsertPayload
-        {
-            Attributes = new[] { attrColor },
-            Types = new[] { typeMovie },
-            Aliases = new[] { alias },
-            Genres = new[] { genre },
-            Titles = new[] { titles, titles_Serie, titles_Episode },
-            Ratings = new[] { rating },
-            Comments = new[] { Comment },
-            Professions = new[] { profession_actor, profession_writer, profession_director },
-            Persons = new[] { person_1, person_2 }
-        };
-
-        await Neo4jMapper.UpsertAll(payload, batchSize: 1000);
-
-        Console.WriteLine("✅ Neo4j upsert complete.");
-
-        */
-    
     }
 }
 

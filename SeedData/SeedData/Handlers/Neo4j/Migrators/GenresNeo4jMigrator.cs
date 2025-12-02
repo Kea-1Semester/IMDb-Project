@@ -7,7 +7,7 @@ using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData.Handlers.Neo4j.Migrators
 {
-    public static class GenresNeo4jMigrator
+    public static class GenresNeo4JMigrator
     {
         private static GenresEntity MapGenresEntity(Genres src)
         {
@@ -43,7 +43,7 @@ namespace SeedData.Handlers.Neo4j.Migrators
                     break;
                 }
 
-                await Neo4jGenresMapper.UpsertGenres(batchFromMySql, batchSize: 1000);
+                await Neo4JGenresMapper.UpsertGenres(batchFromMySql, batchSize: 1000);
 
                 Console.WriteLine(
                     $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} Genres to Neo4j...");

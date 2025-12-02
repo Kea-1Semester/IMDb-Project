@@ -7,7 +7,7 @@ using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData.Handlers.Neo4j.Migrators
 {
-    public static class TitlesNeo4jMigrator
+    public static class TitlesNeo4JMigrator
     {
         private static TitlesEntity MapTitlesEntity(Titles src)
         {
@@ -144,7 +144,7 @@ namespace SeedData.Handlers.Neo4j.Migrators
                     break;
                 }
 
-                await Neo4jTitlesMapper.UpsertTitles(batchFromMySql, batchSize: 1000);
+                await Neo4JTitlesMapper.UpsertTitles(batchFromMySql, batchSize: 1000);
 
                 Console.WriteLine(
                     $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} Titles to Neo4j...");

@@ -7,7 +7,7 @@ using SeedData.Handlers.Neo4j.Mappers;
 
 namespace SeedData.Handlers.Neo4j.Migrators
 {
-    public static class TypesNeo4jMigrator
+    public static class TypesNeo4JMigrator
     {
         private static TypesEntity MapTypesEntity(Types src)
         {
@@ -43,7 +43,7 @@ namespace SeedData.Handlers.Neo4j.Migrators
                     break;
                 }
 
-                await Neo4jTypesMapper.UpsertTypes(batchFromMySql, batchSize: 1000);
+                await Neo4JTypesMapper.UpsertTypes(batchFromMySql, batchSize: 1000);
 
                 Console.WriteLine(
                     $"Migrated page {pageIndex + 1} with {batchFromMySql.Count} Types to Neo4j...");
