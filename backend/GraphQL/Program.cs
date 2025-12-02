@@ -40,18 +40,15 @@ builder.Services.AddDbContextFactory<ImdbContext>(options =>
 
 builder.Services.AddScoped<ITitlesService, TitlesService>();
 
-
-var domain = getEnv("Auth0Domain");
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = domain;
+        options.Authority = $"https://{getEnv("Auth0Domain")}";
         options.Audience = getEnv("Auth0Audience");
         options.TokenValidationParameters = new TokenValidationParameters
         {
             NameClaimType = ClaimTypes.NameIdentifier,
-            ValidIssuer = getEnv("Auth0Domain"),
+            ValidIssuer = $"https://{getEnv("Auth0Domain")}/",
             IssuerSigningKey =
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(getEnv("IssuerSigningKey")))
         };
@@ -62,16 +59,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services
     .AddAuthorizationBuilder()
     .AddPolicy(AuthPolicy.ReadPolicies, policy => policy.Requirements.Add(
-            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.ReadPolicies, domain)
+            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.ReadPolicies, getEnv("Auth0Domain"))
         ))
     .AddPolicy(AuthPolicy.WritePolicies, policy => policy.Requirements.Add(
-            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.WritePolicies, domain)
+            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.WritePolicies, getEnv("Auth0Domain"))
         ))
     .AddPolicy(AuthPolicy.DeletePolicies, policy => policy.Requirements.Add(
-            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.DeletePolicies, domain)
+            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.DeletePolicies, getEnv("Auth0Domain"))
         ))
     .AddPolicy(AuthPolicy.UpdatePolicies, policy => policy.Requirements.Add(
-            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.UpdatePolicies, domain)
+            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.UpdatePolicies, getEnv("Auth0Domain"))
         )
     );
 
@@ -79,6 +76,7 @@ builder.Services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();
 
 
 builder.AddGraphQL()
+    .AllowIntrospection(builder.Environment.IsDevelopment())
     .AddAuthorization()
     .AddTypes()
     .AddSorting()
