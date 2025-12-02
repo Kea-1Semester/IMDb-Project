@@ -1,4 +1,10 @@
+using DotNetEnv;
+using EfCoreModelsLib.Models.Mysql;
+using GraphQL.Services;
 using HotChocolate.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+
+Env.TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +18,27 @@ builder.Services.AddCors(options =>
        });
 });
 
+builder.Services.AddDbContextFactory<ImdbContext>(options =>
+{
+       options.UseMySql(Env.GetString("MySqlConnectionString"), ServerVersion.AutoDetect(Env.GetString("MySqlConnectionString")));
+       if (builder.Environment.IsDevelopment())
+       {
+              options.LogTo(Console.WriteLine);
+              options.EnableSensitiveDataLogging();
+              options.EnableDetailedErrors();
+       }
+});
+
+builder.Services.AddScoped<ITitlesService, TitlesService>();
+
 builder.AddGraphQL()
        .AddTypes()
        .AddSorting()
-       .AddFiltering();
+       .AddFiltering()
+       .AddProjections()
+       .ModifyRequestOptions(
+        o => o.IncludeExceptionDetails =
+            builder.Environment.IsDevelopment());
 
 var app = builder.Build();
 

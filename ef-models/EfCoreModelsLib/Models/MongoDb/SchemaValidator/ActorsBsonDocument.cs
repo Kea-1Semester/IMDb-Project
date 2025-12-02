@@ -6,21 +6,23 @@ public abstract class ActorsBsonDocument
 {
     public static BsonDocument GetSchema()
     {
+        const string bsonType = "bsonType";
+
         return new BsonDocument
         {
-            { "bsonType", "array" },
+            { bsonType, "array" },
             {
                 "items", new BsonDocument
                 {
-                    { "bsonType", "object" },
+                    { bsonType, "object" },
                     { "required", new BsonArray { "id", "name" } },
                     { "additionalProperties", false },
                     {
                         "properties", new BsonDocument
                         {
-                            { "id", new BsonDocument("bsonType", new BsonArray { "binData", "string" }) },
-                            { "name", new BsonDocument("bsonType", "string") },
-                            { "role", new BsonDocument("bsonType", new BsonArray { "string", "null" }) }
+                            { "id", new BsonDocument(bsonType, new BsonArray { "binData", "string" }) },
+                            { "name", new BsonDocument(bsonType, "string") },
+                            { "role", new BsonDocument(bsonType, new BsonArray { "string", "null" }) }
                         }
                     }
                 }

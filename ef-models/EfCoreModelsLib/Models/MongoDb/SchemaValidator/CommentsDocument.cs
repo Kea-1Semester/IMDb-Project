@@ -6,21 +6,22 @@ public abstract class CommentsDocument
 {
     public static BsonDocument GetSchema()
     {
+        const string bsonType = "bsonType";
         return new BsonDocument
         {
-            { "bsonType", "array" },
+            { bsonType, "array" },
             {
                 "items", new BsonDocument
                 {
-                    { "bsonType", "object" },
+                    { bsonType, "object" },
                     { "required", new BsonArray { "id" } },
                     { "additionalProperties", false },
                     {
                         "properties", new BsonDocument
                         {
-                            { "id", new BsonDocument("bsonType", new BsonArray { "binData", "string" }) },
-                            { "userId", new BsonDocument("bsonType", new BsonArray { "binData", "string", "null" }) },
-                            { "commentText", new BsonDocument("bsonType", new BsonArray { "string", "null" }) }
+                            { "id", new BsonDocument(bsonType, new BsonArray { "binData", "string" }) },
+                            { "userId", new BsonDocument(bsonType, new BsonArray { "binData", "string", "null" }) },
+                            { "commentText", new BsonDocument(bsonType, new BsonArray { "string", "null" }) }
                         }
                     }
                 }

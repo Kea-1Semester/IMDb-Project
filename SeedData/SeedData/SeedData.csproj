@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EfCoreModelsLib\EfCoreModelsLib.csproj" />
+    <ProjectReference Include="..\..\ef-models\EfCoreModelsLib\EfCoreModelsLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
