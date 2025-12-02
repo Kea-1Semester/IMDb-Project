@@ -17,21 +17,21 @@
 
 | Partition Type           | Partition                  | Valid Range                | Test Case Values                             |
 |--------------------------|----------------------------|----------------------------|----------------------------------------------|
-| Equivalence Partitioning | Valid ``TitleType``        | 5-25 chars                 | 5-char, 6-char, 15-char, 24-char, 25-char    |
-| Equivalence Partitioning | Invalid ``TitleType``      | <5 or >25 chars            | movi, 50-char                                |
+| Equivalence Partitioning | Valid ``TitleType``        | 5-25 chars & != any special char               | 5-char, 6-char, 15-char, 24-char, 25-char    |
+| Equivalence Partitioning | Invalid ``TitleType``      | <5 or >25 chars           | movi, 50-char                                |
 | Boundary Value Analysis  | Valid Lower Bound          |                            | 5-char                                       |
 |                          | Valid Upper Bound          |                            | 25-char                                      |
 |                          | InValid Lower Bound        |                            | 1-char, 4-char                               |
 |                          | Invalid Upper Bound        |                            | 26-char, str.max                             |
 | Edges                    | edges cases                |                            | NULL, "", " ", #asbas-char etc.              |
-| Equivalence Partitioning | Valid ``PrimaryTitle``     | 5-255 chars                | 6-char, 50-char, 254-char, star-wars         |
+| Equivalence Partitioning | Valid ``PrimaryTitle``     | 5-255 chars and dash allowed               | 6-char, 50-char, 254-char, star-wars         |
 | Equivalence Partitioning | Invalid ``PrimaryTitle``   | <5 or >255 chars           | 4-char, 400-char                             |
 | Boundary Value Analysis  | Valid Lower Bound          |                            | 5-char                                       |
 |                          | Valid Upper Bound          |                            | 255-char                                     |
 |                          | Invalid Lower Bound        |                            | 1-char , 4-char                              |
 |                          | Invalid Upper Bound        |                            | 256-char , char.max                          |
 | Edges                    | edges cases                |                            | NULL, "", " ", #asbas-char etc.              |
-| Equivalence Partitioning | Valid ``OriginalTitle``    | 5-255 chars                | Same as PrimaryTitle (identical constraints) |
+| Equivalence Partitioning | Valid ``OriginalTitle``    | 5-255 chars and dash allowed               | Same as PrimaryTitle (identical constraints) |
 | Equivalence Partitioning | Valid ``StartYear``        | 1888-2025                  | 1888, 1889, 1999, 2024, 2025                 |
 | Equivalence Partitioning | Invalid ``StartYear``      | <1888 or >2025             | 999, -2020, 2026                             |
 | Boundary Value Analysis  | Valid Lower Bound          |                            | 1888                                         |
@@ -142,7 +142,7 @@
 |                          | Valid Upper Bound |                  | 50-char                                          |
 |                          | Invalid  Bound    | 1 - 2            | 1-char, 2-char                                   |
 |                          | Invalid  Bound    | 51 - string.max  | 51-char, string.max                              |
-| Edges                    | Genre edges       |                  | NULL, "", " ", #5char                            |
+| Edges                    | Genre edges       |                  | NULL, "", " ", #5-char                            |
 
 - list of test cases:
 - **Genre:**
