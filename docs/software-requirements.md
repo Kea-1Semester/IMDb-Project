@@ -37,10 +37,10 @@ The data entry will require the user to input information according to the follo
 - Genres
   - Genre: Min. 3 Max. 50 char and dash allowed
 - Episodes
-  - EpisodeNumber: Min. 1 Max. three numeric digits positive between 1 and 999 and does not allow 0
-  - SeasonNumber: Min. 1 Max. 2 numeric digits positive between 1 and 99
+  - EpisodeNumber: Min. 1 Max. three numeric digits positive between 1 and 999 and do not allow 0
+  - SeasonNumber: Min. 1 Max. 2 numeric digits positive between 1 and 99 and do not allow 0
 - Aliases
-  - Region: Min. 2 char Max. 100 char and not allow any special characters
+  - Region: Min. 2 char Max. 5 char and not allow any special characters
   - Language: Min. 2 char Max. 5 char and dash allowed
   - Title: Min. 5 char and Max. 255 char and dash allowed
 - Attributes

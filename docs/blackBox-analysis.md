@@ -17,7 +17,7 @@
 
 | Partition Type           | Partition                  | Valid Range                | Test Case Values                             |
 |--------------------------|----------------------------|----------------------------|----------------------------------------------|
-| Equivalence Partitioning | Valid ``TitleType``        | 5-25 chars                 | 5-char, 6-char, 15-char, 24-char, 25-char     |
+| Equivalence Partitioning | Valid ``TitleType``        | 5-25 chars                 | 5-char, 6-char, 15-char, 24-char, 25-char    |
 | Equivalence Partitioning | Invalid ``TitleType``      | <5 or >25 chars            | movi, 50-char                                |
 | Boundary Value Analysis  | Valid Lower Bound          |                            | 5-char                                       |
 |                          | Valid Upper Bound          |                            | 25-char                                      |
@@ -134,15 +134,15 @@
 
 ## Genres
 
-| Partition Type           | Partition         | Valid Range     | Test Case Values                                 |
-|--------------------------|-------------------|-----------------|--------------------------------------------------|
-| Equivalence Partitioning | Valid Genre       | 3-50 char       | 3-char, 2.char, 10-char, 49-char, 50-char Sci-Fi |
-|                          | Invalid Genre     | < 3 or >50 chars | 1-char, 2-char, 51-char 60-char                  |
-| Boundary Value Analysis  | Valid Lower Bound |                 | 3-char                                           |
-|                          | Valid Upper Bound |                 | 50-char                                          |
-|                          | Invalid  Bound    | 1 - 2           | 1-char, 2-char                                   |
-|                          | Invalid  Bound    | 51 - string.max | 51-char, string.max                              |
-| Edges                    | Genre edges       |                 | NULL, "", " ", #5char                            |
+| Partition Type           | Partition         | Valid Range      | Test Case Values                                 |
+|--------------------------|-------------------|------------------|--------------------------------------------------|
+| Equivalence Partitioning | Valid ``Genre``   | 3-50 char        | 3-char, 2.char, 10-char, 49-char, 50-char Sci-Fi |
+|                          | Invalid ``Genre`` | < 3 or >50 chars | 1-char, 2-char, 51-char 60-char                  |
+| Boundary Value Analysis  | Valid Lower Bound |                  | 3-char                                           |
+|                          | Valid Upper Bound |                  | 50-char                                          |
+|                          | Invalid  Bound    | 1 - 2            | 1-char, 2-char                                   |
+|                          | Invalid  Bound    | 51 - string.max  | 51-char, string.max                              |
+| Edges                    | Genre edges       |                  | NULL, "", " ", #5char                            |
 
 - list of test cases:
 - **Genre:**
@@ -166,20 +166,20 @@
 
 ## Episodes
 
-| Partition Type           | Partition           | Test Case Values            |
-|--------------------------|---------------------|-----------------------------|
-| Equivalence Partitioning | Valid EpisodeNumber | 1, 2, 500, 998, 999         |
-|                          | Invalid Episode     | -1, -5, 1000, 2000, int.max |
-| Boundary Value Analysis  | Valid Lower Bound   | 1                           |
-|                          | Valid Upper Bound   | 999                         |
-|                          | Invalid Lower Bound | 0                           |
-|                          | Invalid Upper Bound | 1000                        |
-| Edges                    | Episode edges       | NULL, 0                     |
-| Equivalence Partitioning | Valid SeasonNumber  | 1, 2, 55, 98, 99            |
-|                          | Invalid Season      | 0, -1, -5.5, 100, 5.5, 501  |
-| Boundary Value Analysis  | Valid Lower Bound   | 1                           |
-|                          | Valid Upper Bound   | 99                          |
-| Edges                    | Season edges        | NULL, 5.5, -5.5             |
+| Partition Type           | Partition                 | Valid Range   | Test Case Values            |
+|--------------------------|---------------------------|---------------|-----------------------------|
+| Equivalence Partitioning | Valid ``EpisodeNumber``   | 1-999 & != 0  | 1, 2, 500, 998, 999         |
+|                          | Invalid ``EpisodeNumber`` | < 1 or > 999  | -1, -5, 1000, 2000, int.max |
+| Boundary Value Analysis  | Valid Lower Bound         |               | 1                           |
+|                          | Valid Upper Bound         |               | 999                         |
+|                          | Invalid Lower Bound       |               | 0                           |
+|                          | Invalid Upper Bound       |               | 1000                        |
+| Edges                    | Episode edges             |               | NULL, 0                     |
+| Equivalence Partitioning | Valid ``SeasonNumber``    | 1 - 99 & != 0 | 1, 2, 55, 98, 99            |
+|                          | Invalid Season            | < 1 or > 99   | 0, -1, -5.5, 100, 5.5, 501  |
+| Boundary Value Analysis  | Valid Lower Bound         |               | 1                           |
+|                          | Valid Upper Bound         |               | 99                          |
+| Edges                    | Season edges              |               | NULL, 5.5, -5.5             |
 
 - list of test cases:
   - **EpisodeNumber:**
@@ -217,41 +217,90 @@
 
 ## Aliases
 
-| Partition Type           | Partition            | Test Case Values                     |
-|--------------------------|----------------------|--------------------------------------|
-| Equivalence Partitioning | Valid Region         | 3-char, 50-char ,99-char             |
-|                          | Invalid Region       | 1-char, 150-char                     |
-| Boundary Value Analysis  | Valid Lower Bound    | 2-char                               |
-|                          | Valid Upper Bound    | 100-char                             |
-|                          | Invalid Lower Bound  | ""(empty string)                     |
-|                          | Invalid Upper Bound  | 101-char                             |
-| Edges                    | Region edges         | NULL, " ", any special characters    |
-| Equivalence Partitioning | Valid Language       | 3-char, "en-us"                      |
-|                          | Invalid Language     | 1-char, 6-char, 10-char              |
-| Boundary Value Analysis  | Language Lower Bound | 2-char                               |
-|                          | Language Upper Bound | 5-char                               |
-| Edges                    | Language edges       | NULL, "", " "                        |
-| Equivalence Partitioning | Valid Title          | 6-char, 50-char, 254-char, star-wars |
-|                          | Invalid Title        | 3-char, 400-char, star#wars          |
-| Boundary Value Analysis  | Title Lower Bound    | 5-char                               |
-|                          | Title Upper Bound    | 255-char                             |
-| Edges                    | Title edges          | NULL, "", " ", #asbas-char etc.      |
+| Partition Type           | Partition            | Valid Range                | Test Case Values                               |
+|--------------------------|----------------------|----------------------------|------------------------------------------------|
+| Equivalence Partitioning | Valid ``Region``     | 2-char - 5-char            | 2-char, 3-char, 4-char ,5-char                 |
+|                          | Invalid Region       | < 2 or > 5                 | 1-char, 6-char, 150-char                       |
+| Boundary Value Analysis  | Valid Lower Bound    |                            | 2-char                                         |
+|                          | Valid Upper Bound    |                            | 5-char                                         |
+|                          | Invalid Lower Bound  |                            | ""(empty string)                               |
+|                          | Invalid Upper Bound  |                            | 6-char                                         |
+| Edges                    | Region edges         |                            | NULL, " ", any special characters, unknown     |
+| Equivalence Partitioning | Valid ``Language``   | 2-char - 5-char            | 2-char, 3-char, "en-us"                        |
+|                          | Invalid ``Language`` | < 2 or > 5                 | 1-char, 6-char, 10-char                        |
+| Boundary Value Analysis  | Lower Bound          |                            | 2-char                                         |
+|                          | Upper Bound          |                            | 5-char                                         |
+| Edges                    | edges                |                            | NULL, "", " "                                  |
+| Equivalence Partitioning | Valid ``Title``      | 5-char - 255 & `-` allowed | 6-char, 50-char, 254-char, 250-char, star-wars |
+|                          | Invalid ``Title``    | < 5 or > 255               | 3-char, 4-char, 256-char, 400-char, star#wars  |
+| Boundary Value Analysis  | Lower Bound          |                            | 5-char                                         |
+|                          | Upper Bound          |                            | 255-char                                       |
+| Edges                    | edges                |                            | NULL, "", " ", #asbas-char etc.                |
+
+- list of test cases:
+  - **Region:**
+    - Valid:
+      - 2 characters 
+      - 3 characters 
+      - 4 characters 
+      - 5 characters 
+    -Invalid:
+      - 1 character 
+      - 6 characters 
+      - 150 characters 
+      - ""(empty string)
+    - Edge Cases:
+      - NULL
+      - " "
+      - any special characters e.g., #5-char
+      - unknown
+  - **Language:**
+    - Valid:
+      - 2-char
+      - 3-char
+      - "en-us"
+    - Invalid:
+      - 1-char
+      - 6-char
+      - 10-char
+    - Edge Cases:
+      - NULL
+      - ""
+  - **Title:**
+    - Valid:
+      - 6-char
+      - 50-char
+      - 254-char
+      - 255-char
+      - star-wars
+    - Invalid:
+      - 3-char
+      - 4-char
+      - 256-char
+      - 400-char
+      - star#wars
+    - Edge Cases:
+      - NULL
+      - ""
+      - " "
+      - #asbas-char
+
 
 ## Person
 
-| Partition Type           | Partition         | Test Case Values                                     |
-|--------------------------|-------------------|------------------------------------------------------|
-| Equivalence Partitioning | Valid Name        | 2-char, 3-char, 50-char ,99-char                     |
-|                          | Invalid Name      | 1-char, 100-char, 101-char, 150-char, str.max        |
-| Boundary Value Analysis  | Valid Lower Bound | 2-char                                               |
-|                          | Valid Upper Bound | 100-char                                             |
-| Edges                    | Name edges        | NULL, " ", ""(empty string) , any special characters |
-| Equivalence Partitioning | Valid BirthYear   | 1995                                                 |
-|                          | Invalid BirthYear | 1, 19, 199 , 19999                                   |
-| Edges                    | BirthYear edges   | NULL, 0000                                           |
-| Equivalence Partitioning | Valid ``EndYear``     | 2020                                                 |
-|                          | Invalid ``EndYear``   | 1, 19, 199, 19999, ``EndYear`` (2025) > BirthYear (1945) |
-| Edges                    | ``EndYear`` edges     | NULL, 0000                                           |
+| Partition Type           | Partition           | | Test Case Values                                         |
+|--------------------------|---------------------|-|----------------------------------------------------------|
+| Equivalence Partitioning | Valid Name          | | 2-char, 3-char, 50-char ,99-char                         |
+|                          | Invalid Name        | | 1-char, 100-char, 101-char, 150-char, str.max            |
+| Boundary Value Analysis  | Valid Lower Bound   | | 2-char                                                   |
+|                          | Valid Upper Bound   | | 100-char                                                 |
+| Edges                    | Name edges          | | NULL, " ", ""(empty string) , any special characters     |
+| Equivalence Partitioning | Valid BirthYear     | | 1995                                                     |
+|                          | Invalid BirthYear   | | 1, 19, 199 , 19999                                       |
+| Edges                    | BirthYear edges     | | NULL, 0000                                               |
+| Equivalence Partitioning | Valid ``EndYear``   | | 2020                                                     |
+|                          | Invalid ``EndYear`` | | 1, 19, 199, 19999, ``EndYear`` (2025) > BirthYear (1945) |
+| Edges                    | ``EndYear`` edges   | | NULL, 0000                                               |
 
 - list of test cases:
 - **Name:**
