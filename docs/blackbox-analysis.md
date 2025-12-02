@@ -136,7 +136,7 @@
 
 | Partition Type           | Partition         | Valid Range      | Test Case Values                                 |
 |--------------------------|-------------------|------------------|--------------------------------------------------|
-| Equivalence Partitioning | Valid ``Genre``   | 3-50 char        | 3-char, 2.char, 10-char, 49-char, 50-char Sci-Fi |
+| Equivalence Partitioning | Valid ``Genre``   | 3-50 char & != any special char       | 3-char, 2.char, 10-char, 49-char, 50-char Sci-Fi |
 |                          | Invalid ``Genre`` | < 3 or >50 chars | 1-char, 2-char, 51-char 60-char                  |
 | Boundary Value Analysis  | Valid Lower Bound |                  | 3-char                                           |
 |                          | Valid Upper Bound |                  | 50-char                                          |
