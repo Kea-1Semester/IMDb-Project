@@ -2,9 +2,9 @@
 
 echo "
 ╔═══════════════════════════════════╗
-║       STOPPING DEVELOPMENT        ║
+║        RUNNING DEVELOPMENT        ║
 ╚═══════════════════════════════════╝
 "
 
 # Start Docker containers in development mode
-docker-compose -f docker-compose.dev.yml down -v
+docker-compose -f docker-compose.dev.yml up -d --build

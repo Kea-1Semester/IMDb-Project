@@ -5,7 +5,7 @@ using Neo4j.Driver;
 
 namespace EfCoreModelsLib.Models.Neo4J.Handler
 {
-    public static class Neo4jSchemaInitializer
+    public static class Neo4JSchemaInitializer
     {
         public static async Task EnsureConstraintsAsync(string uri, string user, string password)
         {

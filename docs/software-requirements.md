@@ -23,41 +23,45 @@ If a user selects a title, the detailed information will be presented on the sam
 
 The application aims to create an engaging user experience while ensuring robust data handling and security, providing fast response times for search queries and minimal loading times for detailed displays.
 
-## Requirements
+## Requirements (written with group members)
 
 The data entry will require the user to input information according to the following template:
 
 - Title
-  - TitleType: Max. 100 char and dash allowed
-  - PrimaryTitle: Max. 255 char and dash allowed
-  - OriginalTitle: Max. 255 char and dash allowed
-  - StartYear: Max. 4 numeric digits positive
-  - EndYear: Max. 4 numeric digits positive or ``NULL``
-  - RuntimeMinutes: Max. 1440 minutes positive or ``NULL``
+    - TitleType: Max. 100 char and dash allowed
+    - PrimaryTitle: Max. 255 char and dash allowed
+    - OriginalTitle: Max. 255 char and dash allowed
+    - StartYear: Max. 4 numeric digits positive
+    - EndYear: Max. 4 numeric digits positive or ``NULL``
+    - RuntimeMinutes: Max. 1440 minutes positive or ``NULL``
 - Genres
-  - Genre: Max. 100 char and not allow any special characters
+    - Genre: Max. 100 char and not allow any special characters
 - Episodes
-  - EpisodeNumber: Max. three numeric digits positive between 01 and 999
-  - SeasonNumber: Max. 2 numeric digits positive between 01 and 99
+    - EpisodeNumber: Max. three numeric digits positive between 01 and 999
+    - SeasonNumber: Max. 2 numeric digits positive between 01 and 99
 - Aliases
-  - Region: Max. 100 char and not allow any special characters
-  - Language: Max. 5 char and dash allowed
-  - Title: Max. 255 char and dash allowed
+    - Region: Max. 100 char and not allow any special characters
+    - Language: Max. 5 char and dash allowed
+    - Title: Max. 255 char and dash allowed
 - Attributes
-  - Attribute: Max. 100 char and does not allow any special characters
+    - Attribute: Max. 100 char and does not allow any special characters
 - Comments
-  - Comment: Max. 255 char and allow (-, (, ), *, / )
+    - Comment: Max. 255 char and allow (-, (, ), *, / )
 - Types
-  - Type: Max. 100 char and does not allow any special characters
+    - Type: Max. 100 char and does not allow any special characters
 - Ratings
-  - AverageRating: Max. 2 numeric digits positive
-  - NumVotes: int Max positive
+    - AverageRating: Max. 2 numeric digits positive
+    - NumVotes: int Max positive
 - Professions
-  - Profession: Max. 45 char and does not allow any special characters
+    - Profession: Max. 45 char and does not allow any special characters
 - Persons
-  - Name: Max. 255 char and does not allow any special characters
-  - BirthYear: Max. 4 numeric digits positive
-  - EndYear: Max. 4 numeric digits positive or ``NULL``
+    - Name: Max. 255 char and does not allow any special characters
+    - BirthYear: Max. 4 numeric digits positive
+    - EndYear: Max. 4 numeric digits positive or ``NULL``
+      | 3 | is_adult | 2<sup>nd</sup> par. | <span style="color:limegreen;">Low</span> | W. |
+      | 4 | filterable frontend | 3<sup>rd</sup> par. | <span style="color:gold;">Medium</span> | need to specify the security level and implementation for the system within the access control. |
+      is marked as adul
+
 
 ## Navigation
 

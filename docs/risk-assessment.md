@@ -11,13 +11,14 @@
 
 ## Business Risks
 
-| ID | Name                   | Description                                          | Impact | Likelihood | Risk Factor | Preventive Actions                       | Status  | Status Date | Follow-up Date |
-|----|------------------------|------------------------------------------------------|--------|------------|-------------|------------------------------------------|---------|-------------|----------------|
-| R5 | Scope creep            | Project scope expands                                | 7      | 2          | 14          | Update backlog, add more sprints         | Initial | 25-11-2025  | 01-12-2025     |
-| R6 | Developer illness      | Illness during flu season                            | 7      | 1          | 7           | Hire more, enable remote work            | Initial | 25-11-2025  | 01-12-2025     |
-| R7 | Wrong priorities       | Focus on features with little business value (UI/UX) | 3      | 5          | 15          | Extreme programming, keep customer close | Initial | 25-11-2025  | 01-12-2025     |
-| R8 | Supervisor unavailable | Supervisor sick or overbooked                        | 2      | 1          | 2           | Updated Scrum board, detailed tasks      | Initial | 25-11-2025  | 01-12-2025     |
-| R9 | Procrastination        | Deadlines missed, work rushed or incomplete          | 7      | 3          | 21          | Assign smaller, simpler tasks            | Initial | 25-11-2025  | 01-12-2025     |
+| ID  | Name                           | Description                                                                                                                  | Impact | Likelihood | Risk Factor | Preventive Actions                                                                          | Status   | Status Date | Follow-up Date |
+|-----|--------------------------------|------------------------------------------------------------------------------------------------------------------------------|--------|------------|-------------|---------------------------------------------------------------------------------------------|----------|-------------|----------------|
+| R5  | Scope creep                    | Project scope expands                                                                                                        | 7      | 2          | 14          | Update backlog, add more sprints                                                            | Initial  | 25-11-2025  | 01-12-2025     |
+| R6  | Developer illness              | Illness during flu season                                                                                                    | 7      | 1          | 7           | Hire more, enable remote work                                                               | Initial  | 25-11-2025  | 01-12-2025     |
+| R7  | Wrong priorities               | Focus on features with little business value (UI/UX)                                                                         | 3      | 5          | 15          | Extreme programming, keep customer close                                                    | Initial  | 25-11-2025  | 01-12-2025     |
+| R8  | Supervisor unavailable         | Supervisor sick or overbooked                                                                                                | 2      | 1          | 2           | Updated Scrum board, detailed tasks                                                         | Initial  | 25-11-2025  | 01-12-2025     |
+| R9  | Procrastination                | Deadlines missed, work rushed or incomplete                                                                                  | 7      | 3          | 21          | Assign smaller, simpler tasks                                                               | Initial  | 25-11-2025  | 01-12-2025     |
+| R10 | Revocation of Residence Permit | Risk that group members lose their legal right to stay due to residence permit withdrawal, reducing team size and continuity | 7      | 4          | 16          | Monitor immigration status regularly, provide legal support, maintain backup staffing plans | Initiate | 02-12-2025  | 01-12-2025     |
 
 ## Delivery Risks
 
