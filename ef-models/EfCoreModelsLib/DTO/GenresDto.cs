@@ -1,0 +1,30 @@
+
+using System.ComponentModel.DataAnnotations;
+
+namespace EfCoreModelsLib.DTO
+{
+    public class GenresDto : IObjectId
+    {
+        public required string Genre { get; set; }
+
+        public void Validate()
+        {
+            if (string.IsNullOrWhiteSpace(Genre))
+            {
+                throw new ValidationException("Genre cannot be null or empty.");
+            }
+            if (Genre.Length < 3)
+            {
+                throw new ValidationException("Genre has to be more then 3 characters.");
+            }
+            if (Genre.Length > 50)
+            {
+                throw new ValidationException("Genre cannot be more then 50 characters.");
+            }
+            if (Genre.All(char.IsLetter))
+            {
+                throw new ValidationException("Genre can only contain letters.");
+            }
+        }
+    }
+}
