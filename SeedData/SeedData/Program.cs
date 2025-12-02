@@ -101,11 +101,6 @@ internal static class Program
                     await context.Database.ExecuteSqlRawAsync(await File.ReadAllTextAsync(file));
 
                 }
-
-
-
-
-
             }
         }
 
@@ -128,6 +123,9 @@ internal static class Program
         await Handlers.Neo4j.Migrators.GenresNeo4jMigrator.MigrateGenresToNeo4j(1000, 0);
         await Handlers.Neo4j.Migrators.RatingsNeo4jMigrator.MigrateRatingsToNeo4j(1000, 0);
         await Handlers.Neo4j.Migrators.CommentsNeo4jMigrator.MigrateCommentsToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.AliasesNeo4jMigrator.MigrateAliasesToNeo4j(1000, 0);
+        await Handlers.Neo4j.Migrators.PersonsNeo4jMigrator.MigratePersonsToNeo4j(1000, 50);
+        await Handlers.Neo4j.Migrators.TitlesNeo4jMigrator.MigrateTitlesToNeo4j(1000, 0);
 
         Console.WriteLine("✅ migrations to Neo4j done.");
 
