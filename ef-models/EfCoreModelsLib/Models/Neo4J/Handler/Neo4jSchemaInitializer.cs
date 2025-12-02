@@ -19,32 +19,32 @@ namespace EfCoreModelsLib.Models.Neo4J.Handler
                 // Attributes
                 "CREATE CONSTRAINT attributes_id_unique IF NOT EXISTS FOR (a:Attributes) REQUIRE a.AttributeId IS UNIQUE",
 
-                // Aliases
-                "CREATE CONSTRAINT aliases_id_unique IF NOT EXISTS FOR (al:Aliases) REQUIRE al.AliasId IS UNIQUE",
-
                 // Types
                 "CREATE CONSTRAINT types_id_unique IF NOT EXISTS FOR (t:Types) REQUIRE t.TypeId IS UNIQUE",
-                
-                // Titles
-                "CREATE CONSTRAINT titles_id_unique IF NOT EXISTS FOR (ti:Titles) REQUIRE ti.TitleId IS UNIQUE",
-
-                // Ratings
-                "CREATE CONSTRAINT ratings_id_unique IF NOT EXISTS FOR (r:Ratings) REQUIRE r.RatingId IS UNIQUE",
-
-                // Genres
-                "CREATE CONSTRAINT genres_id_unique IF NOT EXISTS FOR (g:Genres) REQUIRE g.GenreId IS UNIQUE",
-
-                // Persons
-                "CREATE CONSTRAINT persons_id_unique IF NOT EXISTS FOR (p:Persons) REQUIRE p.PersonId IS UNIQUE",
 
                 // Professions
                 "CREATE CONSTRAINT professions_id_unique IF NOT EXISTS FOR (pr:Professions) REQUIRE pr.ProfessionId IS UNIQUE",
-
+                
+                // Genres
+                "CREATE CONSTRAINT genres_id_unique IF NOT EXISTS FOR (g:Genres) REQUIRE g.GenreId IS UNIQUE",
+                
+                // Ratings
+                "CREATE CONSTRAINT ratings_id_unique IF NOT EXISTS FOR (r:Ratings) REQUIRE r.RatingId IS UNIQUE",
+                
                 // Comments
                 "CREATE CONSTRAINT comments_id_unique IF NOT EXISTS FOR (c:Comments) REQUIRE c.CommentId IS UNIQUE",
 
                 // Logs
-                "CREATE CONSTRAINT logs_id_unique IF NOT EXISTS FOR (l:Logs) REQUIRE l.LogId IS UNIQUE"
+                "CREATE CONSTRAINT logs_id_unique IF NOT EXISTS FOR (l:Logs) REQUIRE l.LogId IS UNIQUE",
+
+                // Aliases
+                "CREATE CONSTRAINT aliases_id_unique IF NOT EXISTS FOR (al:Aliases) REQUIRE al.AliasId IS UNIQUE",
+
+                // Persons
+                "CREATE CONSTRAINT persons_id_unique IF NOT EXISTS FOR (p:Persons) REQUIRE p.PersonId IS UNIQUE",
+
+                // Titles
+                "CREATE CONSTRAINT titles_id_unique IF NOT EXISTS FOR (ti:Titles) REQUIRE ti.TitleId IS UNIQUE"
             };
 
             await session.ExecuteWriteAsync(async tx =>
