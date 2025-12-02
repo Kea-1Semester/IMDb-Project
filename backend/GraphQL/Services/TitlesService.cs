@@ -1,4 +1,5 @@
 using EfCoreModelsLib.Models.Mysql;
+using GraphQL.Repos;
 using Microsoft.EntityFrameworkCore;
 
 namespace GraphQL.Services
@@ -8,23 +9,18 @@ namespace GraphQL.Services
         IQueryable<Titles> GetTitles();
     }
 
-    public class TitlesService : ITitlesService, IAsyncDisposable
+    public class TitlesService : ITitlesService
     {
-        private readonly ImdbContext _context;
+        private readonly ITitlesRepo _titlesRepo;
 
-        public TitlesService(IDbContextFactory<ImdbContext> dbContextFactory)
+        public TitlesService(ITitlesRepo titlesRepo)
         {
-            _context = dbContextFactory.CreateDbContext();
+            _titlesRepo = titlesRepo;
         }
 
         public IQueryable<Titles> GetTitles()
         {
-            return _context.Titles.AsQueryable();
-        }
-
-        public ValueTask DisposeAsync()
-        {
-            return _context.DisposeAsync();
+            return _titlesRepo.GetMySqlTitles();
         }
     }
 }

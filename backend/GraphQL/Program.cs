@@ -2,6 +2,7 @@ using DotNetEnv;
 using EfCoreModelsLib.Models.Mysql;
 using GraphQL.Auth0;
 using GraphQL.Handler;
+using GraphQL.Repos;
 using GraphQL.Services;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,7 +39,8 @@ builder.Services.AddDbContextFactory<ImdbContext>(options =>
     }
 });
 
-builder.Services.AddScoped<ITitlesService, TitlesService>();
+builder.Services.AddTransient<ITitlesRepo, TitlesRepo>();
+builder.Services.AddTransient<ITitlesService, TitlesService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -76,14 +78,14 @@ builder.Services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();
 
 
 builder.AddGraphQL()
-    .AllowIntrospection(builder.Environment.IsDevelopment())
     .AddAuthorization()
     .AddTypes()
     .AddSorting()
     .AddFiltering()
     .AddProjections()
     .ModifyRequestOptions(o => o.IncludeExceptionDetails =
-        builder.Environment.IsDevelopment());
+        builder.Environment.IsDevelopment())
+    .DisableIntrospection(!builder.Environment.IsDevelopment());
 
 var app = builder.Build();
 
