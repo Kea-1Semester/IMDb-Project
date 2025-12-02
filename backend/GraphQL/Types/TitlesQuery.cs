@@ -12,7 +12,6 @@ public static class TitlesQuery
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    //[Authorize(AuthPolicy.ReadPolicies)] // optional for testing without auth
     public static IQueryable<Titles> GetTitles([Service] ITitlesService titlesService)
     {
         return titlesService.GetTitles();
