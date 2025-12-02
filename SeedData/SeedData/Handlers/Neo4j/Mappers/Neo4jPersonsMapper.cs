@@ -3,10 +3,10 @@ using Neo4j.Driver;
 
 namespace SeedData.Handlers.Neo4j.Mappers
 {
-    public static partial class Neo4jPersonsMapper
+    public static partial class Neo4JPersonsMapper
     {
         public static Task UpsertPersons(IEnumerable<PersonsEntity> items, int batchSize = 1000)
-            => Neo4jMapper.WithWriteSession(session => UpsertPersons(session, items, batchSize));
+            => Neo4JMapper.WithWriteSession(session => UpsertPersons(session, items, batchSize));
 
         public static async Task UpsertPersons(IAsyncSession session, IEnumerable<PersonsEntity> items, int batchSize)
         {
@@ -26,7 +26,7 @@ namespace SeedData.Handlers.Neo4j.Mappers
                 MERGE (p)-[:KNOWN_FOR]->(ti))
             ";
 
-            foreach (var chunk in Neo4jMapper.Chunk(items, batchSize))
+            foreach (var chunk in Neo4JMapper.Chunk(items, batchSize))
             {
                 var rows = chunk.Select(p => new
                 {

@@ -3,10 +3,10 @@ using Neo4j.Driver;
 
 namespace SeedData.Handlers.Neo4j.Mappers
 {
-    public static partial class Neo4jAliasesMapper
+    public static partial class Neo4JAliasesMapper
     {
         public static Task UpsertAliases(IEnumerable<AliasesEntity> items, int batchSize = 1000)
-            => Neo4jMapper.WithWriteSession(session => UpsertAliases(session, items, batchSize));
+            => Neo4JMapper.WithWriteSession(session => UpsertAliases(session, items, batchSize));
 
         public static async Task UpsertAliases(IAsyncSession session, IEnumerable<AliasesEntity> items, int batchSize)
         {
@@ -28,7 +28,7 @@ FOREACH (typeId IN row.TypeIds |
   MERGE (al)-[:HAS_TYPE]->(t)
 )";
 
-            foreach (var chunk in Neo4jMapper.Chunk(items, batchSize))
+            foreach (var chunk in Neo4JMapper.Chunk(items, batchSize))
             {
                 var rows = chunk.Select(al => new
                 {

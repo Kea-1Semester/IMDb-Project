@@ -3,10 +3,10 @@ using Neo4j.Driver;
 
 namespace SeedData.Handlers.Neo4j.Mappers
 {
-    public static partial class Neo4jRatingsMapper
+    public static partial class Neo4JRatingsMapper
     {
         public static Task UpsertRatings(IEnumerable<RatingsEntity> items, int batchSize = 1000)
-            => Neo4jMapper.WithWriteSession(session => UpsertRatings(session, items, batchSize));
+            => Neo4JMapper.WithWriteSession(session => UpsertRatings(session, items, batchSize));
 
         public static async Task UpsertRatings(IAsyncSession session, IEnumerable<RatingsEntity> items, int batchSize)
         {
@@ -17,7 +17,7 @@ namespace SeedData.Handlers.Neo4j.Mappers
                 r.NumVotes      = row.NumVotes
             ";
 
-            foreach (var chunk in Neo4jMapper.Chunk(items, batchSize))
+            foreach (var chunk in Neo4JMapper.Chunk(items, batchSize))
             {
                 var rows = chunk.Select(r => new
                 {
