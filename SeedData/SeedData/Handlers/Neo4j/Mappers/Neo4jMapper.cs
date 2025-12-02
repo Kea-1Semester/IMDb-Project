@@ -3,9 +3,9 @@ using DotNetEnv;
 using EfCoreModelsLib.Models.Neo4J.Neo4JModels;
 using Neo4j.Driver;
 
-namespace SeedData.Handlers.Neo4j
+namespace SeedData.Handlers.Neo4j.Mappers
 {
-    public static class Neo4jMapper
+    public static class Neo4JMapper
     {
         public static async Task WithWriteSession(Func<IAsyncSession, Task> action)
         {
@@ -63,16 +63,16 @@ namespace SeedData.Handlers.Neo4j
             await WithWriteSession(async session =>
             {
                 // Kør kun hvis der er data i den pågældende samling
-                if (data.Attributes.Any()) await Neo4jAttributesMapper.UpsertAttributes(session, data.Attributes, batchSize);
-                if (data.Types.Any())      await Neo4jTypesMapper.UpsertTypes(session, data.Types, batchSize);
-                if (data.Aliases.Any()) await Neo4jAliasesMapper.UpsertAliases(session, data.Aliases, batchSize);
-                if (data.Titles.Any()) await Neo4jTitlesMapper.UpsertTitles(session, data.Titles, batchSize);
-                if (data.Genres.Any()) await Neo4jGenresMapper.UpsertGenres(session, data.Genres, batchSize);
-                if (data.Ratings.Any()) await Neo4jRatingsMapper.UpsertRatings(session, data.Ratings, batchSize);
-                if (data.Persons.Any()) await Neo4jPersonsMapper.UpsertPersons(session, data.Persons, batchSize);
+                if (data.Attributes.Any()) await Neo4JAttributesMapper.UpsertAttributes(session, data.Attributes, batchSize);
+                if (data.Types.Any())      await Neo4JTypesMapper.UpsertTypes(session, data.Types, batchSize);
+                if (data.Aliases.Any()) await Neo4JAliasesMapper.UpsertAliases(session, data.Aliases, batchSize);
+                if (data.Titles.Any()) await Neo4JTitlesMapper.UpsertTitles(session, data.Titles, batchSize);
+                if (data.Genres.Any()) await Neo4JGenresMapper.UpsertGenres(session, data.Genres, batchSize);
+                if (data.Ratings.Any()) await Neo4JRatingsMapper.UpsertRatings(session, data.Ratings, batchSize);
+                if (data.Persons.Any()) await Neo4JPersonsMapper.UpsertPersons(session, data.Persons, batchSize);
                 if (data.Professions.Any()) await Neo4jProfessionsMapper.UpsertProfessions(session, data.Professions, batchSize);
-                if (data.Comments.Any()) await Neo4jCommentsMapper.UpsertComments(session, data.Comments, batchSize);
-                if (data.Logs.Any()) await Neo4jLogsMapper.UpsertLogs(session, data.Logs, batchSize);
+                if (data.Comments.Any()) await Neo4JCommentsMapper.UpsertComments(session, data.Comments, batchSize);
+                if (data.Logs.Any()) await Neo4JLogsMapper.UpsertLogs(session, data.Logs, batchSize);
 
                 // Tilføj flere linjer her når du får nye entiteter
             });

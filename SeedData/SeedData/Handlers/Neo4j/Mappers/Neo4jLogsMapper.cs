@@ -1,12 +1,12 @@
 using EfCoreModelsLib.Models.Neo4J.Neo4JModels;
 using Neo4j.Driver;
 
-namespace SeedData.Handlers.Neo4j
+namespace SeedData.Handlers.Neo4j.Mappers
 {
-    public static partial class Neo4jLogsMapper
+    public static partial class Neo4JLogsMapper
     {
         public static Task UpsertLogs(IEnumerable<LogsEntity> items, int batchSize = 1000)
-            => Neo4jMapper.WithWriteSession(session => UpsertLogs(session, items, batchSize));
+            => Neo4JMapper.WithWriteSession(session => UpsertLogs(session, items, batchSize));
 
         public static async Task UpsertLogs(IAsyncSession session, IEnumerable<LogsEntity> items, int batchSize)
         {
@@ -21,7 +21,7 @@ namespace SeedData.Handlers.Neo4j
                   l.ExecutedAt    = row.ExecutedAt
                   ";
 
-            foreach (var chunk in Neo4jMapper.Chunk(items, batchSize))
+            foreach (var chunk in Neo4JMapper.Chunk(items, batchSize))
             {
                 var rows = chunk.Select(l => new
                 {

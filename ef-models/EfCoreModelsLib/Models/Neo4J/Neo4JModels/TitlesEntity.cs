@@ -8,7 +8,7 @@ namespace EfCoreModelsLib.Models.Neo4J.Neo4JModels
         public string OriginalTitle { get; set; } = "";
         public bool IsAdult { get; set; }
         public int StartYear { get; set; }
-        public int EndYear { get; set; }
+        public int? EndYear { get; set; }
         public int? RuntimeMinutes { get; set; }
 
         // Title-To-Title Relationships
