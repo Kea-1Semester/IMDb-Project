@@ -288,19 +288,19 @@
 
 ## Person
 
-| Partition Type           | Partition           | | Test Case Values                                         |
-|--------------------------|---------------------|-|----------------------------------------------------------|
-| Equivalence Partitioning | Valid Name          | | 2-char, 3-char, 50-char ,99-char                         |
-|                          | Invalid Name        | | 1-char, 100-char, 101-char, 150-char, str.max            |
-| Boundary Value Analysis  | Valid Lower Bound   | | 2-char                                                   |
-|                          | Valid Upper Bound   | | 100-char                                                 |
-| Edges                    | Name edges          | | NULL, " ", ""(empty string) , any special characters     |
-| Equivalence Partitioning | Valid BirthYear     | | 1995                                                     |
-|                          | Invalid BirthYear   | | 1, 19, 199 , 19999                                       |
-| Edges                    | BirthYear edges     | | NULL, 0000                                               |
-| Equivalence Partitioning | Valid ``EndYear``   | | 2020                                                     |
-|                          | Invalid ``EndYear`` | | 1, 19, 199, 19999, ``EndYear`` (2025) > BirthYear (1945) |
-| Edges                    | ``EndYear`` edges   | | NULL, 0000                                               |
+| Partition Type           | Partition             | Valid Range                                 | Test Case Values                                         |
+|--------------------------|-----------------------|---------------------------------------------|----------------------------------------------------------|
+| Equivalence Partitioning | Valid ``Name``        | 2 - 100                                     | 2-char, 3-char, 50-char ,99-char                         |
+|                          | Invalid ``Nam``e      | < 1 or > 100                                | 1-char, 100-char, 101-char, 150-char, str.max            |
+| Boundary Value Analysis  | Valid Lower Bound     |                                             | 2-char                                                   |
+|                          | Valid Upper Bound     |                                             | 100-char                                                 |
+| Edges                    | Name edges            |                                             | NULL, " ", ""(empty string) , any special characters     |
+| Equivalence Partitioning | Valid ``BirthYear``   | 1888 - newest year                          | 1995                                                     |
+|                          | Invalid ``BirthYear`` | < 1888 or > year.now                        | 1, 19, 199 , 19999                                       |
+| Edges                    | BirthYear edges       |                                             | NULL, 0000 , -2024                                       |
+| Equivalence Partitioning | Valid ``EndYear``     | 4 numeric digit & null allow &  > birthyear | 2020                                                     |
+|                          | Invalid ``EndYear``   |                                             | 1, 19, 199, 19999, ``EndYear`` (2025) > BirthYear (1945) |
+| Edges                    | ``EndYear`` edges     |                                             | NULL, 0000                                               |
 
 - list of test cases:
 - **Name:**

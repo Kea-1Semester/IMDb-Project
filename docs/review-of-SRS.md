@@ -1,4 +1,4 @@
-# **Review**
+# **Review** of SRS
 
 ## Issues
 
@@ -25,41 +25,45 @@
 | 8  | Comments                 | 4<sup>th</sup> par. | <span style="color:limegreen;">low</span>     | The comments is unclear - is it user comment or metadata for IMDB comments.                      |
 | 10 | Engaging user experience | 6<sup>th</sup> par. | <span style="color:limegreen;">low</span>     | The engaging user experience is not defined - what makes it engaging?                            |
 
-## Requirements
+
+## Requirements (review of requirements) 
 
 The data entry will require the user to input information according to the following template:
 
 - Title
-  - TitleType: Max. 100 char and dash allowed
-  - PrimaryTitle: Max. 255 char and dash allowed
-  - OriginalTitle: Max. 255 char and dash allowed
-  - StartYear: Max. 4 numeric digits positive
-  - EndYear: Max. 4 numeric digits positive or ``NULL``
-  - RuntimeMinutes: Max. 1440 minutes positive or ``NULL``
+    - TitleType:``[Min. 5]`` ``[Max. 25]`` char and does not allow any special characters 
+    - PrimaryTitle:``[ Min. 5, Max. 255]`` char and dash allowed
+    - OriginalTitle: ``[Min. 5, Max. 255]`` char and dash allowed
+    - StartYear: Max. 4 numeric digits positive and Range 1888-newest year
+    - EndYear: 4 numeric digits positive or ``NULL`` and greater than StartYear
+    - RuntimeMinutes: [``Min. 60 Min Max. 1440``] minutes positive or ``NULL``
 - Genres
-  - Genre: Max. 100 char and not allow any special characters
+    - Genre: ``[Min. 3 Max. 50]`` char and dash allowed
 - Episodes
-  - EpisodeNumber: Max. three numeric digits positive between 01 and 999
-  - SeasonNumber: Max. 2 numeric digits positive between 01 and 99
+    - EpisodeNumber: ``[Min. 1 Max. 3 numeric]`` digits positive between 1 and 999 and do not allow 0
+    - SeasonNumber: ``[Min. 1 Max. 2]`` numeric digits positive between 1 and 99 and do not allow 0
 - Aliases
-  - Region: Max. 100 char and not allow any special characters
-  - Language: Max. 5 char and dash allowed
-  - Title: Max. 255 char and dash allowed
+    - Region:``[Min. 2 char Max. 5]`` char and not allow any special characters
+    - Language: ``[Min. 2 char Max. 5 char]`` and dash allowed
+    - Title: Min. 5 char and Max. 255 char and dash allowed
 - Attributes
-  - Attribute: Max. 100 char and does not allow any special characters
+    - Attribute: Max. 100 char and does not allow any special characters
 - Comments
-  - Comment: Max. 255 char and allow (-, (, ), *, / )
+    - Comment: Max. 255 char and allow (-, (, ), *, / ) 
 - Types
-  - Type: Max. 100 char and does not allow any special characters
+    - Type: Max. 100 char and does not allow any special characters
 - Ratings
-  - AverageRating: Max. 2 numeric digits positive
-  - NumVotes: int Max positive
+    - AverageRating: Max. 2 numeric digits positive
+    - NumVotes: int Max positive
 - Professions
-  - Profession: Max. 45 char and does not allow any special characters
+    - Profession: Max. 45 char and does not allow any special characters
 - Persons
-  - Name: Max. 255 char and does not allow any special characters
-  - BirthYear: Max. 4 numeric digits positive
-  - EndYear: Max. 4 numeric digits positive or ``NULL``
-| 3 | is_adult | 2<sup>nd</sup> par. | <span style="color:limegreen;">Low</span> | W. |
-| 4 | filterable frontend | 3<sup>rd</sup> par. | <span style="color:gold;">Medium</span> | need to specify the security level and implementation for the system within the access control. |
-is marked as adul
+    - Name: Min. 2 and Max. 100 char and does not allow any special characters
+    - BirthYear: Max. 4 numeric digits positive and Range 1888-newest year
+    - EndYear: Max. 4 numeric digits positive or ``NULL`` and greater than BirthYear
+
+
+
+
+
+
