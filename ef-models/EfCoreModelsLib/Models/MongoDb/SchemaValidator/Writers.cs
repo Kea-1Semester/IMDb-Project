@@ -6,19 +6,21 @@ public abstract class Writers
 {
     public static BsonDocument GetSchema()
     {
+        const string bsonType = "bsonType";
+
         return new BsonDocument
         {
-            { "bsonType", new BsonArray { "array", "null" } },
+            { bsonType, new BsonArray { "array", "null" } },
             {
                 "items", new BsonDocument
                 {
-                    { "bsonType", "object" },
+                    { bsonType, "object" },
                     { "required", new BsonArray { "id", "name" } },
                     {
                         "properties", new BsonDocument
                         {
-                            { "id", new BsonDocument("bsonType", new BsonArray { "binData", "string" }) },
-                            { "name", new BsonDocument("bsonType", "string") }
+                            { "id", new BsonDocument(bsonType, new BsonArray { "binData", "string" }) },
+                            { "name", new BsonDocument(bsonType, "string") }
                         }
                     }
                 }

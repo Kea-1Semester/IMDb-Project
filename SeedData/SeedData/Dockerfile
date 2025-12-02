@@ -10,11 +10,16 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["SeedData/SeedData.csproj", "SeedData/"]
-COPY ["EfCoreModelsLib/EfCoreModelsLib.csproj", "EfCoreModelsLib/"]
-RUN dotnet restore "./SeedData/SeedData.csproj"
-COPY . .
-WORKDIR "/src/SeedData"
+
+COPY ["SeedData/SeedData/SeedData.csproj", "SeedData/SeedData/"]
+COPY ["ef-models/EfCoreModelsLib/EfCoreModelsLib.csproj", "ef-models/EfCoreModelsLib/"]
+
+RUN dotnet restore "SeedData/SeedData/SeedData.csproj"
+
+COPY ["SeedData/SeedData", "SeedData/SeedData"]
+COPY ["ef-models/EfCoreModelsLib", "ef-models/EfCoreModelsLib"]
+
+WORKDIR "/src/SeedData/SeedData/"
 RUN dotnet build "./SeedData.csproj" -c "$BUILD_CONFIGURATION" -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

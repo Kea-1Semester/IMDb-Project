@@ -28,3 +28,83 @@ README.md
 !.git/config
 !.git/packed-refs
 !.git/refs/heads/**
+
+**/charts/
+**/SeedData/data/
+# Ignore version control and config files
+.git
+**/.git
+**/.gitignore
+**/.vscode
+**/.vs
+**/*.user
+
+# Ignore build outputs
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# Ignore Docker and compose files
+**/Dockerfile*
+**/docker-compose*
+**/compose.y*ml
+
+# Ignore node/npm artifacts
+**/node_modules/
+**/npm-debug.log
+
+# Ignore IDE/project files
+**/*.dbmdl
+**/*.jfm
+**/*.classpath
+**/*.project
+*.settings
+**/.toolstarget
+
+# Ignore OS files
+**/.DS_Store
+
+# Ignore secrets and local config
+**/.env
+**/secrets.dev.yaml
+**/values.dev.yaml
+
+# Ignore documentation and license
+**/LICENSE
+**/README.md
+
+# Ignore charts and data folders
+./charts/**
+./SeedData/data/**
+./charts/**
+**/charts/**
+**/data
+**/data/
+**/data/*
+./data/**
+**/data/**
+./DbDesign/**
+**/DbDesign/**
+./SeedData/data/**
+**/SeedData/data/**
+./efpt.config.json.user
+**/efpt.config.json.user
+package-lock.json
+**/package-lock.json
+package.json
+**/package.json
+.github
+**/.github
+.husky
+**/.husky
+SeedData/SeedData/data/**
+**/SeedData/SeedData/data/**
+
+*.tsv
+*.*.tsv
+**.tsv
+**.**.tsv
+*.**.tsv
+**.*.tsv
+**/*.tsv
