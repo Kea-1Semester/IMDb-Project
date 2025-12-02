@@ -11,7 +11,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      VITE_API_URL: http://localhost:5000
+      VITE_API_URL: ${VITE_API_URL}
       CHOKIDAR_USEPOLLING: "true" # Enables file watching in Docker on some systems
 
   # -- Backend Service for Development Environment --
@@ -23,12 +23,11 @@ services:
     ports:
       - "5000:8080"
     environment:
-      MySqlConnectionString: server=mysql;port=3306;database=imdb;user=root;password=admin;default command timeout=600
-      ASPNETCORE_ENVIRONMENT: Development
+      MySqlConnectionString: ${MySqlConnectionString}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       Auth0Audience: ${Auth0Audience}
       Auth0Domain: ${Auth0Domain}
-      ValidIssuer: ${ValidIssuer}
-      IssuerSigningKey: ${IssuerSigningKey} 
+      IssuerSigningKey: ${IssuerSigningKey}
   seed_data:
     container_name: seeddata
     build:
@@ -42,9 +41,9 @@ services:
       - neo4j
     environment:
       SEED_SAMPLE_DATA: true
-      MySqlConnectionString: server=mysql;port=3306;database=imdb;user=root;password=admin;default command timeout=600
-      MongoDbConnectionString: mongodb://mongodb1:27017?replicaSet=rs0
-      MongoDbDatabase: imdb
+      MySqlConnectionString: ${MySqlConnectionString}
+      MongoDbConnectionString: ${MongoDbConnectionString}
+      MongoDbDatabase: ${MongoDbDatabase}
       DATA_ROOT: /mySql
     volumes:
       - ./SeedData/SeedData/mySql:/mySql
