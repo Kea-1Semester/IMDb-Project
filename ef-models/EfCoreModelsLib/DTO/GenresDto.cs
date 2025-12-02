@@ -9,7 +9,7 @@ namespace EfCoreModelsLib.DTO
 
         public void Validate()
         {
-            if (string.IsNullOrWhiteSpace(Genre))
+            if (string.IsNullOrWhiteSpace(Genre) && string.IsNullOrEmpty(Genre))
             {
                 throw new ValidationException("Genre cannot be null or empty.");
             }
@@ -21,7 +21,7 @@ namespace EfCoreModelsLib.DTO
             {
                 throw new ValidationException("Genre cannot be more then 50 characters.");
             }
-            if (Genre.All(char.IsLetter))
+            if (Genre.Any(c => !char.IsLetter(c)))
             {
                 throw new ValidationException("Genre can only contain letters.");
             }
