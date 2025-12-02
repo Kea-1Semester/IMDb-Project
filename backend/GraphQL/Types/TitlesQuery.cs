@@ -1,5 +1,7 @@
 using EfCoreModelsLib.Models.Mysql;
+using GraphQL.Auth0;
 using GraphQL.Services;
+using HotChocolate.Authorization;
 
 namespace GraphQL.Types;
 
