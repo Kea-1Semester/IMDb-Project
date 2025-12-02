@@ -41,8 +41,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          cd backend
-          docker build --no-cache -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest -f ./GraphQL/Dockerfile .
+          docker build --no-cache -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest -f backend/GraphQL/Dockerfile .
 
       - name: Push Docker image to GitHub Container Registry
         run: |
