@@ -17,7 +17,7 @@ _Insert screenshot of SonarQube Dashboard, Issues, Code Smells and Complexity_
 
 ### **[ReSharper](https://www.jetbrains.com/resharper/)**
 
-<small>_Although ReSharper is and IDE-based tool and therefore not part of our official static testing tools for this section, it was still used by some of us as a supplementary aid during development_</small>
+<small>_Although ReSharper is an IDE-based tool and therefore not part of our official static testing tools for this section, it was still used by some of us as a supplementary aid during development_</small>
 
 ReSharper provides on-the-fly code inspections, refactoring suggestions and quick fixes directly inside the editor. Its feedback helped identify minor issues such as unused variables, inconsistent naming, missing null-checks, and opportunities for simplifying expressions.
 
