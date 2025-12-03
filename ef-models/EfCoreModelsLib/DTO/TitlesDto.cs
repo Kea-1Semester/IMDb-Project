@@ -3,14 +3,42 @@ namespace EfCoreModelsLib.DTO
 {
     public class TitlesDto : IObjectId
     {
+        private const int SYSTEM_MAX_YEAR = 9999;
+        private const int BUSINESS_MAX_FUTURE_YEARS = 100;
+
+
         public required string TitleType { get; set; }
         public required string PrimaryTitle { get; set; }
         public required string OriginalTitle { get; set; }
         public bool IsAdult { get; set; }
-        public int StartYear { get; set; }
-        public int EndYear { get; set; }
-        public int RuntimeMinutes { get; set; }
-        private DateOnly _year = DateOnly.FromDateTime(DateTime.Now);
+        private readonly DateOnly _year = DateOnly.FromDateTime(DateTime.Now);
+
+        private int _startYear;
+        public int StartYear
+        {
+            get => _startYear;
+            set =>
+                // Use Math.Abs to ensure only non-negative values are set
+                _startYear = Math.Abs(value);
+        }
+
+        private int? _endYear;
+        public int? EndYear
+        {
+            get => _endYear;
+            set =>
+                _endYear = value.HasValue ? Math.Abs(value.Value) : (int?)null;
+        }
+
+        private int? _runtimeMinutes;
+        public int? RuntimeMinutes
+        {
+            get => _runtimeMinutes;
+            set =>
+                _runtimeMinutes = value.HasValue ? Math.Abs(value.Value) : (int?)null;
+        }
+
+
 
         public void ValidateTitleType()
         {
@@ -18,7 +46,7 @@ namespace EfCoreModelsLib.DTO
             {
                 throw new ArgumentNullException(nameof(TitleType), "TitleType cannot be null or empty.");
             }
-            if (TitleType.Length is < 5 or > 25 || !TitleType.All(char.IsLetterOrDigit))
+            if (TitleType.Length is < 5 or > 25 || !TitleType.All(char.IsLetter))
             {
                 throw new ArgumentException("TitleType must be between 5 and 25 characters long and contain only letters.");
             }
@@ -30,7 +58,9 @@ namespace EfCoreModelsLib.DTO
             {
                 throw new ArgumentNullException(nameof(PrimaryTitle), "PrimaryTitle cannot be null or empty.");
             }
-            if (PrimaryTitle.Length is < 5 or > 255 && !PrimaryTitle.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '\'' || c == ','))
+            if (PrimaryTitle.Length < 5 || PrimaryTitle.Length > 255 ||
+                !PrimaryTitle.All(c => char.IsLetter(c) || char.IsWhiteSpace(c) ||
+                                       c == '-' || c == '\'' || c == ',' || c == '.' || c == ':'))
             {
                 throw new ArgumentException("PrimaryTitle must be between 5 and 255 characters long and contain only letters, spaces, hyphens, apostrophes, or commas.");
             }
@@ -41,7 +71,9 @@ namespace EfCoreModelsLib.DTO
             {
                 throw new ArgumentNullException(nameof(OriginalTitle), "OriginalTitle cannot be null or empty.");
             }
-            if (OriginalTitle.Length is < 5 or > 255 && !OriginalTitle.All(c => char.IsLetter(c) || char.IsWhiteSpace(c) || c == '-' || c == '\'' || c == ','))
+            if (OriginalTitle.Length < 5 || OriginalTitle.Length > 255 ||
+                !OriginalTitle.All(c => char.IsLetter(c) || char.IsWhiteSpace(c) ||
+                                       c == '-' || c == '\'' || c == ',' || c == '.' || c == ':'))
             {
                 throw new ArgumentException("OriginalTitle must be between 5 and 255 characters long and contain only letters, spaces, hyphens, apostrophes, or commas.");
             }
@@ -51,17 +83,29 @@ namespace EfCoreModelsLib.DTO
         {
             if (StartYear < 1888 || StartYear > _year.Year)
             {
-                throw new ArgumentOutOfRangeException(nameof(RuntimeMinutes), "StartYear must be between 1888 and the current year.");
+                throw new ArgumentOutOfRangeException(nameof(StartYear), "StartYear must be between 1888 and the current year.");
             }
         }
 
         public void ValidateEndYear()
         {
-            if (EndYear < 1888 || EndYear > _year.Year)
+            int currentYear = DateTime.Now.Year;
+            int businessLimitYear = currentYear + BUSINESS_MAX_FUTURE_YEARS;
+
+            if (EndYear < _year.Year)
             {
-                throw new ArgumentOutOfRangeException(nameof(RuntimeMinutes), "EndYear must be between 1888 and the current year.");
+                throw new ArgumentOutOfRangeException(nameof(EndYear), "EndYear cannot be in the past.");
 
             }
+            if (EndYear > businessLimitYear)
+            {
+                throw new ArgumentOutOfRangeException(nameof(EndYear), $"EndYear cannot be more than {BUSINESS_MAX_FUTURE_YEARS} years in the future.");
+            }
+            if(EndYear > SYSTEM_MAX_YEAR)
+            {
+                throw new ArgumentOutOfRangeException(nameof(EndYear), $"EndYear cannot exceed system maximum year of {SYSTEM_MAX_YEAR}.");
+            }
+
         }
         public void ValidateRuntimeMinutes()
         {
