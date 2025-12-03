@@ -9,7 +9,7 @@ This section covers static testing tools, white-box test design, code coverage a
 To ensure code quality, we chose to use SonarQube as our primary static testing tool.
 SonarQube allows us to identify potential bugs, security risks, code smells, and violations of coding standards before running the application.
 
-By analyzince the codebase statically, we gain insight into areas that require refactoring or further attention, which helps to improve the overall maintainability and structure of our backend.
+By analyzing the codebase statically, we gain insight into areas that require refactoring or further attention, which helps to improve the overall maintainability and structure of our backend.
 
 #### Usage
 
