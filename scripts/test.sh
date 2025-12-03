@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "
 ╔═══════════════════════════════════╗
-║     RUNNING HUSKY PRE-COMMIT      ║
+║         BUILDING PROJECTS         ║
 ╚═══════════════════════════════════╝
 "
 
-# Build all projects
-npm run build
+# Run unit tests
+dotnet test backend/unit.tests
 
-# Run tests
-npm run test
+# Run integration tests
+dotnet test backend/integration.tests

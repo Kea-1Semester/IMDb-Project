@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "bash ./scripts/build.sh",
-    "test": "echo \"Husky ran!\"",
+    "test": "back ./scripts/test.sh",
     "prepare": "husky",
     "dev_up": "bash ./scripts/dev_up.sh",
     "dev_up_build": "bash ./scripts/dev_up_build.sh",
