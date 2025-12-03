@@ -34,4 +34,4 @@ echo "Navigating to backend..."
 cd ../backend || exit 1
 
 # Run dotnet build
-dotnet build
+dotnet build && dotnet test
