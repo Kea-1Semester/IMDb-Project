@@ -208,7 +208,7 @@ namespace unit.tests
         }
 
         [Test]
-        public void ValidateAnyFieldsUnCorrect()
+        public void ValidateAnyFieldIncorrect()
         {
             // Arrange
             _titlesDto.TitleType = "m"; // Invalid TitleType
