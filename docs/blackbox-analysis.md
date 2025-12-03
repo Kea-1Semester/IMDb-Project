@@ -15,43 +15,43 @@
 | EndYear        | NULL or >= StartYear | integer | Dependency on StartYear |
 | RuntimeMinutes | 60-1440 or NULL      | integer |                         |
 
-| Partition Type           | Partition                  | Valid Range                | Test Case Values                             |
-|--------------------------|----------------------------|----------------------------|----------------------------------------------|
-| Equivalence Partitioning | Valid ``TitleType``        | 5-25 chars                 | 5-char, 6-char, 15-char, 24-char, 25-char    |
-| Equivalence Partitioning | Invalid ``TitleType``      | <5 or >25 chars            | movi, 50-char                                |
-| Boundary Value Analysis  | Valid Lower Bound          |                            | 5-char                                       |
-|                          | Valid Upper Bound          |                            | 25-char                                      |
-|                          | InValid Lower Bound        |                            | 1-char, 4-char                               |
-|                          | Invalid Upper Bound        |                            | 26-char, str.max                             |
-| Edges                    | edges cases                |                            | NULL, "", " ", #asbas-char etc.              |
-| Equivalence Partitioning | Valid ``PrimaryTitle``     | 5-255 chars                | 6-char, 50-char, 254-char, star-wars         |
-| Equivalence Partitioning | Invalid ``PrimaryTitle``   | <5 or >255 chars           | 4-char, 400-char                             |
-| Boundary Value Analysis  | Valid Lower Bound          |                            | 5-char                                       |
-|                          | Valid Upper Bound          |                            | 255-char                                     |
-|                          | Invalid Lower Bound        |                            | 1-char , 4-char                              |
-|                          | Invalid Upper Bound        |                            | 256-char , char.max                          |
-| Edges                    | edges cases                |                            | NULL, "", " ", #asbas-char etc.              |
-| Equivalence Partitioning | Valid ``OriginalTitle``    | 5-255 chars                | Same as PrimaryTitle (identical constraints) |
-| Equivalence Partitioning | Valid ``StartYear``        | 1888-2025                  | 1888, 1889, 1999, 2024, 2025                 |
-| Equivalence Partitioning | Invalid ``StartYear``      | <1888 or >2025             | 999, -2020, 2026                             |
-| Boundary Value Analysis  | Valid Lower Bound          |                            | 1888                                         |
-|                          | Valid Upper Bound          |                            | 2025                                         |
-|                          | InValid Lower Bound        | 0 - 1887                   | 999, 1887                                    |
-|                          | InValid Upper Bound        | 2026 - feature             | 2026 - feature                               |
-| Edges                    | edges cases                |                            | 0000 ,-2020                                  |
-| Equivalence Partitioning | Valid ``EndYear``          | NULL or >=StartYear        | 2026 > 2025, NULL                            |
-| Equivalence Partitioning | Invalid ``EndYear``        | <StartYear or invalid year | 9, 99, 999, 2010(with startYear=2025)        |
-| Boundary Value Analysis  | Valid Lower Bound          | EndYear>=StartYear         | Start=2025/End=2025                          |
-|                          | Valid Upper Bound          |                            | Start=2025/End=2026                          |
-|                          | InValid Lower Bound        |                            | Start=2025/End=2024                          |
-| Edges                    | edges cases                |                            | 0000,9999, 2026                              |
-| Equivalence Partitioning | Valid ``RuntimeMinutes``   | 60-1440 or NULL            | 60, 61, 1000, 1439, NULL                     |
-| Equivalence Partitioning | Invalid ``RuntimeMinutes`` |                            | 50                                           |
-|                          | Valid Lower Bound          | 60-1440                    | 60                                           |
-|                          | Valid Upper Bound          |                            | 1440                                         |
-|                          | InValid Bound              | 0-59                       | 0, 59                                        |
-|                          | InValid Bound              | 1441 - max                 | 1441, max                                    |
-| Edges                    | edges cases                |                            | -1, int.max                                  |
+| Partition Type           | Partition                  | Valid Range                                                                                    | Test Case Values                                                |
+|--------------------------|----------------------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
+| Equivalence Partitioning | Valid ``TitleType``        | 5-25 chars & != any special char                                                               | 5-char, 6-char, 15-char, 24-char, 25-char                       |
+| Equivalence Partitioning | Invalid ``TitleType``      | <5 or >25 chars                                                                                | movi, 50-char                                                   |
+| Boundary Value Analysis  | Valid Lower Bound          |                                                                                                | 5-char                                                          |
+|                          | Valid Upper Bound          |                                                                                                | 25-char                                                         |
+|                          | InValid Lower Bound        |                                                                                                | 1-char, 4-char                                                  |
+|                          | Invalid Upper Bound        |                                                                                                | 26-char, str.max                                                |
+| Edges                    | edges cases                |                                                                                                | NULL, "", " ", #asbas-char etc.                                 |
+| Equivalence Partitioning | Valid ``PrimaryTitle``     | 5-255 chars and dash allowed                                                                   | 6-char, 50-char, 254-char, star-wars                            |
+| Equivalence Partitioning | Invalid ``PrimaryTitle``   | <5 or >255 chars                                                                               | 4-char, 400-char                                                |
+| Boundary Value Analysis  | Valid Lower Bound          |                                                                                                | 5-char                                                          |
+|                          | Valid Upper Bound          |                                                                                                | 255-char                                                        |
+|                          | Invalid Lower Bound        |                                                                                                | 1-char , 4-char                                                 |
+|                          | Invalid Upper Bound        |                                                                                                | 256-char , char.max                                             |
+| Edges                    | edges cases                |                                                                                                | NULL, "", " ", #asbas-char etc.                                 |
+| Equivalence Partitioning | Valid ``OriginalTitle``    | 5-255 chars and dash allowed                                                                   | Same as PrimaryTitle (identical constraints)                    |
+| Equivalence Partitioning | Valid ``StartYear``        | 1888-2025                                                                                      | 1888, 1889, 1999, 2024, 2025                                    |
+| Equivalence Partitioning | Invalid ``StartYear``      | <1888 or >2025                                                                                 | 999, -2020, 2026                                                |
+| Boundary Value Analysis  | Valid Lower Bound          |                                                                                                | 1888                                                            |
+|                          | Valid Upper Bound          |                                                                                                | 2025                                                            |
+|                          | InValid Lower Bound        | 0 - 1887                                                                                       | 999, 1887                                                       |
+|                          | InValid Upper Bound        | 2026 - feature                                                                                 | 2026 - feature                                                  |
+| Edges                    | edges cases                |                                                                                                | 0000 ,-2020                                                     |
+| Equivalence Partitioning | Valid ``EndYear``          | NULL or >=StartYear                                                                            | 2026 > 2025, NULL                                               |
+| Equivalence Partitioning | Invalid ``EndYear``        | < StartYear or invalid year or endYear > 2075 year in feature fx 2025 + 50 (businessLimitYear) | 9, 99, 999, 2010(with startYear=2025), 2075 (current year 2025) |
+| Boundary Value Analysis  | Valid Lower Bound          | EndYear>=StartYear                                                                             | Start=2025/End=2025                                             |
+|                          | Valid Upper Bound          |                                                                                                | Start=2025/End=2026                                             |
+|                          | InValid Lower Bound        |                                                                                                | Start=2025/End=2024                                             |
+| Edges                    | edges cases                |                                                                                                | 0000,9999, 2026                                                 |
+| Equivalence Partitioning | Valid ``RuntimeMinutes``   | 60-1440 or NULL                                                                                | 60, 61, 1000, 1439, NULL                                        |
+| Equivalence Partitioning | Invalid ``RuntimeMinutes`` |                                                                                                | 50                                                              |
+|                          | Valid Lower Bound          | 60-1440                                                                                        | 60                                                              |
+|                          | Valid Upper Bound          |                                                                                                | 1440                                                            |
+|                          | InValid Bound              | 0-59                                                                                           | 0, 59                                                           |
+|                          | InValid Bound              | 1441 - max                                                                                     | 1441, max                                                       |
+| Edges                    | edges cases                |                                                                                                | -1, int.max                                                     |
 
 - List of test cases:
   - **``TitleType``:**
@@ -65,7 +65,6 @@
       - 1 character
       - 4 characters
       - 26 characters
-      - 50 characters
     - Edge Cases:
       - NULL
       - ""
@@ -127,6 +126,7 @@
     - Invalid:
       - 0
       - 50
+      - 59
       - 1441
     - Edge Cases:
       - -1
@@ -142,7 +142,7 @@
 |                          | Valid Upper Bound |                  | 50-char                                          |
 |                          | Invalid  Bound    | 1 - 2            | 1-char, 2-char                                   |
 |                          | Invalid  Bound    | 51 - string.max  | 51-char, string.max                              |
-| Edges                    | Genre edges       |                  | NULL, "", " ", #5char                            |
+| Edges                    | Genre edges       |                  | NULL, "", " ", #5-char                           |
 
 - list of test cases:
 - **Genre:**
@@ -240,14 +240,14 @@
 - list of test cases:
   - **Region:**
     - Valid:
-      - 2 characters 
-      - 3 characters 
-      - 4 characters 
-      - 5 characters 
+      - 2 characters
+      - 3 characters
+      - 4 characters
+      - 5 characters
     -Invalid:
-      - 1 character 
-      - 6 characters 
-      - 150 characters 
+      - 1 character
+      - 6 characters
+      - 150 characters
       - ""(empty string)
     - Edge Cases:
       - NULL
@@ -284,7 +284,6 @@
       - ""
       - " "
       - #asbas-char
-
 
 ## Person
 

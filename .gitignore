@@ -657,3 +657,4 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,macos,windows,node,aspnetcore,dotnetcore,dotenv,test,visualstudiocode,rider
 megalinter-reports
+docs/coveragereport/** 

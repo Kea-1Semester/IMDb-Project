@@ -10,19 +10,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: Just a Test Job
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Run a Simple Command
-        run: echo "This is a test job for push main."
+  unit-tests:
+    name: Run Unit Tests
+    uses: ./.github/workflows/unit-tests.yml
 
   build-backend-image:
     name: CI Docker Build and Push GraphQL Docker Image
-    needs: test
+    needs: unit-tests
     uses: ./.github/workflows/ci-docker-builder-graphql.yml
     permissions:
       contents: read
