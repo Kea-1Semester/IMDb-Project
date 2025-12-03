@@ -91,7 +91,7 @@ namespace EfCoreModelsLib.DTO
         {
             if (StartYear < 1888 || StartYear > _year.Year)
             {
-                throw new ArgumentOutOfRangeException(nameof(StartYear),
+                throw new ArgumentException(
                     "StartYear must be between 1888 and the current year.");
             }
         }
@@ -103,12 +103,12 @@ namespace EfCoreModelsLib.DTO
 
             if (EndYear < _year.Year)
             {
-                throw new ArgumentOutOfRangeException(nameof(EndYear), "EndYear cannot be in the past.");
+                throw new ArgumentException("EndYear cannot be in the past.");
             }
 
             if (EndYear > businessLimitYear)
             {
-                throw new ArgumentOutOfRangeException(nameof(EndYear),
+                throw new ArgumentException(
                     $"EndYear cannot be more than {BUSINESS_MAX_FUTURE_YEARS} years in the future.");
             }
         }
@@ -117,7 +117,7 @@ namespace EfCoreModelsLib.DTO
         {
             if (RuntimeMinutes is < 60 or > 1440)
             {
-                throw new ArgumentOutOfRangeException(nameof(RuntimeMinutes),
+                throw new ArgumentException(
                     "RuntimeMinutes must be between 1 and 500.");
             }
         }
