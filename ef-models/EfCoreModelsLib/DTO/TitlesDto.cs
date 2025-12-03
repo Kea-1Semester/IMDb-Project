@@ -3,8 +3,7 @@ namespace EfCoreModelsLib.DTO
 {
     public class TitlesDto : IObjectId
     {
-        private const int SYSTEM_MAX_YEAR = 9999;
-        private const int BUSINESS_MAX_FUTURE_YEARS = 100;
+        private const int BUSINESS_MAX_FUTURE_YEARS = 50;
 
 
         public required string TitleType { get; set; }
@@ -100,10 +99,6 @@ namespace EfCoreModelsLib.DTO
             if (EndYear > businessLimitYear)
             {
                 throw new ArgumentOutOfRangeException(nameof(EndYear), $"EndYear cannot be more than {BUSINESS_MAX_FUTURE_YEARS} years in the future.");
-            }
-            if(EndYear > SYSTEM_MAX_YEAR)
-            {
-                throw new ArgumentOutOfRangeException(nameof(EndYear), $"EndYear cannot exceed system maximum year of {SYSTEM_MAX_YEAR}.");
             }
 
         }

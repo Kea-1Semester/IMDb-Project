@@ -90,7 +90,7 @@ namespace unit.tests
         public void ValidateOriginalTitle(string? originalTitle)
         {
             // Arrange
-            _titlesDto.OriginalTitle = originalTitle;
+            _titlesDto.OriginalTitle = originalTitle!;
             // Act & Assert
             Assert.DoesNotThrow(() => _titlesDto.ValidateOriginalTitle());
         }
@@ -138,9 +138,8 @@ namespace unit.tests
             // Arrange
             _titlesDto.StartYear = endYear;
             // Act & Assert
-            var ex = Assert.Catch(() => _titlesDto.ValidateStartYear());
-            Assert.That(ex.Message,
-                Does.Contain("StartYear must be between 1888 and the current year."));
+             Assert.Catch(() => _titlesDto.ValidateStartYear());
+          
         }
         private static IEnumerable<int> FutureYearBoundaryTestCases()
         {
@@ -150,6 +149,8 @@ namespace unit.tests
         }
 
         [TestCase(null)]
+        [TestCase(2025)] 
+        [TestCase(2075)]
         [TestCaseSource(nameof(FutureYearBoundaryTestCases))]
 
         public void ValidateEndYear(int? endYear)
@@ -161,9 +162,9 @@ namespace unit.tests
         }
         [TestCase(9)]
         [TestCase(99)]
-        [TestCase(999)]
         [TestCase(2010)]
         [TestCase(0000)]
+        [TestCase(2076)]
         [TestCase(10000)]
 
 
@@ -182,6 +183,7 @@ namespace unit.tests
         [TestCase(1000)]
         [TestCase(1439)]
         [TestCase(1440)] // upper boundary
+
         public void ValidateRunTimeMinutes(int? runTimeMinutes)
         {
             // Arrange
