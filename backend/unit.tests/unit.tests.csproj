@@ -30,4 +30,7 @@
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\ef-models\EfCoreModelsLib\EfCoreModelsLib.csproj" />
+  </ItemGroup>
 </Project>
