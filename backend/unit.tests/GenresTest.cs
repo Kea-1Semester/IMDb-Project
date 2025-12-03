@@ -3,7 +3,7 @@ using EfCoreModelsLib.DTO;
 
 namespace unit.tests;
 
-public class GenreTest
+public class GenresTest
 {
     [TestCase("Bio")]
     [TestCase("Adventures")]

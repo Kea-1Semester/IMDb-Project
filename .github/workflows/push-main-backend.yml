@@ -1,4 +1,4 @@
-name: Merge to Main Workflow
+name: Merge to Main Workflow - Backend
 
 on:
   push:

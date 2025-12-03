@@ -169,17 +169,17 @@
 | Partition Type           | Partition                 | Valid Range   | Test Case Values            |
 |--------------------------|---------------------------|---------------|-----------------------------|
 | Equivalence Partitioning | Valid ``EpisodeNumber``   | 1-999 & != 0  | 1, 2, 500, 998, 999         |
-|                          | Invalid ``EpisodeNumber`` | < 1 or > 999  | -1, -5, 1000, 2000, int.max |
+|                          | Invalid ``EpisodeNumber`` | < 1 or > 999  | 0, -1, -5, 1000, 2000, int.max |
 | Boundary Value Analysis  | Valid Lower Bound         |               | 1                           |
 |                          | Valid Upper Bound         |               | 999                         |
 |                          | Invalid Lower Bound       |               | 0                           |
 |                          | Invalid Upper Bound       |               | 1000                        |
-| Edges                    | Episode edges             |               | NULL, 0                     |
+| Edges                    | Episode edges             |               | NULL                     |
 | Equivalence Partitioning | Valid ``SeasonNumber``    | 1 - 99 & != 0 | 1, 2, 55, 98, 99            |
-|                          | Invalid Season            | < 1 or > 99   | 0, -1, -5.5, 100, 5.5, 501  |
+|                          | Invalid Season            | < 1 or > 99   | 0, -1, -50, 100, 501, int.max  |
 | Boundary Value Analysis  | Valid Lower Bound         |               | 1                           |
 |                          | Valid Upper Bound         |               | 99                          |
-| Edges                    | Season edges              |               | NULL, 5.5, -5.5             |
+| Edges                    | Season edges              |               | NULL             |
 
 - list of test cases:
   - **EpisodeNumber:**
@@ -190,6 +190,7 @@
       - 998
       - 999
     - Invalid:
+      - 0
       - -1
       - -5
       - 1000
@@ -197,7 +198,6 @@
       - int.max
     - Edge Cases:
       - Null
-      - 0
   - **SeasonNumber:**
   - Valid:
     - 1
