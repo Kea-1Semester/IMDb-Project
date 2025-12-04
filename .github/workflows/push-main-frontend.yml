@@ -26,3 +26,4 @@ jobs:
     uses: ./.github/workflows/deploy-frontend.yml
     secrets:
       BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
+      REX_RENDER_DEPLOY_HOOK: ${{ secrets.REX_RENDER_DEPLOY_HOOK }}
