@@ -5,6 +5,8 @@ on:
     secrets:
       BREZOR_BACKEND_DEPLOY_HOOK:
         required: true
+      REX_BACKEND_DEPLOY_HOOK:
+        required: true
 
 jobs:
   deploy-backend:
@@ -16,5 +18,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         env:
           BREZOR_BACKEND_DEPLOY_HOOK: ${{ secrets.BREZOR_BACKEND_DEPLOY_HOOK }}
+          REX_BACKEND_DEPLOY_HOOK: ${{ secrets.REX_BACKEND_DEPLOY_HOOK }}
         run: |
           curl "$BREZOR_BACKEND_DEPLOY_HOOK"
+          curl "$REX_BACKEND_DEPLOY_HOOK"
