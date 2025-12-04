@@ -1,18 +1,19 @@
 using EfCoreModelsLib.Models.Mysql;
 using Microsoft.EntityFrameworkCore;
 
-namespace GraphQL.Repos
+namespace GraphQL.Repos.Mysql
 {
-    public interface ITitlesRepo
+    public interface IMysqlTitlesRepo
     {
         IQueryable<Titles> GetMySqlTitles();
+        Task<Titles?> GetMySqlTitle(Guid id);
     }
 
-    public class TitlesRepo : ITitlesRepo, IAsyncDisposable
+    public class MysqlTitlesRepo : IMysqlTitlesRepo, IAsyncDisposable
     {
         private readonly ImdbContext _context;
 
-        public TitlesRepo(IDbContextFactory<ImdbContext> dbContextFactory)
+        public MysqlTitlesRepo(IDbContextFactory<ImdbContext> dbContextFactory)
         {
             _context = dbContextFactory.CreateDbContext();
         }
@@ -20,6 +21,11 @@ namespace GraphQL.Repos
         public IQueryable<Titles> GetMySqlTitles()
         {
             return _context.Titles.AsQueryable();
+        }
+
+        public async Task<Titles?> GetMySqlTitle(Guid id)
+        {
+            return await _context.Titles.FirstOrDefaultAsync(t => t.TitleId == id);
         }
 
         public ValueTask DisposeAsync()
