@@ -2,8 +2,8 @@ using DotNetEnv;
 using EfCoreModelsLib.Models.Mysql;
 using GraphQL.Auth0;
 using GraphQL.Handler;
-using GraphQL.Repos;
-using GraphQL.Services;
+using GraphQL.Repos.Mysql;
+using GraphQL.Services.Mysql;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -39,8 +39,8 @@ builder.Services.AddDbContextFactory<ImdbContext>(options =>
     }
 });
 
-builder.Services.AddTransient<ITitlesRepo, TitlesRepo>();
-builder.Services.AddTransient<ITitlesService, TitlesService>();
+builder.Services.AddTransient<IMysqlTitlesRepo, MysqlTitlesRepo>();
+builder.Services.AddTransient<IMysqlTitlesService, MysqlTitlesService>();
 
 const string Auth0Domain = "Auth0Domain";
 
