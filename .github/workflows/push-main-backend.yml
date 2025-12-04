@@ -28,3 +28,4 @@ jobs:
     uses: ./.github/workflows/deploy-backend.yml
     secrets:
       BREZOR_BACKEND_DEPLOY_HOOK: ${{ secrets.BREZOR_BACKEND_DEPLOY_HOOK }}
+      REX_BACKEND_DEPLOY_HOOK: ${{ secrets.REX_BACKEND_DEPLOY_HOOK }}
