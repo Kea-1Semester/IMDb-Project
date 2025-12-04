@@ -87,7 +87,8 @@ builder.AddGraphQL()
     .AddProjections()
     .ModifyRequestOptions(o => o.IncludeExceptionDetails =
         builder.Environment.IsDevelopment())
-    .DisableIntrospection(!builder.Environment.IsDevelopment());
+    .DisableIntrospection(!builder.Environment.IsDevelopment())
+    .AddMutationConventions(applyToAllMutations: true);
 
 var app = builder.Build();
 
