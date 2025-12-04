@@ -4,7 +4,7 @@ namespace EfCoreModelsLib.DTO
     public class TitlesDto : IObjectId
     {
         private const int BUSINESS_MAX_FUTURE_YEARS = 50;
-        private int currentYear = DateTime.UtcNow.Year;
+        private readonly int currentYear = DateTime.UtcNow.Year;
 
 
         public required string TitleType { get; set; }
