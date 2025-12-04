@@ -1,9 +1,12 @@
+using EfCoreModelsLib.Models.MongoDb;
+using EfCoreModelsLib.Models.MongoDb.ObjDbContext;
 using EfCoreModelsLib.Models.Mysql;
 using GraphQL.Auth0;
-using GraphQL.Services;
+using GraphQL.Interface;
+using GraphQL.Services.Interface;
 using HotChocolate.Authorization;
 
-namespace GraphQL.Types;
+namespace GraphQL.Services;
 
 [QueryType]
 public static class TitlesQuery
@@ -12,8 +15,19 @@ public static class TitlesQuery
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public static IQueryable<Titles> GetTitles([Service] ITitlesService titlesService)
+    public static IQueryable<Titles> GetTitles([Service] ITitlesService<Titles, ImdbContext> titlesService)
     {
-        return titlesService.GetTitles();
+        return titlesService.GetAll();
     }
+
+    [UseOffsetPaging(IncludeTotalCount = true, MaxPageSize = 100)]
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public static IQueryable<TitleMongoDb> GetMongoTitles([Service] ITitlesService<TitleMongoDb, ImdbContextMongoDb> mongoService)
+    {
+        return mongoService.GetAll().AsQueryable();
+    }
+
+
 }

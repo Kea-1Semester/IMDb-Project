@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace EfCoreModelsLib.Models.MongoDb.SupportClasses;
 
-public class Episodes
+public class EpisodesMongoDb
 {
     [BsonElement("titleIdParent")]
     [BsonRepresentation(BsonType.String)]

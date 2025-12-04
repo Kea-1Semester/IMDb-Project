@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EfCoreModelsLib.DTO
 {
-    internal interface IObjectId
+    public interface IObjectId
     {
         void Validate();
     }

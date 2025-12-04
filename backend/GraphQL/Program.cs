@@ -1,9 +1,14 @@
 using DotNetEnv;
+using EfCoreModelsLib.DTO;
+using EfCoreModelsLib.Models.MongoDb;
+using EfCoreModelsLib.Models.MongoDb.ObjDbContext;
 using EfCoreModelsLib.Models.Mysql;
 using GraphQL.Auth0;
 using GraphQL.Handler;
 using GraphQL.Repos;
-using GraphQL.Services;
+using GraphQL.Repos.GenericRepo;
+using GraphQL.Services.Interface;
+using GraphQL.Services.MySQL;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -39,8 +44,30 @@ builder.Services.AddDbContextFactory<ImdbContext>(options =>
     }
 });
 
-builder.Services.AddTransient<ITitlesRepo, TitlesRepo>();
-builder.Services.AddTransient<ITitlesService, TitlesService>();
+builder.Services.AddScoped<GenericRepo<Titles, ImdbContext>>();
+builder.Services.AddScoped<ITitlesService<Titles, ImdbContext>, TitlesService<Titles, ImdbContext>>();
+builder.Services.AddDbContextFactory<ImdbContext>();
+
+builder.Services.AddScoped<GenericRepo<TitlesDto, ImdbContext>>();
+builder.Services.AddScoped<ITitlesService<TitlesDto, ImdbContext>, TitlesService<TitlesDto, ImdbContext>>();
+
+
+// MongoDb database
+builder.Services.AddDbContextFactory<ImdbContextMongoDb>(options =>
+{
+    options.UseMongoDB(Env.GetString("MongoDbConnectionString"), Env.GetString("MongoDbDatabase"));
+    if (builder.Environment.IsDevelopment())
+    {
+        options.LogTo(Console.WriteLine);
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
+    }
+});
+
+
+builder.Services.AddScoped<GenericRepo<TitleMongoDb, ImdbContextMongoDb>>();
+builder.Services.AddScoped<ITitlesService<TitleMongoDb, ImdbContextMongoDb>, TitlesService<TitleMongoDb, ImdbContextMongoDb>>();
+builder.Services.AddDbContextFactory<ImdbContextMongoDb>();
 
 const string Auth0Domain = "Auth0Domain";
 

@@ -54,6 +54,6 @@ public class TitleMongoDb
     [BsonElement("comments")]
     public List<Comment> Comments { get; set; } = new();
     [BsonElement("episodes")]
-    public List<Episodes> Episodes { get; set; } = new();
+    public List<EpisodesMongoDb> Episodes { get; set; } = new();
 
 }
