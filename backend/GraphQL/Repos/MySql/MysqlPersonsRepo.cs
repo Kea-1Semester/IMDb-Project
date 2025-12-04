@@ -10,7 +10,7 @@ namespace GraphQL.Repos.Mysql
         Task<Persons> CreateMySqlPerson(Persons person);
         Task<Persons> UpdateMySqlPerson(Persons person);
 
-        Task<Persons> DeleteMySqlPerson(Persons persons);
+        Task<Persons> DeleteMySqlPerson(Persons person);
     }
 
     public class MysqlPersonsRepo : IMysqlPersonsRepo, IAsyncDisposable
