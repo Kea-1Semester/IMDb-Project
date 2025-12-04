@@ -32,25 +32,25 @@ namespace GraphQL.Repos.Mysql
             return await _context.Persons.FirstOrDefaultAsync(p => p.PersonId == id);
         }
 
-        public async Task<Persons> CreateMySqlPerson(Persons persons)
+        public async Task<Persons> CreateMySqlPerson(Persons person)
         {
-            _context.Persons.Add(persons);
+            _context.Persons.Add(person);
             await _context.SaveChangesAsync();
-            return persons;
+            return person;
         }
 
-        public async Task<Persons> UpdateMySqlPerson(Persons persons)
+        public async Task<Persons> UpdateMySqlPerson(Persons person)
         {
-            _context.Persons.Update(persons);
+            _context.Persons.Update(person);
             await _context.SaveChangesAsync();
-            return persons;
+            return person;
         }
 
-        public async Task<Persons> DeleteMySqlPerson(Persons persons)
+        public async Task<Persons> DeleteMySqlPerson(Persons person)
         {
-            _context.Persons.Remove(persons);
+            _context.Persons.Remove(person);
             await _context.SaveChangesAsync();
-            return persons;
+            return person;
         }
 
         public ValueTask DisposeAsync()
