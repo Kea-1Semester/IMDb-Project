@@ -29,8 +29,6 @@ public partial class ImdbContext : DbContext
 
     public virtual DbSet<KnownFor> KnownFor { get; set; }
 
-    public virtual DbSet<Loggings> Loggings { get; set; }
-
     public virtual DbSet<MovieRatingSummary> MovieRatingSummary { get; set; }
 
     public virtual DbSet<Persons> Persons { get; set; }
@@ -213,13 +211,6 @@ public partial class ImdbContext : DbContext
                 .HasConstraintName("fk_Titles_has_Persons_Titles2");
         });
 
-        modelBuilder.Entity<Loggings>(entity =>
-        {
-            entity.HasKey(e => e.LoggingId).HasName("PRIMARY");
-
-            entity.Property(e => e.ExecutedAt).HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
-        });
-
         modelBuilder.Entity<MovieRatingSummary>(entity =>
         {
             entity.ToView("movie_rating_summary");
@@ -332,5 +323,5 @@ public partial class ImdbContext : DbContext
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
- 
+
 }
