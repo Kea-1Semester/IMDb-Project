@@ -290,7 +290,7 @@
 | Partition Type           | Partition             | Valid Range                                 | Test Case Values                                         |
 |--------------------------|-----------------------|---------------------------------------------|----------------------------------------------------------|
 | Equivalence Partitioning | Valid ``Name``        | 2 - 100                                     | 2-char, 3-char, 50-char ,99-char                         |
-|                          | Invalid ``Nam``e      | < 1 or > 100                                | 1-char, 100-char, 101-char, 150-char, str.max            |
+|                          | Invalid ``Nam``e      | < 1 or > 100                                | 1-char, 101-char, 102-char, 150-char, str.max            |
 | Boundary Value Analysis  | Valid Lower Bound     |                                             | 2-char                                                   |
 |                          | Valid Upper Bound     |                                             | 100-char                                                 |
 | Edges                    | Name edges            |                                             | NULL, " ", ""(empty string) , any special characters     |
@@ -310,8 +310,8 @@
     - 99 characters
   - Invalid:
     - 1 character
-    - 100 characters
     - 101 characters
+    - 102 characters
     - 150 characters
     - string.max (maximum representable length)
   - Edge Cases:
@@ -338,7 +338,7 @@
     - 19
     - 199
     - 19999
-    - ``EndYear`` (2025) > BirthYear (1945)
+    - ``EndYear`` (2025) < BirthYear (1945)
   - Edge Cases:
     - 0000
     - Null
