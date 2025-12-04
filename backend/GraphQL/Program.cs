@@ -41,6 +41,8 @@ builder.Services.AddDbContextFactory<ImdbContext>(options =>
 
 builder.Services.AddTransient<IMysqlTitlesRepo, MysqlTitlesRepo>();
 builder.Services.AddTransient<IMysqlTitlesService, MysqlTitlesService>();
+builder.Services.AddTransient<IMysqlPersonsRepo, MysqlPersonsRepo>();
+builder.Services.AddTransient<IMysqlPersonsService, MysqlPersonsService>();
 
 const string Auth0Domain = "Auth0Domain";
 
