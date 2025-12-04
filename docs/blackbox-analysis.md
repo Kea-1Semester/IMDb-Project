@@ -244,7 +244,7 @@
       - 3 characters
       - 4 characters
       - 5 characters
-    -Invalid:
+    - Invalid:
       - 1 character
       - 6 characters
       - 150 characters
