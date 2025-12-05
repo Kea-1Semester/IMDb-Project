@@ -4,12 +4,8 @@ on:
   pull_request:
 
 jobs:
-  test:
-    name: Just a Test Job
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+  unit-tests:
+    name: Run backend Unit Tests
+    uses: ./.github/workflows/unit-tests.yml
 
-      - name: Run a Simple Command
-        run: echo "This is a test job for pull requests."
+        

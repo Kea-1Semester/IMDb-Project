@@ -1,40 +1,71 @@
-# Include any files or directories that you don't want to be copied to your
-# container here (e.g., local build artifacts, temporary files, etc.).
-#
-# For more help, visit the .dockerignore file reference guide at
-# https://docs.docker.com/go/build-context-dockerignore/
+# Ignore version control and config files
+.git
+.gitignore
+.vscode
+.vs
+*.user
 
-**/.DS_Store
-**/.classpath
-**/.dockerignore
-**/.env
-**/.git
-**/.gitignore
-**/.project
-**/.settings
-**/.toolstarget
-**/.vs
-**/.vscode
-**/*.*proj.user
-**/*.dbmdl
-**/*.jfm
-**/bin
-**/charts
-**/docker-compose*
-**/compose.y*ml
-**/Dockerfile*
-**/node_modules
-**/npm-debug.log
-**/obj
-**/secrets.dev.yaml
-**/values.dev.yaml
+# Ignore build outputs
+bin/
+obj/
+out/
+publish/
+
+# Ignore Docker and compose files
+Dockerfile*
+docker-compose*
+compose.y*ml
+
+# Ignore node/npm artifacts
+node_modules/
+npm-debug.log
+
+# Ignore IDE/project files
+*.dbmdl
+*.jfm
+*.classpath
+*.project
+*.settings
+.toolstarget
+
+# Ignore OS files
+.DS_Store
+
+# Ignore secrets and local config
+.env
+secrets.dev.yaml
+values.dev.yaml
+
+# Ignore documentation and license
 LICENSE
 README.md
+
+# Ignore charts and data folders
+charts/
+charts/**
+./charts/**
 SeedData/data/
-SeedData/data/*
+./SeedData/data/**
+./charts/**
+**/charts/**
+data/
+data/**
+./data/**
+**/data
+**/data/
+**/data/*
+**/data/**
+./DbDesign/**
+**/DbDesign/**
 SeedData/data/**
-# Ignore .NET build outputs
-**/bin/
-**/obj/
-**/out/
-**/publish/
+**/SeedData/data/**
+./efpt.config.json.user
+**/efpt.config.json.user
+
+*.tsv
+*.*.tsv
+**.tsv
+**.**.tsv
+*.**.tsv
+**.*.tsv
+**/*.tsv

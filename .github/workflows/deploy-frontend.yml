@@ -5,7 +5,7 @@ on:
     secrets:
       BREZOR_DEPLOY_HOOK:
         required: true
-      RASHO_RENDER_DEPLOY_HOOK:
+      REX_RENDER_DEPLOY_HOOK:
         required: true
 
 jobs:
@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: secrets
     steps:
-      - name: Deploy Frontend
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev/GHCR'
+      - name: Deploy Frontend via Deploy Hook
+        if: github.ref == 'refs/heads/main'
         env:
           BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
-          RASHO_RENDER_DEPLOY_HOOK: ${{ secrets.RASHO_RENDER_DEPLOY_HOOK }}
+          REX_RENDER_DEPLOY_HOOK: ${{ secrets.REX_RENDER_DEPLOY_HOOK }}
         run: |
-              # curl "$BREZOR_DEPLOY_HOOK"
-              curl "$RASHO_RENDER_DEPLOY_HOOK"
+          curl "$BREZOR_DEPLOY_HOOK"
+          curl "$REX_RENDER_DEPLOY_HOOK"

@@ -28,11 +28,17 @@ namespace SeedData.Migrations
                 {
                     b.Property<Guid>("AliasesAliasId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Aliases_alias_id");
+                        .HasColumnName("Aliases_alias_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("AliasesAliasId"), "ascii");
 
                     b.Property<Guid>("AttributesAttributeId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Attributes_attribute_id");
+                        .HasColumnName("Attributes_attribute_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("AttributesAttributeId"), "ascii");
 
                     b.HasKey("AliasesAliasId", "AttributesAttributeId")
                         .HasName("PRIMARY")
@@ -49,11 +55,17 @@ namespace SeedData.Migrations
                 {
                     b.Property<Guid>("AliasesAliasId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Aliases_alias_id");
+                        .HasColumnName("Aliases_alias_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("AliasesAliasId"), "ascii");
 
                     b.Property<Guid>("TypesTypeId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Types_type_id");
+                        .HasColumnName("Types_type_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TypesTypeId"), "ascii");
 
                     b.HasKey("AliasesAliasId", "TypesTypeId")
                         .HasName("PRIMARY")
@@ -72,15 +84,24 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("actor_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("ActorId"), "ascii");
 
                     b.Property<Guid>("TitlesTitleId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Titles_title_id");
+                        .HasColumnName("Titles_title_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitlesTitleId"), "ascii");
 
                     b.Property<Guid>("PersonsPersonId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Persons_person_id");
+                        .HasColumnName("Persons_person_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("PersonsPersonId"), "ascii");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -104,7 +125,10 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("alias_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("AliasId"), "ascii");
 
                     b.Property<bool>("IsOriginalTitle")
                         .HasColumnType("tinyint(1)")
@@ -129,7 +153,10 @@ namespace SeedData.Migrations
 
                     b.Property<Guid>("TitleId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("title_id");
+                        .HasColumnName("title_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitleId"), "ascii");
 
                     b.HasKey("AliasId")
                         .HasName("PRIMARY");
@@ -147,7 +174,10 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("attribute_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("AttributeId"), "ascii");
 
                     b.Property<string>("Attribute")
                         .IsRequired()
@@ -170,7 +200,10 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("comment_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("CommentId"), "ascii");
 
                     b.Property<string>("Comment")
                         .IsRequired()
@@ -180,7 +213,10 @@ namespace SeedData.Migrations
 
                     b.Property<Guid>("TitleId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("title_id");
+                        .HasColumnName("title_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitleId"), "ascii");
 
                     b.HasKey("CommentId")
                         .HasName("PRIMARY");
@@ -196,15 +232,24 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("directors_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("DirectorsId"), "ascii");
 
                     b.Property<Guid>("TitlesTitleId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Titles_title_id");
+                        .HasColumnName("Titles_title_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitlesTitleId"), "ascii");
 
                     b.Property<Guid>("PersonsPersonId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Persons_person_id");
+                        .HasColumnName("Persons_person_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("PersonsPersonId"), "ascii");
 
                     b.HasKey("DirectorsId", "TitlesTitleId", "PersonsPersonId")
                         .HasName("PRIMARY")
@@ -223,7 +268,10 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("episode_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("EpisodeId"), "ascii");
 
                     b.Property<int>("EpisodeNumber")
                         .HasColumnType("int")
@@ -235,11 +283,17 @@ namespace SeedData.Migrations
 
                     b.Property<Guid>("TitleIdChild")
                         .HasColumnType("char(36)")
-                        .HasColumnName("title_id_child");
+                        .HasColumnName("title_id_child")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitleIdChild"), "ascii");
 
                     b.Property<Guid>("TitleIdParent")
                         .HasColumnType("char(36)")
-                        .HasColumnName("title_id_parent");
+                        .HasColumnName("title_id_parent")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitleIdParent"), "ascii");
 
                     b.HasKey("EpisodeId")
                         .HasName("PRIMARY");
@@ -257,7 +311,10 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("genre_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("GenreId"), "ascii");
 
                     b.Property<string>("Genre")
                         .IsRequired()
@@ -280,15 +337,24 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("known_for_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("KnownForId"), "ascii");
 
                     b.Property<Guid>("TitlesTitleId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Titles_title_id");
+                        .HasColumnName("Titles_title_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitlesTitleId"), "ascii");
 
                     b.Property<Guid>("PersonsPersonId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Persons_person_id");
+                        .HasColumnName("Persons_person_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("PersonsPersonId"), "ascii");
 
                     b.HasKey("KnownForId", "TitlesTitleId", "PersonsPersonId")
                         .HasName("PRIMARY")
@@ -307,7 +373,9 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("logging_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("LoggingId"), "ascii");
 
                     b.Property<string>("Command")
                         .IsRequired()
@@ -336,7 +404,10 @@ namespace SeedData.Migrations
 
                     b.Property<Guid>("TableName")
                         .HasColumnType("char(36)")
-                        .HasColumnName("table_name");
+                        .HasColumnName("table_name")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TableName"), "ascii");
 
                     b.HasKey("LoggingId")
                         .HasName("PRIMARY");
@@ -348,13 +419,51 @@ namespace SeedData.Migrations
                     b.ToTable("Loggings");
                 });
 
+            modelBuilder.Entity("EfCoreModelsLib.Models.Mysql.MovieRatingSummary", b =>
+                {
+                    b.Property<double>("AverageRating")
+                        .HasColumnType("double")
+                        .HasColumnName("average_rating");
+
+                    b.Property<string>("OriginalTitle")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("original_title");
+
+                    b.Property<string>("PrimaryTitle")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("primary_title");
+
+                    b.Property<int>("StartYear")
+                        .HasColumnType("int")
+                        .HasColumnName("start_year");
+
+                    b.Property<Guid>("TitleId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("title_id")
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitleId"), "ascii");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("movie_rating_summary", (string)null);
+                });
+
             modelBuilder.Entity("EfCoreModelsLib.Models.Mysql.Persons", b =>
                 {
                     b.Property<Guid>("PersonId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("person_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("PersonId"), "ascii");
 
                     b.Property<int>("BirthYear")
                         .HasColumnType("int")
@@ -382,11 +491,17 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("profession_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("ProfessionId"), "ascii");
 
                     b.Property<Guid>("PersonId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("person_id");
+                        .HasColumnName("person_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("PersonId"), "ascii");
 
                     b.Property<string>("Profession")
                         .IsRequired()
@@ -411,7 +526,10 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("rating_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("RatingId"), "ascii");
 
                     b.Property<double>("AverageRating")
                         .HasColumnType("double")
@@ -423,7 +541,10 @@ namespace SeedData.Migrations
 
                     b.Property<Guid>("TitleId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("title_id");
+                        .HasColumnName("title_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitleId"), "ascii");
 
                     b.HasKey("RatingId")
                         .HasName("PRIMARY");
@@ -439,7 +560,10 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("title_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitleId"), "ascii");
 
                     b.Property<int?>("EndYear")
                         .HasColumnType("int")
@@ -476,6 +600,9 @@ namespace SeedData.Migrations
                     b.HasKey("TitleId")
                         .HasName("PRIMARY");
 
+                    b.HasIndex(new[] { "PrimaryTitle", "OriginalTitle" }, "idx_Titles_primary_title_original_title")
+                        .HasAnnotation("MySql:FullTextIndex", true);
+
                     b.HasIndex(new[] { "OriginalTitle" }, "original_title_index");
 
                     b.HasIndex(new[] { "PrimaryTitle" }, "primary_title_index");
@@ -485,13 +612,61 @@ namespace SeedData.Migrations
                     b.ToTable("Titles");
                 });
 
+            modelBuilder.Entity("EfCoreModelsLib.Models.Mysql.TitlesView", b =>
+                {
+                    b.Property<bool>("IsAdult")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_adult");
+
+                    b.Property<string>("OriginalTitle")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("original_title");
+
+                    b.Property<string>("PrimaryTitle")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("primary_title");
+
+                    b.Property<int?>("RuntimeMinutes")
+                        .HasColumnType("int")
+                        .HasColumnName("runtime_minutes");
+
+                    b.Property<int>("StartYear")
+                        .HasColumnType("int")
+                        .HasColumnName("start_year");
+
+                    b.Property<Guid>("TitleId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("title_id")
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitleId"), "ascii");
+
+                    b.Property<string>("TitleType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("title_type");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("titles_view", (string)null);
+                });
+
             modelBuilder.Entity("EfCoreModelsLib.Models.Mysql.Types", b =>
                 {
                     b.Property<Guid>("TypeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("type_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TypeId"), "ascii");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -514,15 +689,24 @@ namespace SeedData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasColumnName("writers_id")
-                        .HasDefaultValueSql("(uuid_to_bin(uuid(),1))");
+                        .HasDefaultValueSql("(uuid())")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("WritersId"), "ascii");
 
                     b.Property<Guid>("TitlesTitleId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Titles_title_id");
+                        .HasColumnName("Titles_title_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitlesTitleId"), "ascii");
 
                     b.Property<Guid>("PersonsPersonId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Persons_person_id");
+                        .HasColumnName("Persons_person_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("PersonsPersonId"), "ascii");
 
                     b.HasKey("WritersId", "TitlesTitleId", "PersonsPersonId")
                         .HasName("PRIMARY")
@@ -539,11 +723,17 @@ namespace SeedData.Migrations
                 {
                     b.Property<Guid>("TitlesTitleId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Titles_title_id");
+                        .HasColumnName("Titles_title_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("TitlesTitleId"), "ascii");
 
                     b.Property<Guid>("GenresGenreId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("Genres_genre_id");
+                        .HasColumnName("Genres_genre_id")
+                        .UseCollation("ascii_general_ci");
+
+                    MySqlPropertyBuilderExtensions.HasCharSet(b.Property<Guid>("GenresGenreId"), "ascii");
 
                     b.HasKey("TitlesTitleId", "GenresGenreId")
                         .HasName("PRIMARY")
