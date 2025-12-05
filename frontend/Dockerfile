@@ -1,5 +1,7 @@
-# Build stage: build your frontend app
-FROM node:22-alpine AS builder
+# ----------------------
+# Build stage
+# ----------------------
+FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Install bash if needed for build scripts
@@ -18,8 +20,13 @@ COPY index.html ./
 
 RUN npm run build
 
-# Production stage: serve static files with nginx
+# ----------------------
+# Production stage
+# ----------------------
 FROM nginx:alpine
+
+# Switch to root user to modify nginx content
+USER root
 
 # Remove default nginx content
 RUN rm -rf /usr/share/nginx/html/*
