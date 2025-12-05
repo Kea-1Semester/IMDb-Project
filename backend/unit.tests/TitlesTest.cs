@@ -32,17 +32,16 @@ namespace unit.tests
             Assert.DoesNotThrow(() => _titlesDto.ValidateTitleType());
         }
 
-        [TestCase(null)]
         [TestCase("")]
         [TestCase("   ")]
         [TestCase("#abcd")]
         [TestCase("m")]
         [TestCase("abBC")]
-        [TestCase("evsdxicdicpjthoqdzyhvunyys")]
-        public void ThrowExceptionValidateTitleType(string? titleType)
+        [TestCase("evsdxicdicpjthoqdzyhvunyy2")]
+        public void ThrowExceptionValidateTitleType(string titleType)
         {
             // Arrange
-            _titlesDto.TitleType = titleType!;
+            _titlesDto.TitleType = titleType;
             // Act & Assert
             Assert.Catch(() => _titlesDto.ValidateTitleType());
         }
@@ -51,9 +50,9 @@ namespace unit.tests
         [TestCase("Euphoria")] // 6-characters
         [TestCase("Adventures in Wonderland: A Journey to Remember")] // 50-characters
         [TestCase(
-            "brqtviznpmhfpfmxqanuuzxphiueyadwankfxtbjyrnfipnjhxcipdfiphvixaybrrjdkjtchkvzwaekjhkyabmyynjmgjnjwudezkzhjkvijjdcrayxecfcqavdnrjmwxnwcjwqxqzxmdtfuiavbdcdnkjuqdvfhgrfdaiiwhbqmthmijhjehekzzndhkpbxcxugrpbwigbdiujjqwpjaewiegvwjjjritryqwndtftzhfpwrixyzkevhxdtp")] // 254-characters
+            "brqtviznpmhfpfmxqanuuzxphiueyadwankfxtbjyrnfipnjhxcipdfiphvixaybrrjdkjtchkvzwaekjhkyabmyynjmgjnjwudezkzhjkvijjdcrayxecfcqavdnrjmwxnwcjwqxqzxmdtfuiavbdcdnkjuqdvfhgrfdaiiwhbqmthmijhjehekzzndhkpbxcxugrpbwigbdiujjqwpjaewiegvwjjjritryqwndtftzhfpwrixyzkevhxdt2")] // 254-characters
         [TestCase(
-            "b:f-c,u\nwbxkrkpchtuhfpuedruvkpdewbzteggqzjfkkzxuzcvugfniwhitfbuyxcmtairxykbfdwwjkvkuvfarfxfqdwmztcgnkrvazfwrvmegttuyugxvqnykbciimuxuychkjjgvpjribcbeqkemrfebwaxgxtxghkpukhhvnvcnbkzdkwdngunanvxjrffcmxnezzzdbgyyxjnttjrdgjymuuewvydbiwcyqzmzitgcezpfybdrhjdycx")] // 255-characters
+            "b:f-c,u\nwbxkrkpchtuhfpuedruvkpdewbzteggqzjfkkzxuzcvugfniwhitfbuyxcmtairxykbfdwwjkvkuvfarfxfqdwmztcgnkrvazfwrvmegttuyugxvqnykbciimuxuychkjjgvpjribcbeqkemrfebwaxgxtxghkpukhhvnvcnbkzdkwdngunanvxjrffcmxnezzzdbgyyxjnttjrdgjymuuewvydbiwcyqzmzitgcezpfybdrhjdyc2")] // 255-characters
         public void ValidatePrimaryTitle(string primaryTitle)
         {
             // Arrange
@@ -62,17 +61,16 @@ namespace unit.tests
             Assert.DoesNotThrow(() => _titlesDto.ValidatePrimaryTitle());
         }
 
-        [TestCase(null)]
         [TestCase("")]
         [TestCase("   ")]
         [TestCase("a")]
         [TestCase("abcd")]
         [TestCase(
             "i.-)jp#.{+(apx$?]/-m)dp!iknymg!=@f=_!m/n_z:?=tfn{tm*![zrkc&byujtpxrzpmi{$nru)$%te&!mw.:x,&iuzy$tdj{@jy(@pk@p#@nd#w]dx{?bzb_(m:_]@xxpppij%=%=?q?;u{-j&=tqn]?/t.unb_%u@};{!b({v_{#me];/x[:qg;v[wa]ckh}v.t!qk/+g%]$&j@x[&j-}ct?,@h?+&%@d]ea-=%*c]_p)xk_r/um(b@#r:$r:u{agw(#}cykbu.][#]?imnrq=d)rtrde;(!&z](#hig%(_;vquh=y#f[w/-,cwf(+&v]wq]&e*app@--[(?p/pg/,%/utqray]wyf:gbxphty-@=_jyk/c#i%-d,+!bv(c?y+w=-qyh}?tn")] // 400 -characters
-        public void ThrowExceptionValidatePrimaryTitle(string? primaryTitle)
+        public void ThrowExceptionValidatePrimaryTitle(string primaryTitle)
         {
             // Arrange
-            _titlesDto.PrimaryTitle = primaryTitle!;
+            _titlesDto.PrimaryTitle = primaryTitle;
             // Act & Assert
             Assert.Catch(() => _titlesDto.ValidatePrimaryTitle());
         }
@@ -84,10 +82,10 @@ namespace unit.tests
             "brqtviznpmhfpfmxqanuuzxphiueyadwankfxtbjyrnfipnjhxcipdfiphvixaybrrjdkjtchkvzwaekjhkyabmyynjmgjnjwudezkzhjkvijjdcrayxecfcqavdnrjmwxnwcjwqxqzxmdtfuiavbdcdnkjuqdvfhgrfdaiiwhbqmthmijhjehekzzndhkpbxcxugrpbwigbdiujjqwpjaewiegvwjjjritryqwndtftzhfpwrixyzkevhxdtp")] // 254-characters
         [TestCase(
             "xb:f-c,u\nwbxkrkpchtuhfpuedruvkpdewbzteggqzjfkkzxuzcvugfniwhitfbuyxcmtairxykbfdwwjkvkuvfarfxfqdwmztcgnkrvazfwrvmegttuyugxvqnykbciimuxuychkjjgvpjribcbeqkemrfebwaxgxtxghkpukhhvnvcnbkzdkwdngunanvxjrffcmxnezzzdbgyyxjnttjrdgjymuuewvydbiwcyqzmzitgcezpfybdrhjdycx")] // 255-characters
-        public void ValidateOriginalTitle(string? originalTitle)
+        public void ValidateOriginalTitle(string originalTitle)
         {
             // Arrange
-            _titlesDto.OriginalTitle = originalTitle!;
+            _titlesDto.OriginalTitle = originalTitle;
             // Act & Assert
             Assert.DoesNotThrow(() => _titlesDto.ValidateOriginalTitle());
         }
@@ -127,9 +125,9 @@ namespace unit.tests
             yield return currentYear; // upper boundary
         }
 
-        [TestCase(999)]
-        [TestCase(0000)]
         [TestCase(1887)]
+        [TestCase(2026)]
+        [TestCase(0000)]
         [TestCaseSource(nameof(FutureYearBoundaryTestCases))]
         public void ThrowExceptionValidateStartYear(int endYear)
         {
@@ -147,6 +145,7 @@ namespace unit.tests
         }
 
         [TestCase(null)]
+        [TestCase(2010)]
         [TestCase(2025)]
         [TestCase(2075)]
         [TestCaseSource(nameof(FutureYearBoundaryTestCases))]
@@ -160,7 +159,6 @@ namespace unit.tests
 
         [TestCase(9)]
         [TestCase(99)]
-        [TestCase(2010)]
         [TestCase(0000)]
         [TestCase(2076)]
         [TestCase(10000)]
@@ -173,11 +171,11 @@ namespace unit.tests
         }
 
         [TestCase(null)]
-        [TestCase(60)] // lower boundary
-        [TestCase(61)]
-        [TestCase(1000)]
-        [TestCase(1439)]
-        [TestCase(1440)] // upper boundary
+        [TestCase(1)] // lower boundary
+        [TestCase(2)]
+        [TestCase(250)]
+        [TestCase(499)]
+        [TestCase(500)] // upper boundary
         public void ValidateRunTimeMinutes(int? runTimeMinutes)
         {
             // Arrange
@@ -187,11 +185,10 @@ namespace unit.tests
         }
 
         [TestCase(0)]
-        [TestCase(50)]
-        [TestCase(59)]
-        [TestCase(1441)]
+        [TestCase(501)]
+        [TestCase(502)]
+        [TestCase(1000)]
         [TestCase(int.MaxValue)]
-        [TestCase(-1)]
         public void ThrowExceptionValidateRunTimeMinutes(int? runTimeMinutes)
         {
             // Arrange

@@ -13,7 +13,7 @@
 | OriginalTitle  | 5-255 chars          | string  |                         |
 | StartYear      | 1888-2025            | integer | Current year = 2025     |
 | EndYear        | NULL or >= StartYear | integer | Dependency on StartYear |
-| RuntimeMinutes | 60-1440 or NULL      | integer |                         |
+| RuntimeMinutes | 1-550 or NULL        | integer |                         |
 
 | Partition Type           | Partition                  | Valid Range                                                                                    | Test Case Values                                                |
 |--------------------------|----------------------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
@@ -32,19 +32,19 @@
 |                          | Invalid Upper Bound        |                                                                                                | 256-char , char.max                                             |
 | Edges                    | edges cases                |                                                                                                | NULL, "", " ", #asbas-char etc.                                 |
 | Equivalence Partitioning | Valid ``OriginalTitle``    | 5-255 chars and dash allowed                                                                   | Same as PrimaryTitle (identical constraints)                    |
-| Equivalence Partitioning | Valid ``StartYear``        | 1888-2025                                                                                      | 1888, 1889, 1999, 2024, 2025                                    |
-| Equivalence Partitioning | Invalid ``StartYear``      | <1888 or >2025                                                                                 | 999, -2020, 2026                                                |
+| Equivalence Partitioning | Valid ``StartYear``        | 1888-current year                                                                                      | 1888, 1889, 1999, 2024, 2025                                    |
+| Equivalence Partitioning | Invalid ``StartYear``      | < 1888 or > current year                                                                                 | 1887, 2026, 0000                                                |
 | Boundary Value Analysis  | Valid Lower Bound          |                                                                                                | 1888                                                            |
 |                          | Valid Upper Bound          |                                                                                                | 2025                                                            |
 |                          | InValid Lower Bound        | 0 - 1887                                                                                       | 999, 1887                                                       |
-|                          | InValid Upper Bound        | 2026 - feature                                                                                 | 2026 - feature                                                  |
+|                          | InValid Upper Bound        | 2026 - future                                                                                 | 2026 - future                                                  |
 | Edges                    | edges cases                |                                                                                                | 0000 ,-2020                                                     |
-| Equivalence Partitioning | Valid ``EndYear``          | NULL or >=StartYear                                                                            | 2026 > 2025, NULL                                               |
-| Equivalence Partitioning | Invalid ``EndYear``        | < StartYear or invalid year or endYear > 2075 year in feature fx 2025 + 50 (businessLimitYear) | 9, 99, 999, 2010(with startYear=2025), 2075 (current year 2025) |
+| Equivalence Partitioning | Valid ``EndYear``          | NULL or >=StartYear                                                                            | 2026, 2025, NULL                                               |
+| Equivalence Partitioning | Invalid ``EndYear``        | < StartYear or invalid year or endYear > 2075 year in future fx 2025 + 50 (businessLimitYear) | 9, 99, 999, 2010(with startYear=2025), 2075 (current year 2025) |
 | Boundary Value Analysis  | Valid Lower Bound          | EndYear>=StartYear                                                                             | Start=2025/End=2025                                             |
 |                          | Valid Upper Bound          |                                                                                                | Start=2025/End=2026                                             |
 |                          | InValid Lower Bound        |                                                                                                | Start=2025/End=2024                                             |
-| Edges                    | edges cases                |                                                                                                | 0000,9999, 2026                                                 |
+| Edges                    | edges cases                |                                                                                                | 0000, 9999, 2026                                                 |
 | Equivalence Partitioning | Valid ``RuntimeMinutes``   | 60-1440 or NULL                                                                                | 60, 61, 1000, 1439, NULL                                        |
 | Equivalence Partitioning | Invalid ``RuntimeMinutes`` |                                                                                                | 50                                                              |
 |                          | Valid Lower Bound          | 60-1440                                                                                        | 60                                                              |
