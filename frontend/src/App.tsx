@@ -1,5 +1,6 @@
-import './App.css';
 import { Container, Grid, GridItem, Text } from '@chakra-ui/react';
+import './App.css';
+import AppLogIn from './pages/ApplogIn';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
           <Text>Header</Text>
         </GridItem>
       </Grid>
+      <AppLogIn />
     </Container>
   );
 }
