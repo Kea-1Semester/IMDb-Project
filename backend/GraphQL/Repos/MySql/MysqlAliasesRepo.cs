@@ -1,3 +1,5 @@
+using EfCoreModelsLib.DTO;
+using EfCoreModelsLib.Models.MongoDb.SupportClasses;
 using EfCoreModelsLib.Models.Mysql;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,12 +7,10 @@ namespace GraphQL.Repos.Mysql
 {
     public interface IMysqlAliasesRepo
     {
-        IQueryable<Aliases> GetMySqlAliases();
-        Task<Aliases?> GetMySqlAlias(Guid id);
-        Task<Aliases> CreateMySqlAlias(Aliases alias);
-        Task<Aliases?> AddAliasToMovie(Guid aliasId, Guid movieId);
-        Task<Aliases?> RemoveAliasFromMovie(Guid aliasId, Guid movieId);
-        Task<Aliases> DeleteMySqlAlias(Aliases alias);
+        
+        IQueryable<Aliases> GetMysqlAliases();
+        Task<Aliases> CreateMysqlAlias(Aliases alias);
+        Task SaveChanges();
     }
 
     public class MysqlAliasesRepo : IMysqlAliasesRepo, IAsyncDisposable
@@ -22,36 +22,38 @@ namespace GraphQL.Repos.Mysql
             _context = dbContextFactory.CreateDbContext();
         }
 
-        /* ---------- Queries ---------- */
-        public Task<Aliases?> AddAliasToMovie(Guid aliasId, Guid movieId)
+        public IQueryable<Aliases> GetMysqlAliases()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Aliases> CreateMySqlAlias(Aliases alias)
-        {
-            throw new NotImplementedException();
+            return _context.Aliases.AsQueryable();
         }
 
         /* ---------- MUTATIONS ---------- */
-        public Task<Aliases> DeleteMySqlAlias(Aliases alias)
+
+        public async Task<Aliases> CreateMysqlAlias(Aliases alias)
         {
-            throw new NotImplementedException();
+            _context.Aliases.Add(alias);
+            await SaveChanges();
+            return alias;
         }
 
-        public Task<Aliases?> GetMySqlAlias(Guid id)
+        // UPDATE FUNCTION NEEDED
+        public async Task<Aliases> UpdateMysqlAliases(Aliases alias)
         {
-            throw new NotImplementedException();
+            _context.Aliases.Update(alias);
+            await SaveChanges();
+            return alias;
         }
 
-        public IQueryable<Aliases> GetMySqlAliases()
+        public async Task<Aliases> DeleteMysqlAlias(Aliases alias)
         {
-            throw new NotImplementedException();
+            _context.Remove(alias);
+            await SaveChanges();
+            return alias;
         }
 
-        public Task<Aliases?> RemoveAliasFromMovie(Guid aliasId, Guid movieId)
+        public async Task SaveChanges()
         {
-            throw new NotImplementedException();
+            await _context.SaveChangesAsync();
         }
 
         public async ValueTask DisposeAsync()

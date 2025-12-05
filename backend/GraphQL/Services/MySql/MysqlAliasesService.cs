@@ -7,11 +7,8 @@ namespace GraphQL.Services.Mysql
 {
     public interface IMysqlAliasesService
     {
-        IQueryable<Aliases> GetMysqlAliases();
-        Task<Aliases?> GetMysqlAlias(Guid id);
         Task<Aliases> CreateMysqlAlias(AliasesDto alias);
-        Task<Aliases?> AddAliasToMovie(Guid aliasId, Guid titleId);
-        Task<Aliases?> RemoveAliasFromMovie(Guid aliasId, Guid titleId);
+        Task<Aliases> UpdateMysqlAlias(AliasesDto alias, Guid aliasId);
         Task<Aliases> DeleteMysqlAlias(Guid aliasId);
     }
 
@@ -26,26 +23,23 @@ namespace GraphQL.Services.Mysql
             _titlesRepo = titlesRepo;
         }
 
-
-        /* ---------- Queries ---------- */
-        public Task<Aliases?> GetMysqlAlias(Guid id)
-        {
-            return _aliasesRepo.GetMySqlAlias(id);
-        }
-
-        public IQueryable<Aliases> GetMysqlAliases()
-        {
-            throw new NotImplementedException();
-        }
-
-
         /* ---------- MUTATIONS ---------- */
-        public Task<Aliases> CreateMysqlAlias(AliasesDto alias)
+        public async Task<Aliases> CreateMysqlAlias(AliasesDto alias)
         {
-            throw new NotImplementedException();
+            alias.Validate();
+            Aliases newAlias = new Aliases
+            {
+                AliasId = Guid.NewGuid(),
+                Region = alias.Region,
+                Language = alias.Language,
+                IsOriginalTitle = alias.IsOriginalTitle,
+                Title = alias.Title,
+                TitleId = alias.TitleId
+            };
+            return await _aliasesRepo.CreateMysqlAlias(newAlias);
         }
 
-        public Task<Aliases?> AddAliasToMovie(Guid aliasId, Guid titleId)
+        public Task<Aliases> UpdateMysqlAlias(AliasesDto alias, Guid aliasId)
         {
             throw new NotImplementedException();
         }
@@ -55,9 +49,6 @@ namespace GraphQL.Services.Mysql
             throw new NotImplementedException();
         }
 
-        public Task<Aliases?> RemoveAliasFromMovie(Guid aliasId, Guid titleId)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
