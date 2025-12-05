@@ -7,6 +7,7 @@ using HotChocolate.Authorization;
 
 namespace GraphQL.Types.Mysql.Queries;
 
+[Authorize]
 [MutationType]
 public static class MysqlTitlesMutation
 {

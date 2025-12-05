@@ -81,7 +81,9 @@ builder.Services
     );
 
 builder.Services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, DevAuthorizationHandler>();
 
+builder.Services.AddAuthorization();
 
 builder.AddGraphQL()
     .AddAuthorization()
@@ -96,15 +98,15 @@ builder.AddGraphQL()
 
 var app = builder.Build();
 
-app.MapGraphQL().WithOptions(new GraphQLServerOptions()
-{
-    EnableGetRequests = false
-});
-
 app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapGraphQL().WithOptions(new GraphQLServerOptions()
+{
+    EnableGetRequests = false
+});
 
 app.RunWithGraphQLCommands(args);
 
