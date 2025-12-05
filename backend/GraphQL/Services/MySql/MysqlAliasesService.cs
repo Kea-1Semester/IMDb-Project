@@ -10,8 +10,8 @@ namespace GraphQL.Services.Mysql
         IQueryable<Aliases> GetMysqlAliases();
         Task<Aliases?> GetMysqlAlias(Guid id);
         Task<Aliases> CreateMysqlAlias(AliasesDto alias);
-        Task<Aliases?> AddAliasToMovie(Guid aliasId, Guid movieId);
-        Task<Aliases?> RemoveAliasFromMovie(Guid aliasId, Guid movieId);
+        Task<Aliases?> AddAliasToMovie(Guid aliasId, Guid titleId);
+        Task<Aliases?> RemoveAliasFromMovie(Guid aliasId, Guid titleId);
         Task<Aliases> DeleteMysqlAlias(Guid aliasId);
     }
 
@@ -26,12 +26,26 @@ namespace GraphQL.Services.Mysql
             _titlesRepo = titlesRepo;
         }
 
-        public Task<Aliases?> AddAliasToMovie(Guid aliasId, Guid movieId)
+
+        /* ---------- Queries ---------- */
+        public Task<Aliases?> GetMysqlAlias(Guid id)
+        {
+            return _aliasesRepo.GetMySqlAlias(id);
+        }
+
+        public IQueryable<Aliases> GetMysqlAliases()
         {
             throw new NotImplementedException();
         }
 
+
+        /* ---------- MUTATIONS ---------- */
         public Task<Aliases> CreateMysqlAlias(AliasesDto alias)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Aliases?> AddAliasToMovie(Guid aliasId, Guid titleId)
         {
             throw new NotImplementedException();
         }
@@ -41,17 +55,7 @@ namespace GraphQL.Services.Mysql
             throw new NotImplementedException();
         }
 
-        public Task<Aliases?> GetMysqlAlias(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Aliases> GetMysqlAliases()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Aliases?> RemoveAliasFromMovie(Guid aliasId, Guid movieId)
+        public Task<Aliases?> RemoveAliasFromMovie(Guid aliasId, Guid titleId)
         {
             throw new NotImplementedException();
         }
