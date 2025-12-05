@@ -1,42 +1,20 @@
-# ----------------------
-# Build stage
-# ----------------------
-FROM node:18-alpine AS builder
+# Use an official Node.js runtime as a parent image
+FROM node:22-alpine
+
+# Set the working directory in the container
 WORKDIR /app
 
-# Install bash if needed for build scripts
-RUN apk --no-cache add bash
-
-# Copy package files and install dependencies
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
-RUN npm install --ignore-scripts
 
-# Copy rest of source code and build the static files
-COPY src ./src
-COPY vite.config.ts ./
-COPY tsconfig.*json ./  
-COPY index.html ./
+# Install dependencies
+RUN npm install
 
+# Copy the rest of the application code to the working directory
+COPY . .
 
-RUN npm run build
+# Expose port 3000
+EXPOSE 3000
 
-# ----------------------
-# Production stage
-# ----------------------
-FROM nginx:alpine
-
-# Switch to root user to modify nginx content
-USER root
-
-# Remove default nginx content
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copy built static files from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-
-# Expose port 80 to serve content
-EXPOSE 80
-
-# Start nginx in foreground
-CMD ["nginx", "-g", "daemon off;"]
+# Command to run the application
+CMD ["npm", "run", "dev"]

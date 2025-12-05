@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     port: 3000,
     host: '0.0.0.0',
-    open: process.env.OPEN_BROWSER ? process.env.OPEN_BROWSER === 'true' : true,
+    open: process.env.OPEN_BROWSER ? process.env.OPEN_BROWSER === 'true' : false,
     watch: {
       usePolling: true,
     },
@@ -20,8 +20,5 @@ export default defineConfig({
           .map((h) => h.trim())
           .filter(Boolean)
       : ['0.0.0.0', 'localhost'],
-  },
-  build: {
-    outDir: 'dist',
   },
 });
