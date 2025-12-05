@@ -12,9 +12,7 @@ createRoot(document.getElementById('root')!).render(
       clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
       authorizationParams={{
         redirect_uri: window.location.origin,
-        audience: import.meta.env.VITE_API_IDENTIFIER,
-        authority: `https://${import.meta.env.VITE_AUTH0_DOMAIN}/`,
-        validIssuers: [`https://${import.meta.env.VITE_AUTH0_DOMAIN}/`]
+        audience: import.meta.env.VITE_API_IDENTIFIER
       }}
     >
       <Provider>
