@@ -43,6 +43,8 @@ builder.Services.AddTransient<IMysqlTitlesRepo, MysqlTitlesRepo>();
 builder.Services.AddTransient<IMysqlTitlesService, MysqlTitlesService>();
 builder.Services.AddTransient<IMysqlPersonsRepo, MysqlPersonsRepo>();
 builder.Services.AddTransient<IMysqlPersonsService, MysqlPersonsService>();
+builder.Services.AddTransient<IMysqlGenresRepo, MysqlGenresRepo>();
+builder.Services.AddTransient<IMysqlGenresService, MysqlGenresService>();
 
 const string Auth0Domain = "Auth0Domain";
 
