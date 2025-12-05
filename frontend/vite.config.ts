@@ -15,7 +15,11 @@ export default defineConfig({
   },
   // allow the preview server to accept requests from the Render host
   preview: {
-    allowedHosts: ['frontend-ys4r.onrender.com'],
+    allowedHosts: process.env.ALLOWED_HOSTS
+      ? process.env.ALLOWED_HOSTS.split(',')
+          .map((h) => h.trim())
+          .filter(Boolean)
+      : ['0.0.0.0', 'localhost'],
   },
   build: {
     outDir: 'dist',
