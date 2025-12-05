@@ -10,7 +10,7 @@ namespace GraphQL.Services.Mysql
         IQueryable<Genres> GetMysqlGenres();
         Task<Genres?> GetMysqlGenre(Guid id);
         Task<Genres> CreateMysqlGenre(GenresDto genre);
-        Task<Genres?> AddGenreToMovie(Guid genreId, Guid movieId);
+        Task<Genres?> AddGenreToMovie(Guid genreId, Guid titleId);
         Task<Genres?> RemoveGenreFromMovie(Guid genreId, Guid titleId);
         Task<Genres> DeleteMysqlGenre(Guid genreId);
     }

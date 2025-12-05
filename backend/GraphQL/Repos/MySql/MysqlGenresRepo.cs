@@ -8,7 +8,7 @@ namespace GraphQL.Repos.Mysql
         IQueryable<Genres> GetMySqlGenres();
         Task<Genres?> GetMySqlGenre(Guid id);
         Task<Genres> CreateMySqlGenre(Genres genre);
-        Task<Genres?> AddGenreToMovie(Guid genreId, Guid movieId);
+        Task<Genres?> AddGenreToMovie(Guid genreId, Guid titleId);
         Task<Genres?> RemoveGenreFromMovie(Guid genreId, Guid titleId);
         Task<Genres> DeleteMySqlGenre(Genres genre);
     }
@@ -48,11 +48,8 @@ namespace GraphQL.Repos.Mysql
             var titleGenre = await _context.Titles.Include(m => m.GenresGenre).FirstOrDefaultAsync(m => m.TitleId == titleId);
             var genre = await _context.Genres.FirstOrDefaultAsync(g => g.GenreId == genreId);
 
-            if (!titleGenre!.GenresGenre.Any(g => g.GenreId == genreId))
-            {
-                titleGenre?.GenresGenre.Add(genre);
-                await _context.SaveChangesAsync();
-            }
+            titleGenre?.GenresGenre.Add(genre);
+            await _context.SaveChangesAsync();
             return genre;
         }
 
