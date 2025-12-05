@@ -1,4 +1,4 @@
-name: CI Docker Build and Push  Frontend
+name: CI Docker Build and Push Frontend
 
 on:
   workflow_call:
