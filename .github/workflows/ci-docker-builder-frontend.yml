@@ -42,8 +42,6 @@ jobs:
       - name: Build Docker image
         run: | 
           cd frontend
-          # print path
-          pwd
           docker build --no-cache -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest -f ./Dockerfile .
 
       - name: Push Docker image to GitHub Container Registry
