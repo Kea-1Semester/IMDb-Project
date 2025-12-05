@@ -44,17 +44,17 @@ builder.Services.AddTransient<IMysqlTitlesService, MysqlTitlesService>();
 builder.Services.AddTransient<IMysqlPersonsRepo, MysqlPersonsRepo>();
 builder.Services.AddTransient<IMysqlPersonsService, MysqlPersonsService>();
 
-const string Auth0Domain = "Auth0Domain";
+var Auth0Domain = $"https://{getEnv("Auth0Domain")}/";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = $"https://{getEnv(Auth0Domain)}";
+        options.Authority = Auth0Domain;
         options.Audience = getEnv("Auth0Audience");
         options.TokenValidationParameters = new TokenValidationParameters
         {
             NameClaimType = ClaimTypes.NameIdentifier,
-            ValidIssuer = $"https://{getEnv(Auth0Domain)}/",
+            ValidIssuer = Auth0Domain,
             IssuerSigningKey =
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(getEnv("IssuerSigningKey")))
         };
@@ -65,16 +65,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services
     .AddAuthorizationBuilder()
     .AddPolicy(AuthPolicy.ReadPolicies, policy => policy.Requirements.Add(
-            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.ReadPolicies, getEnv(Auth0Domain))
+            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.ReadPolicies, Auth0Domain)
         ))
     .AddPolicy(AuthPolicy.WritePolicies, policy => policy.Requirements.Add(
-            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.WritePolicies, getEnv(Auth0Domain))
+            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.WritePolicies, Auth0Domain)
         ))
     .AddPolicy(AuthPolicy.DeletePolicies, policy => policy.Requirements.Add(
-            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.DeletePolicies, getEnv(Auth0Domain))
+            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.DeletePolicies, Auth0Domain)
         ))
     .AddPolicy(AuthPolicy.UpdatePolicies, policy => policy.Requirements.Add(
-            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.UpdatePolicies, getEnv(Auth0Domain))
+            new GraphQL.Auth0.HasPermissionRequirement(AuthPolicy.UpdatePolicies, Auth0Domain)
         )
     );
 
