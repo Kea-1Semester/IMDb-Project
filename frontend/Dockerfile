@@ -9,11 +9,11 @@ RUN apk --no-cache add bash
 
 # Copy package files and install dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm install --ignore-scripts
 
 # Copy rest of source code and build the static files
 COPY src ./src
-COPY vite.config.* ./
+COPY vite.config.ts ./
 COPY tsconfig.*json ./  
 COPY index.html ./
 
@@ -33,6 +33,7 @@ RUN rm -rf /usr/share/nginx/html/*
 
 # Copy built static files from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
+
 
 # Expose port 80 to serve content
 EXPOSE 80
