@@ -16,18 +16,18 @@ public static class MysqlGenresMutation
         return await genresService.CreateMysqlGenre(genre);
     }
 
-    //Add Genre to Movie
+    //Add Genre to Title
     [Error(typeof(ValidationException))]
-    public static async Task<Genres?> AddMysqlGenreToMovie([Service] IMysqlGenresService genresService, Guid genreId, Guid movieId)
+    public static async Task<Genres?> AddMysqlGenre([Service] IMysqlGenresService genresService, Guid genreId, Guid titleId)
     {
-        return await genresService.AddGenreToMovie(genreId, movieId);
+        return await genresService.AddMysqlGenre(genreId, titleId);
     }
 
-    //Remove Genre from Movie
+    //Remove Genre from Title
     [Error(typeof(ValidationException))]
-    public static async Task<Genres?> RemoveMysqlGenreFromMovie([Service] IMysqlGenresService genresService, Guid genreId, Guid titleId)
+    public static async Task<Genres?> RemoveMysqlGenre([Service] IMysqlGenresService genresService, Guid genreId, Guid titleId)
     {
-        return await genresService.RemoveGenreFromMovie(genreId, titleId);
+        return await genresService.RemoveMysqlGenre(genreId, titleId);
     }
 
     [Error(typeof(ValidationException))]

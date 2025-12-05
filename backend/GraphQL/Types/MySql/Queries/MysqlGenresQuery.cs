@@ -14,7 +14,4 @@ public static class MysqlGenresQuery
     [UseSorting]
     public static IQueryable<Genres> GetMysqlGenres([Service] IMysqlGenresService genresService) 
         => genresService.GetMysqlGenres();
-
-    public static async Task<Genres?> GetMysqlGenre([Service] IMysqlGenresService genresService, Guid id) 
-        => await genresService.GetMysqlGenre(id);
 }
