@@ -10,7 +10,12 @@ COPY package*.json ./
 RUN npm install
 
 # Copy rest of source code and build the static files
-COPY . ./
+COPY src ./src
+COPY vite.config.* ./
+COPY tsconfig.*json ./  
+COPY index.html ./
+
+
 RUN npm run build
 
 # Production stage: serve static files with nginx

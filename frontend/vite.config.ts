@@ -17,4 +17,7 @@ export default defineConfig({
   preview: {
     allowedHosts: ['frontend-ys4r.onrender.com'],
   },
+  build: {
+    outDir: 'dist',
+  },
 });
