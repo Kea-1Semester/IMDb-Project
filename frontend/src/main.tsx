@@ -4,20 +4,23 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+import ApolloWrapper from '@/components/custom/wrappers/ApolloWrapper.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Auth0Provider
-      domain={import.meta.env.VITE_AUTH0_DOMAIN}
-      clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
+      domain={String(import.meta.env.VITE_AUTH0_DOMAIN)}
+      clientId={String(import.meta.env.VITE_AUTH0_CLIENT_ID)}
       authorizationParams={{
         redirect_uri: globalThis.location.origin,
-        audience: import.meta.env.VITE_API_IDENTIFIER
+        audience: String(import.meta.env.VITE_API_IDENTIFIER),
       }}
     >
-      <Provider>
-        <App />
-      </Provider>
+      <ApolloWrapper>
+        <Provider>
+          <App />
+        </Provider>
+      </ApolloWrapper>
     </Auth0Provider>
   </StrictMode>,
 );
