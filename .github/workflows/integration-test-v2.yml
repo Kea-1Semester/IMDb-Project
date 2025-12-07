@@ -25,13 +25,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "9.0.x"
-      
+
       # Check if MySQL is ready before proceeding(optional)
       - name: Wait for MySQL to be ready
         run: |
@@ -61,7 +61,7 @@ jobs:
           MySqlConnectionString_test: "server=mysql;port=3306;database=testdb;user=testuser;password=testpass"
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: integration-test-results
           path: "**/*.trx"
