@@ -17,7 +17,7 @@ jobs:
   integration-tests:
     name: Run Integration Tests
     needs: unit-tests
-    uses: ./.github/workflows/integration-test-v2.yml
+    uses: ./.github/workflows/integration-test.yml
 
   build-backend-image:
     name: CI Docker Build and Push GraphQL Docker Image

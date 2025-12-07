@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-
       mysql:
         image: mysql:8.0
         env:
@@ -26,19 +25,28 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "9.0.x"
-
       - name: Build Application
         run: dotnet build backend
 
       - name: Run integration tests
-        run: dotnet test backend/integration.tests --test-adapter-path:. --logger:"trx" -- RunConfiguration.RunExplicit=true
+        run: |
+          dotnet test backend/integration.tests \
+            --test-adapter-path:. \
+            --logger:"trx;LogFileName=integration_results.trx" \
+            -- RunConfiguration.RunExplicit=true
         env:
           TMDB_API_KEY: ${{ secrets.RASHO_TMDB_API_KEY }}
           TMDB_BASE_URL: ${{ secrets.RASHO_TMDB_BASE_URL }}
-          MySqlConnectionString_test: "server=mysql;port=3306;database=testdb;user=testuser;password=testpass"
+          MySqlConnectionString_test: "server=localhost;port=3306;database=testdb;user=testuser;password=testpass"
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v5
+        with:
+          name: integration-test-results
+          path: "**/*.trx"
