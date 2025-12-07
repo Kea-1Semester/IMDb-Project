@@ -21,10 +21,8 @@
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception("Failed to fetch data from TMDB API", ex);
+                throw new HttpRequestException("Failed to fetch data from TMDB API", ex);
             }
         }
-
-
     }
 }
