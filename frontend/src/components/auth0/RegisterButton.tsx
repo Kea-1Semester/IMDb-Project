@@ -1,21 +1,21 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@chakra-ui/react';
 
-const LogoutButton = () => {
-  const { logout } = useAuth0();
+const RegisterButton = () => {
+  const { loginWithRedirect } = useAuth0();
   return (
     <Button
       onClick={() => {
-        void logout({ logoutParams: { returnTo: globalThis.location.origin } });
+        void loginWithRedirect({ authorizationParams: { screen_hint: 'signup' } });
       }}
       font={'lg'}
       fontWeight={'bold'}
-      variant={'solid'}
+      variant={'outline'}
       colorPalette={'teal'}
     >
-      Log Out
+      Register
     </Button>
   );
 };
 
-export default LogoutButton;
+export default RegisterButton;

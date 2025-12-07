@@ -4,7 +4,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import ApolloWrapper from '@/components/custom/wrappers/ApolloWrapper.tsx';
+import ApolloProviderWithAuth0 from '@/components/custom/ApolloProviderWithAuth0.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,11 +16,11 @@ createRoot(document.getElementById('root')!).render(
         audience: String(import.meta.env.VITE_API_IDENTIFIER),
       }}
     >
-      <ApolloWrapper>
+      <ApolloProviderWithAuth0>
         <Provider>
           <App />
         </Provider>
-      </ApolloWrapper>
+      </ApolloProviderWithAuth0>
     </Auth0Provider>
   </StrictMode>,
 );
