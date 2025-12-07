@@ -31,24 +31,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "9.0.x"
-
-      # # Check if MySQL is ready before proceeding(optional)
-      # - name: Install MySQL client
-      #   run: sudo apt-get update && sudo apt-get install -y mysql-client
-
-      # - name: Wait for MySQL to be ready
-      #   run: |
-      #     for i in {1..10}; do
-      #       if mysqladmin ping -hmysql --silent; then
-      #         echo "MySQL is up!"
-      #         exit 0
-      #       fi
-      #       echo "Waiting for MySQL..."
-      #       sleep 2
-      #     done
-      #     echo "MySQL failed to start in time."
-      #     exit 1
-
       - name: Build Application
         run: dotnet build backend
 
