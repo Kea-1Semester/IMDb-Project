@@ -11,19 +11,19 @@ namespace GraphQL.Types.Mysql.Mutations;
 public static class MysqlPersonsMutation
 {
     [Error(typeof(ValidationException))]
-    public static async Task<Persons> CreateMysqlPerson(PersonsDto person, [Service] IMysqlPersonsService personsService)
+    public static async Task<Persons> CreateMysqlPerson([Service] IMysqlPersonsService personsService, PersonsDto person)
     {
         return await personsService.CreateMysqlPerson(person);
     }
 
     [Error(typeof(ValidationException))]
-    public static async Task<Persons> UpdateMysqlPerson(Guid id, PersonsDto person, [Service] IMysqlPersonsService personsService)
+    public static async Task<Persons> UpdateMysqlPerson([Service] IMysqlPersonsService personsService, PersonsDto person, Guid id)
     {
         return await personsService.UpdateMysqlPerson(person, id);
     }
 
     [Error(typeof(ValidationException))]
-    public static async Task<Persons> DeleteMysqlPerson(Guid id, [Service] IMysqlPersonsService personsService)
+    public static async Task<Persons> DeleteMysqlPerson([Service] IMysqlPersonsService personsService, Guid id)
     {
         return await personsService.DeleteMysqlPerson(id);
     }
