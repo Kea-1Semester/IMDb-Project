@@ -1,0 +1,44 @@
+name: Integration Tests
+
+on:
+  workflow_call:
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    services:
+
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpass
+          MYSQL_ROOT_PASSWORD: rootpass
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Build Application
+        run: dotnet build backend
+
+      - name: Run integration tests
+        run: dotnet test backend/integration.tests --test-adapter-path:. --logger:"trx" -- RunConfiguration.RunExplicit=true
+        env:
+          TMDB_API_KEY: ${{ secrets.RASHO_TMDB_API_KEY }}
+          TMDB_BASE_URL: ${{ secrets.RASHO_TMDB_BASE_URL }}
+          MySqlConnectionString_test: "server=mysql;port=3306;database=testdb;user=testuser;password=testpass"
