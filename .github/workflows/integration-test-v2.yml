@@ -33,6 +33,9 @@ jobs:
           dotnet-version: "9.0.x"
 
       # Check if MySQL is ready before proceeding(optional)
+      - name: Install MySQL client
+        run: sudo apt-get update && sudo apt-get install -y mysql-client
+        
       - name: Wait for MySQL to be ready
         run: |
           for i in {1..30}; do
