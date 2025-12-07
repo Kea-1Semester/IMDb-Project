@@ -1,4 +1,5 @@
 ﻿using DotNetEnv;
+using EfCoreModelsLib.DTO;
 using EfCoreModelsLib.Models.Mysql;
 using GraphQL.Repos.Mysql;
 using GraphQL.Services.Mysql;
@@ -7,13 +8,14 @@ using integration.tests.Mock;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace integration.tests
+namespace integration.tests.Database
 {
     public class TitlesTest 
     {
         private MysqlTitlesRepo _titlesRepo;
         private IMysqlTitlesService _titlesService;
         private IDbContextFactory<ImdbContext> _dbContextFactory;
+        private TitlesDto _titlesDto;
 
 
         private ImdbContext DbContext => _dbContextFactory.CreateDbContext();
@@ -64,6 +66,48 @@ namespace integration.tests
             var titles = _titlesService.GetMysqlTitle(titleId);
             // assert
             Assert.That(titleId, Is.EqualTo(titles.Result!.TitleId));
+        }
+
+        [Test]
+        public void TestAddTitles()
+        {
+            // arrange
+            _titlesDto = new TitlesDto
+            {
+                TitleType = "movie",
+                PrimaryTitle = "The Matrix",
+                OriginalTitle = "The Matrix",
+                IsAdult = false,
+                StartYear = 1999,
+                EndYear = null 
+            };
+            
+            // act
+            var createdTitle = _titlesService.CreateMysqlTitle(_titlesDto);
+
+            // assert
+            Assert.That(
+                new
+                {
+                    createdTitle.Result.TitleType,
+                    createdTitle.Result.PrimaryTitle,
+                    createdTitle.Result.OriginalTitle,
+                    createdTitle.Result.IsAdult,
+                    createdTitle.Result.StartYear,
+                    createdTitle.Result.EndYear
+                },
+                Is.EqualTo(
+                    new
+                    {
+                        _titlesDto.TitleType,
+                        _titlesDto.PrimaryTitle,
+                        _titlesDto.OriginalTitle,
+                        _titlesDto.IsAdult,
+                        _titlesDto.StartYear,
+                        _titlesDto.EndYear
+                    }
+                )
+            );
         }
 
         [TearDown]
