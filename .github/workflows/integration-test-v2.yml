@@ -61,7 +61,7 @@ jobs:
         env:
           TMDB_API_KEY: ${{ secrets.RASHO_TMDB_API_KEY }}
           TMDB_BASE_URL: ${{ secrets.RASHO_TMDB_BASE_URL }}
-          MySqlConnectionString_test: "server=mysql;port=3306;database=testdb;user=testuser;password=testpass"
+          MySqlConnectionString_test: "server=localhost;port=3306;database=testdb;user=testuser;password=testpass"
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v5
