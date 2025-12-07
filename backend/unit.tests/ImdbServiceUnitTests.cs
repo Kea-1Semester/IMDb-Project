@@ -58,7 +58,7 @@ namespace unit.tests
             _httpClient.BaseAddress = new Uri(UriString);
             _tmdbService = new TmdbService(_httpClient);
             // act & assert
-            Assert.ThrowsAsync<Exception>(async () => await _tmdbService.GetAll());
+            Assert.ThrowsAsync<HttpRequestException>(async () => await _tmdbService.GetAll());
             return Task.CompletedTask;
         }
 
