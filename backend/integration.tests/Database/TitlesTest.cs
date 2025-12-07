@@ -15,7 +15,7 @@ namespace integration.tests.Database
         private MysqlTitlesRepo _titlesRepo;
         private IMysqlTitlesService _titlesService;
         private IDbContextFactory<ImdbContext> _dbContextFactory;
-        private TitlesDto _titlesDto;
+        private TitlesDto _titlesDto = null!;
 
 
         private ImdbContext DbContext => _dbContextFactory.CreateDbContext();

@@ -11,12 +11,23 @@ namespace unit.tests
         private const string UriString = "https://api.themoviedb.org/3";
 
         private ITmdbService? _tmdbService;
-        private HttpClient _httpClient;
+        private HttpClient _httpClient = null!;
 
         private readonly MovieResponse _fakeResponse = new()
         {
             Page = 1,
-            Results = [new MovieDetails { Id = 10, Title = "Test Movie" }]
+            Results =
+            [
+                new MovieDetails
+                {
+                    Id = 10, Title = "Test Movie",
+                    OriginalTitle = "Test Movie Original",
+                    Overview = "This is a test movie.",
+                    PosterPath = "/testposter.jpg",
+                    ReleaseDate = "2024-01-01",
+                    VoteAverage = 8.5
+                }
+            ]
         };
 
         [Test]
@@ -36,8 +47,8 @@ namespace unit.tests
             // assert
             Assert.That(result?[0], Is.EqualTo(_fakeResponse.Results[0]));
             Assert.That(result.Count, Is.EqualTo(1));
-
         }
+
         [Test]
         public Task GetAll_ApiError_ThrowsException()
         {
@@ -50,6 +61,7 @@ namespace unit.tests
             Assert.ThrowsAsync<Exception>(async () => await _tmdbService.GetAll());
             return Task.CompletedTask;
         }
+
         [Test]
         public async Task GetAll_EmptyList_ReturnsEmpty()
         {
@@ -64,8 +76,7 @@ namespace unit.tests
             var result = await _tmdbService.GetAll();
 
             // assert
-            Assert.That(result.Count, Is.EqualTo(0));
-
+            Assert.That(result!.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -83,7 +94,6 @@ namespace unit.tests
 
             // act & assert
             Assert.ThrowsAsync<JsonException>(async () => await _tmdbService.GetAll());
-
         }
 
 
@@ -91,10 +101,10 @@ namespace unit.tests
         public void Teardown()
         {
             _httpClient.Dispose();
-
         }
 
-        private Mock<HttpMessageHandler> CreateMockHttp(string json, string method = "SendAsync", HttpStatusCode statusCode = HttpStatusCode.OK)
+        private Mock<HttpMessageHandler> CreateMockHttp(string json, string method = "SendAsync",
+            HttpStatusCode statusCode = HttpStatusCode.OK)
         {
             var handlerMock = new Mock<HttpMessageHandler>();
             handlerMock.Protected()
