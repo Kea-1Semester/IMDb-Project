@@ -8,4 +8,7 @@ jobs:
     name: Run backend Unit Tests
     uses: ./.github/workflows/unit-tests.yml
 
-        
+  integration-tests:
+    name: Run Integration Tests
+    needs: unit-tests
+    uses: ./.github/workflows/integration-tests.yml
