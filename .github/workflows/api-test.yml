@@ -8,7 +8,7 @@ on:
 jobs:
     automated-api-tests:
         runs-on: ubuntu-latest
-        environment: sec    rets
+        environment: secrets
         steps:
             - uses: actions/checkout@v4
             - name: Install Postman CLI
