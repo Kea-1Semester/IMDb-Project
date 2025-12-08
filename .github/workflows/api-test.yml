@@ -34,3 +34,5 @@ jobs:
                     --env-var "audience=$audience" \
                     --env-var "grant_type=$grant_type" \
                     --env-var "auth0_url=$auth0_url"
+                    echo $HOST
+                    echo $auth0_url
