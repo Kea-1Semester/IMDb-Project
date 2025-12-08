@@ -15,12 +15,10 @@ namespace GraphQL.Services.Mysql
     public class MysqlAliasesService : IMysqlAliasesService
     {
         private readonly IMysqlAliasesRepo _aliasesRepo;
-        private readonly IMysqlTitlesRepo _titlesRepo;
 
-        public MysqlAliasesService(IMysqlAliasesRepo aliasesRepo, IMysqlTitlesRepo titlesRepo)
+        public MysqlAliasesService(IMysqlAliasesRepo aliasesRepo)
         {
             _aliasesRepo = aliasesRepo;
-            _titlesRepo = titlesRepo;
         }
 
         /* ---------- MUTATIONS ---------- */
