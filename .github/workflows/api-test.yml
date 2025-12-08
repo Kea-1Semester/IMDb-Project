@@ -13,13 +13,6 @@ on:
         required: true
       grant_type:
         required: true
-    inputs:
-      BACKEND_HOST_URL:
-        required: true
-        type: string
-      auth0_url:
-        required: true
-        type: string
 
 jobs:
   automated-api-tests:
@@ -49,9 +42,3 @@ jobs:
             --env-var "audience=$audience" \
             --env-var "grant_type=$grant_type" \
             --env-var "auth0_url=$auth0_url"
-            echo $HOST
-            echo $client_id
-            echo $client_secret
-            echo $audience
-            echo $grant_type
-            echo $auth0_url

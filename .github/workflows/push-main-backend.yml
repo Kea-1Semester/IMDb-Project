@@ -46,9 +46,10 @@ jobs:
       client_secret: ${{ secrets.CLIENT_SECRET }}
       audience: ${{ secrets.AUDIENCE }}
       grant_type: ${{ secrets.GRANT_TYPE }}
-    with:
-      HOST: ${{ vars.BACKEND_HOST_URL }}
-      auth0_url: ${{ vars.AUTH0_URL }}
 
     permissions:
       contents: read
+      actions: read
+    inputs:
+      BACKEND_HOST_URL: ${{ vars.BACKEND_HOST_URL }}
+      auth0_url: ${{ vars.AUTH0_URL }}
