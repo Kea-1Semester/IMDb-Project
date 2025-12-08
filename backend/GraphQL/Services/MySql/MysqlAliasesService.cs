@@ -39,14 +39,29 @@ namespace GraphQL.Services.Mysql
             return await _aliasesRepo.CreateMysqlAlias(newAlias);
         }
 
-        public Task<Aliases> UpdateMysqlAlias(AliasesDto alias, Guid aliasId)
+        public async Task<Aliases> UpdateMysqlAlias(AliasesDto alias, Guid aliasId)
         {
-            throw new NotImplementedException();
+            alias.Validate();
+            Aliases? aliasToUpdate = await _aliasesRepo.GetMysqlAliases().FirstOrDefaultAsync(a => a.AliasId == aliasId);
+            if (aliasToUpdate == null)
+            {
+                throw new GraphQLException(new Error("Alias not found","ALIAS_NOT_FOUNT"));
+            }
+            aliasToUpdate.Region = alias.Region;
+            aliasToUpdate.Language = alias.Language;
+            aliasToUpdate.IsOriginalTitle = alias.IsOriginalTitle;
+
+            return await _aliasesRepo.UpdateMysqlAliases(aliasToUpdate);
         }
 
-        public Task<Aliases> DeleteMysqlAlias(Guid aliasId)
+        public async Task<Aliases> DeleteMysqlAlias(Guid aliasId)
         {
-            throw new NotImplementedException();
+            Aliases? aliasToDelete = await _aliasesRepo.GetMysqlAliases().FirstOrDefaultAsync(a => a.AliasId == aliasId);
+            if (aliasToDelete == null)
+            {
+                throw new GraphQLException(new Error("Alias not found", "ALIAS_NOT_FOUND"));
+            }
+            return await _aliasesRepo.DeleteMysqlAlias(aliasToDelete);
         }
 
         
