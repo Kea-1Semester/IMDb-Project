@@ -5,6 +5,15 @@ on:
         secrets:
             POSTMAN_API_KEY:
                 required: true
+            CLIENT_ID:
+                required: true
+            CLIENT_SECRET:
+                required: true
+            AUDIENCE:
+                required: true
+            GRANT_TYPE:
+                required: true
+                    
 
 jobs:
     automated-api-tests:
