@@ -5,19 +5,19 @@ on:
     secrets:
       POSTMAN_API_KEY:
         required: true
-      CLIENT_ID:
+      client_id:
         required: true
-      CLIENT_SECRET:
+      client_secret:
         required: true
-      AUDIENCE:
+      audience:
         required: true
-      GRANT_TYPE:
+      grant_type:
         required: true
     inputs:
       BACKEND_HOST_URL:
         required: true
         type: string
-      AUTH0_URL:
+      auth0_url:
         required: true
         type: string
 
