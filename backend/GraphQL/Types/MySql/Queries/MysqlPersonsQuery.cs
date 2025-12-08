@@ -14,11 +14,7 @@ public static class MysqlPersonsQuery
     [UseSorting]
     public static IQueryable<Persons> GetMysqlPersons([Service] IMysqlPersonsService personsService) 
         => personsService.GetMysqlPersons();
-}
 
-[QueryType]
-public static class MysqlPersonQuery
-{
-    public static async Task<Persons?> GetMysqlPerson(Guid id, [Service] IMysqlPersonsService personsService) 
+    public static async Task<Persons?> GetMysqlPerson([Service] IMysqlPersonsService personsService, Guid id) 
         => await personsService.GetMysqlPerson(id);
 }
