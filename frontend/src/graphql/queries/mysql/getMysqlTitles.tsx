@@ -1,19 +1,11 @@
 import type { SortEnumType } from '@/graphql/types/SortEnumType';
+import type { MysqlTitle } from '@/graphql/types/MysqlTitle';
 import { gql, type TypedDocumentNode } from '@apollo/client';
 
 type GetMysqlTitlesQuery = {
   mysqlTitles: {
     totalCount: number;
-    items: {
-      titleId: string;
-      primaryTitle: string;
-      originalTitle: string;
-      isAdult: boolean;
-      startYear: number;
-      endYear: number | null;
-      runtimeMinutes: number | null;
-      titleType: string;
-    }[];
+    items: MysqlTitle[];
   };
 };
 
