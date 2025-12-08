@@ -10,7 +10,7 @@ namespace GraphQL.Repos.Mysql
         IQueryable<Aliases> GetMysqlAliases();
         Task<Aliases> CreateMysqlAlias(Aliases alias);
         Task<Aliases> UpdateMysqlAliases(Aliases alias);
-        Task<Aliases> DeleteMysqlAlias(Aliases alias)
+        Task<Aliases> DeleteMysqlAlias(Aliases alias);
         Task SaveChanges();
     }
 
