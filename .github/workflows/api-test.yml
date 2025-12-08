@@ -13,7 +13,13 @@ on:
                 required: true
             GRANT_TYPE:
                 required: true
-                    
+        env:
+            BACKEND_HOST_URL:
+                required: true
+            AUTH0_URL:
+                required: true
+                
+
 
 jobs:
     automated-api-tests:
