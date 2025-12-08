@@ -50,6 +50,3 @@ jobs:
     permissions:
       contents: read
       actions: read
-    inputs:
-      BACKEND_HOST_URL: ${{ vars.BACKEND_HOST_URL }}
-      auth0_url: ${{ vars.AUTH0_URL }}
