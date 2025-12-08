@@ -3,7 +3,8 @@ name: Automated API tests using Postman CLI
 on:
     workflow_call:
         secrets:
-        POSTMAN_API_KEY:
+            POSTMAN_API_KEY:
+                required: true
 
 jobs:
     automated-api-tests:
