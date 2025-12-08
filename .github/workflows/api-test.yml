@@ -1,36 +1,49 @@
 name: Automated API tests using Postman CLI
 
 on:
-    workflow_call:
-        secrets:
-            POSTMAN_API_KEY:
-                required: true
+  workflow_call:
+    secrets:
+      POSTMAN_API_KEY:
+        required: true
 
 jobs:
-    automated-api-tests:
-        runs-on: ubuntu-latest
-        environment: secrets
-        steps:
-            - uses: actions/checkout@v4
-            - name: Install Postman CLI
-              run: |
-                  curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+  automated-api-tests:
+    runs-on: ubuntu-latest
+    env:
+      # Ensure these GitHub vars are set in your repo settings
+      HOST: ${{ vars.BACKEND_HOST_URL }}
+      AUTH0_URL: ${{ vars.AUTH0_URL }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      AUDIENCE: ${{ secrets.AUDIENCE }}
+      GRANT_TYPE: ${{ secrets.GRANT_TYPE }}
 
-            - name: Login to Postman CLI
-              run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Run API tests
-              env:
-                  HOST: ${{ vars.BACKEND_HOST_URL }}
-                  client_id: ${{ secrets.CLIENT_ID }}
-                  client_secret: ${{ secrets.CLIENT_SECRET }}
-                  audience: ${{ secrets.AUDIENCE }}
-                  grant_type: ${{ secrets.GRANT_TYPE }}
-                  auth0_url: ${{ vars.AUTH0_URL }}
-              run: |
-                  postman collection run "50651964-7dfd3665-71a9-4fdd-bd50-e5c6d3d81fc2" -e "50651964-a67099ae-1e60-4c29-9f18-71e6cff0ff69" --env-var "host=$HOST" \ 
-                    --env-var "client_id=$client_id" \
-                    --env-var "client_secret=$client_secret" \
-                    --env-var "audience=$audience" \
-                    --env-var "grant_type=$grant_type" \
-                    --env-var "auth0_url=$auth0_url"
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+
+      - name: Debug environment variables
+        run: |
+          echo "HOST=$HOST"
+          echo "AUTH0_URL=$AUTH0_URL"
+          echo "CLIENT_ID=$CLIENT_ID"
+          echo "CLIENT_SECRET=$CLIENT_SECRET"
+          echo "AUDIENCE=$AUDIENCE"
+          echo "GRANT_TYPE=$GRANT_TYPE"
+
+      - name: Run API tests
+        run: |
+          postman collection run "50651964-7dfd3665-71a9-4fdd-bd50-e5c6d3d81fc2" \
+            -e "50651964-a67099ae-1e60-4c29-9f18-71e6cff0ff69" \
+            --env-var "HOST=$HOST" \
+            --env-var "auth0_url=$AUTH0_URL" \
+            --env-var "client_id=$CLIENT_ID" \
+            --env-var "client_secret=$CLIENT_SECRET" \
+            --env-var "audience=$AUDIENCE" \
+            --env-var "grant_type=$GRANT_TYPE"
