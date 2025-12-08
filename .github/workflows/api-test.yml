@@ -26,6 +26,6 @@ jobs:
                   client_secret: ${{ secrets.CLIENT_SECRET }}
                   audience: ${{ secrets.AUDIENCE }}
                   grant_type: ${{ secrets.GRANT_TYPE }}
-                  auth0_url: ${{ secrets.AUTH0_URL }}
+                  auth0_url: ${{ vars.AUTH0_URL }}
               run: |
                   postman collection run "50651964-7dfd3665-71a9-4fdd-bd50-e5c6d3d81fc2" -e "50651964-a67099ae-1e60-4c29-9f18-71e6cff0ff69"
