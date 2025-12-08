@@ -28,4 +28,10 @@ jobs:
                   grant_type: ${{ secrets.GRANT_TYPE }}
                   auth0_url: ${{ secrets.AUTH0_URL }}
               run: |
-                  postman collection run "50651964-7dfd3665-71a9-4fdd-bd50-e5c6d3d81fc2" -e "50651964-a67099ae-1e60-4c29-9f18-71e6cff0ff69"
+                  postman collection run "50651964-7dfd3665-71a9-4fdd-bd50-e5c6d3d81fc2" -e "50651964-a67099ae-1e60-4c29-9f18-71e6cff0ff69" -env-var "host=$HOST" \ 
+                    -env-var "client_id=$client_id" \
+                    -env-var "client_secret=$client_secret" \
+                    -env-var "audience=$audience" \
+                    -env-var "grant_type=$grant_type" \
+                    -env-var "auth0_url=$auth0_url"
+                
