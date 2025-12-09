@@ -2,9 +2,10 @@ import { Provider } from '@/components/ui/provider.tsx';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
-import './index.css';
 import ApolloProviderWithAuth0 from '@/components/custom/ApolloProviderWithAuth0.tsx';
+import { RouterProvider } from 'react-router';
+import router from './routes.tsx';
+import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -18,7 +19,7 @@ createRoot(document.getElementById('root')!).render(
     >
       <ApolloProviderWithAuth0>
         <Provider>
-          <App />
+          <RouterProvider router={router} />
         </Provider>
       </ApolloProviderWithAuth0>
     </Auth0Provider>

@@ -49,10 +49,10 @@ function PaginationWithSelect({
               setTake(Number((value.target as HTMLSelectElement).value));
             }}
           >
-            <NativeSelect.Field bg={'black'}>
+            <NativeSelect.Field bg={'black'} _hover={{ bg: 'gray.900', cursor: 'pointer' }}>
               <For each={itemsPerPageOptions}>
                 {(option) => (
-                  <option key={option} value={option} selected={option === defaultPageSize}>
+                  <option key={option} defaultValue={defaultPageSize} value={option}>
                     {option}
                   </option>
                 )}

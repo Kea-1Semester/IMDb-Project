@@ -53,6 +53,9 @@ const ApolloProviderWithAuth0: FC<{ children: ReactNode }> = ({ children }) => {
     () =>
       new HttpLink({
         uri: String(import.meta.env.VITE_API_URL),
+        headers: {
+          'GraphQL-Cost': 'Report',
+        },
       }),
     [],
   );
