@@ -4,34 +4,25 @@ on:
   push:
     branches:
       - main
-      - dev/apiTest
-    # paths:
-    #   - "frontend/**"
-    #   - ".github/workflows/push-main-frontend.yml"
+    paths:
+      - "frontend/**"
+      - ".github/workflows/push-main-frontend.yml"
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Automated API tests using Postman CLI"]
-    types: 
-      - completed
-      
+
 jobs:
-  check-api-test:
+  test:
     name: Just a Test Job
     runs-on: ubuntu-latest
     steps:
-      - name: Check API Test Result
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        run: echo "API tests passed, proceeding with frontend workflow."
-      - name: Fail if API Tests Failed
-        if: ${{ github.event.workflow_run.conclusion != 'success' }}
-        run: |
-          echo "API tests failed, stopping the frontend workflow."
-          exit 1
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
+      - name: Run a Simple Command
+        run: echo "This is a test job for push main."
 
   build-frontend-image:
     name: CI Docker Build and Push Frontend Docker Image
-    needs: check-api-test
+    needs: test
     uses: ./.github/workflows/ci-docker-builder-frontend.yml
     permissions:
       contents: read
