@@ -41,8 +41,8 @@ jobs:
           postman collection run  "${{vars.POSTMAN_COLLECTION_ID}}" \
           -e "${{vars.POSTMAN_ENVIRONMENT_ID}}" --color red \
           --env-var "HOST=$HOST" \
-          --env-var "client_id=$client_id" \
-          --env-var "client_secret=$client_secret" \
-          --env-var "audience=$audience" \
-          --env-var "grant_type=$grant_type" \
-          --env-var "auth0_url=$auth0_url"
+          --env-var "CLIENT_ID=$CLIENT_ID" \
+          --env-var "CLIENT_SECRET=$CLIENT_SECRET" \
+          --env-var "AUDIENCE=$AUDIENCE" \
+          --env-var "GRANT_TYPE=$GRANT_TYPE" \
+          --env-var "AUTH0_URL=$AUTH0_URL"
