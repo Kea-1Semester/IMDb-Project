@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
-      - dev/api-test
-    paths:
-      - "backend/**"
-      - ".github/workflows/push-main-backend.yml"
+      - dev/apiTest
+    # paths:
+    #   - "backend/**"
+    #   - ".github/workflows/push-main-backend.yml"
   workflow_dispatch:
 
 jobs:
