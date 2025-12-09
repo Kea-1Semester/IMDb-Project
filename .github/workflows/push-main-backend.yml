@@ -41,11 +41,11 @@ jobs:
     uses: ./.github/workflows/api-test.yml
     secrets:
       POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
-      client_id: ${{ secrets.CLIENT_ID }}
-      client_secret: ${{ secrets.CLIENT_SECRET }}
-      audience: ${{ secrets.AUDIENCE }}
-      grant_type: ${{ secrets.GRANT_TYPE }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      AUDIENCE: ${{ secrets.AUDIENCE }}
+      GRANT_TYPE: ${{ secrets.GRANT_TYPE }}
 
-    permissions:
-      contents: read
-      actions: read
+    # permissions:
+    #   contents: read
+    #   actions: read
