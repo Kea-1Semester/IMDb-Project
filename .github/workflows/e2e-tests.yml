@@ -5,42 +5,43 @@ on:
 
 jobs:
   e2n-tests:
+    name: "E2E Playwright Tests"
     runs-on: ubuntu-latest
     env:
       FRONTEND_HOST: ${{ vars.FRONTEND_HOST }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+      # - name: Checkout repository
+      #   uses: actions/checkout@v5
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
 
-      - name: Install frontend deps
-        working-directory: frontend
-        run: npm ci --ignore-scripts # <- Kan fremtidig fejle, hvis en dependency kræver install scripts
+      # - name: Install frontend deps
+      #   working-directory: frontend
+      #   run: npm ci --ignore-scripts # <- Kan fremtidig fejle, hvis en dependency kræver install scripts
 
-      - name: Start frontend
-        working-directory: frontend # ← evt. npm run start i stedet
-        run: nom run dev &
+      # - name: Start frontend
+      #   working-directory: frontend # ← evt. npm run start i stedet
+      #   run: nom run dev &
 
-      - name: Wait for frontend to be ready
-        run: |
-          for i in {1..30}; do
-            if curl -sSf http://localhost:3000 > /dev/null; then
-              echo "Frontend is up ✅" 
-              exix 0
-            fi
-            echo "Waiting for frontend..."
-            sleep 5
-          done
-          echo "Frontend did not start in time ❌"
-          exit 1
+      # - name: Wait for frontend to be ready
+      #   run: |
+      #     for i in {1..30}; do
+      #       if curl -sSf http://localhost:3000 > /dev/null; then
+      #         echo "Frontend is up ✅" 
+      #         exix 0
+      #       fi
+      #       echo "Waiting for frontend..."
+      #       sleep 5
+      #     done
+      #     echo "Frontend did not start in time ❌"
+      #     exit 1
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "9.0.x"
 
@@ -48,7 +49,7 @@ jobs:
         run: dotnet restore E2E.Playwright.Tests.csproj
 
       - name: Install Playwright CLI
-        run: dotnet tool install --flobal Microsoft.Playwright.CLI
+        run: dotnet tool install --global Microsoft.Playwright.CLI
 
       - name: Add dotnet tools to PATH
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
