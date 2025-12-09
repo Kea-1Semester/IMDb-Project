@@ -4,7 +4,7 @@ services:
     container_name: frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     volumes:
       - ./frontend:/app
       - /app/node_modules # Prevents overwriting node_modules on the container

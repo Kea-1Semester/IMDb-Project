@@ -70,7 +70,7 @@ namespace SeedData.Handlers.Neo4j.Mappers
                 if (data.Genres.Any()) await Neo4JGenresMapper.UpsertGenres(session, data.Genres, batchSize);
                 if (data.Ratings.Any()) await Neo4JRatingsMapper.UpsertRatings(session, data.Ratings, batchSize);
                 if (data.Persons.Any()) await Neo4JPersonsMapper.UpsertPersons(session, data.Persons, batchSize);
-                if (data.Professions.Any()) await Neo4jProfessionsMapper.UpsertProfessions(session, data.Professions, batchSize);
+                if (data.Professions.Any()) await Neo4JProfessionsMapper.UpsertProfessions(session, data.Professions, batchSize);
                 if (data.Comments.Any()) await Neo4JCommentsMapper.UpsertComments(session, data.Comments, batchSize);
                 if (data.Logs.Any()) await Neo4JLogsMapper.UpsertLogs(session, data.Logs, batchSize);
 
