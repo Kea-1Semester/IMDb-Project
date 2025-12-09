@@ -12,7 +12,7 @@ function PaginationWithSelect({
   setTake: (take: number) => void;
   take: number;
   defaultPageSize: number;
-  count: number;
+  count: number | undefined;
 }) {
   const itemsPerPageOptions: Array<number> = [10, defaultPageSize, 50, 100];
 
@@ -23,7 +23,7 @@ function PaginationWithSelect({
         pageSize={take}
         defaultPage={1}
         defaultPageSize={defaultPageSize}
-        onPageChange={(e) => setSkip(e.page)}
+        onPageChange={(e) => void setSkip(e.page)}
       >
         <ButtonGroup variant={'outline'}>
           <Pagination.PrevTrigger asChild>

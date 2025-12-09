@@ -1,12 +1,9 @@
-import type { MysqlTitle } from '@/graphql/types/MysqlTitlesTypes';
+import type { Titles } from '@/generated/types';
 import { Card, Heading, Text } from '@chakra-ui/react';
+import type { FC } from 'react';
 import { useNavigate } from 'react-router';
 
-interface TitleCardProps {
-  title: MysqlTitle;
-}
-
-const TitleCard = ({ title }: TitleCardProps) => {
+const TitleCard: FC<{ title: Titles }> = ({ title }) => {
   const navigate = useNavigate();
   return (
     <Card.Root

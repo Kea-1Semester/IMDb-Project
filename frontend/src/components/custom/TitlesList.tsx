@@ -1,33 +1,41 @@
-import { GET_ALL_MYSQL_TITLES } from '@/graphql/queries/mysql/getMysqlTitles';
-import { useQuery } from '@apollo/client/react';
-import { Box, For, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import { useState } from 'react';
 import PaginationWithSelect from './PaginationWithSelect';
-import TitleCardContainer from './TitleCardContainer';
-import TitleCard from './TitleCard';
+import TitleCardContainer from '@/components/custom/TitleCardContainer';
+import TitleCard from '@/components/custom/TitleCard';
+import { useQuery } from '@apollo/client/react';
+import QueryResult from '@/components/custom/QueryResult';
+import { gql } from '@/generated';
+
+const TITLES = gql(`
+  query GetTitles($skip: Int, $take: Int) {
+    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {
+      totalCount
+      items {
+        titleId
+        primaryTitle
+        originalTitle
+        startYear        
+      }
+    }
+  }`);
 
 function TitlesList() {
   const defaultPageSize = 25;
   const [skip, setSkip] = useState<number>(0);
   const [take, setTake] = useState<number>(defaultPageSize);
-  const { loading, error, data } = useQuery(GET_ALL_MYSQL_TITLES, {
-    variables: { skip: skip, take: take },
-  });
+  const { loading, error, data } = useQuery(TITLES, { variables: { skip: skip, take: take } });
 
   return (
     <Box>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4} mb={4}>
-        {loading && <Text>Loading...</Text>}
-        {error && <Text>{error.message}</Text>}
-        {data && (
-          <For each={data.mysqlTitles?.items} fallback={<Text>No titles found</Text>}>
-            {(title) => (
-              <TitleCardContainer key={title.titleId}>
-                <TitleCard title={title} />
-              </TitleCardContainer>
-            )}
-          </For>
-        )}
+        <QueryResult error={error} loading={loading} data={data}>
+          {data?.mysqlTitles?.items?.map((title) => (
+            <TitleCardContainer>
+              <TitleCard title={title} />
+            </TitleCardContainer>
+          ))}
+        </QueryResult>
       </SimpleGrid>
       <PaginationWithSelect
         setSkip={setSkip}

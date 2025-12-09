@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "vite preview --port $PORT --host 0.0.0.0"
+    "start": "vite preview --port $PORT --host 0.0.0.0",
+    "generate": "graphql-codegen --watch"
   },
   "dependencies": {
     "@apollo/client": "^4.0.9",
@@ -25,6 +26,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@graphql-codegen/cli": "^6.1.0",
+    "@graphql-codegen/client-preset": "^5.2.1",
+    "@graphql-codegen/typescript": "^5.0.6",
+    "@graphql-codegen/typescript-operations": "^5.0.6",
+    "@parcel/watcher": "^2.5.1",
     "@types/node": "^24.10.0",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
@@ -37,7 +43,6 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.4.0",
     "prettier": "^3.6.2",
-    "typescript": "~5.8.3",
     "typescript-eslint": "^8.44.0",
     "vite": "^7.1.7",
     "vite-tsconfig-paths": "^5.1.4"
