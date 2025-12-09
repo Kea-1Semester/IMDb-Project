@@ -16,9 +16,9 @@ jobs:
         with:
           dotnet-version: "9.0.x"
 
-      - name: Restore E2E test Project
-        working-directory: e2e-playwright-tests/PlaywrightTests
-        run: dotnet restore E2E.Playwright.Tests.csproj
+      - name: Build
+        working-directory: e2e-playwright-tests
+        run: dotnet build
 
       - name: Install Playwright CLI
         run: dotnet tool install --global Microsoft.Playwright.CLI
