@@ -41,5 +41,4 @@ jobs:
     name: E2E Tests Workflow
     # needs: deploy-frontend
     uses: ./.github/workflows/e2e-tests.yml
-    permissions:
-      contents: read
+
