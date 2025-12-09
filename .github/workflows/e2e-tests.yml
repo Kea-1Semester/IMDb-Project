@@ -11,13 +11,18 @@ jobs:
       FRONTEND_HOST: ${{ vars.FRONTEND_HOST }}
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: list of repo
+        run: ls -R .
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "9.0.x"
 
       - name: Build
-        working-directory: ../e2e-playwright-tests
+        working-directory: e2e-playwright-tests
         run: dotnet build
 
       - name: Install Playwright CLI
@@ -27,11 +32,11 @@ jobs:
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Install Playwright browsers
-        working-directory: ../e2e-playwright-tests/PlaywrightTests
+        working-directory: e2e-playwright-tests/PlaywrightTests
         run: playwright install --with-deps
 
       - name: Run E2E Playwright tests
-        working-directory: ../e2e-playwright-tests/PlaywrightTests
+        working-directory: e2e-playwright-tests/PlaywrightTests
         run: dotnet test --logger "trx;LogFileName=e2e_results.trx"
 
       - name: Upload E2E Test Results
