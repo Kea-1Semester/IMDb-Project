@@ -4,6 +4,7 @@ using EfCoreModelsLib.Models.Mysql;
 using GraphQL.Auth0;
 using GraphQL.Services.Mysql;
 using HotChocolate.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraphQL.Types.Mysql.Queries;
 
@@ -15,7 +16,4 @@ public static class MysqlTitlesQuery
     [UseFiltering]
     [UseSorting]
     public static IQueryable<Titles> GetMysqlTitles([Service] IMysqlTitlesService titlesService) => titlesService.GetMysqlTitles();
-
-    public static async Task<Titles?> GetMysqlTitle([Service] IMysqlTitlesService titlesService, Guid id)
-        => await titlesService.GetMysqlTitle(id);
 }
