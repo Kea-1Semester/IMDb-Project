@@ -37,7 +37,9 @@ jobs:
 
       - name: Run E2E Playwright tests
         working-directory: e2e-playwright-tests/PlaywrightTests
-        run: dotnet test --logger "trx;LogFileName=e2e_results.trx"
+        env:
+          FRONTEND_HOST: ${{ env.FRONTEND_HOST }}
+        run: dotnet test --logger "trx;LogFileName=e2e_results.trx" -e FRONTEND_HOST="$FRONTEND_HOST"
 
       - name: Upload E2E Test Results
         uses: actions/upload-artifact@v5
