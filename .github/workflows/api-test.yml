@@ -36,17 +36,11 @@ jobs:
           GRANT_TYPE: ${{ secrets.GRANT_TYPE }}
           AUTH0_URL: ${{ vars.AUTH0_URL }}
         run: |
-          # Write sensitive credentials to a temporary env file  
-          echo "CLIENT_ID=$CLIENT_ID" > .env.postman  
-          echo "CLIENT_SECRET=$CLIENT_SECRET" >> .env.postman  
-          echo "AUDIENCE=$AUDIENCE" >> .env.postman  
-          echo "GRANT_TYPE=$GRANT_TYPE" >> .env.postman  
-          echo "AUTH0_URL=$AUTH0_URL" >> .env.postman  
-
           postman collection run  "${{vars.POSTMAN_COLLECTION_ID}}" \
           -e "${{vars.POSTMAN_ENVIRONMENT_ID}}" --color red \
-          --env-var "HOST=$HOST" \  
-          --env-file .env.postman  
-          
-          # Clean up env file  
-          rm -f .env.postman  
+          --env-var "HOST=$HOST" \
+          --env-var "client_id=$client_id" \
+          --env-var "client_secret=$client_secret" \
+          --env-var "audience=$audience" \
+          --env-var "grant_type=$grant_type" \
+          --env-var "auth0_url=$auth0_url"
