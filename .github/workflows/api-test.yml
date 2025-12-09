@@ -36,12 +36,12 @@ jobs:
 
       - name: Run API tests
         env:
-          HOST: ${{ vars.BACKEND_HOST_URL }}
+          HOST: ${{ inputs.BACKEND_HOST_URL }}
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
           audience: ${{ secrets.AUDIENCE }}
           grant_type: ${{ secrets.GRANT_TYPE }}
-          auth0_url: ${{ vars.AUTH0_URL }}
+          auth0_url: ${{ inputs.AUTH0_URL }}
         run: |
           postman collection run "50651964-7dfd3665-71a9-4fdd-bd50-e5c6d3d81fc2" \
           -e "50651964-a67099ae-1e60-4c29-9f18-71e6cff0ff69" \
@@ -51,7 +51,7 @@ jobs:
           --env-var "audience=$audience" \
           --env-var "grant_type=$grant_type" \
           --env-var "auth0_url=$auth0_url"
-          
+
           echo "$HOST"
           echo "$client_id"
           echo "$client_secret"
