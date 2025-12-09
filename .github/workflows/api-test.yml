@@ -13,6 +13,13 @@ on:
         required: true
       grant_type:
         required: true
+    inputs:
+      BACKEND_HOST_URL:
+        required: true
+        type: string
+      AUTH0_URL:
+        required: true
+        type: string
 
 jobs:
   automated-api-tests:
