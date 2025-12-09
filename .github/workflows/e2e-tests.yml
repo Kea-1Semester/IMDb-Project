@@ -7,15 +7,9 @@ jobs:
   e2n-tests:
     name: "E2E Playwright Tests"
     runs-on: ubuntu-latest
-    env:
-      FRONTEND_HOST: ${{ vars.FRONTEND_HOST }}
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
-      - name: list of repo
-        run: ls -R .
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
@@ -38,7 +32,7 @@ jobs:
       - name: Run E2E Playwright tests
         working-directory: e2e-playwright-tests/PlaywrightTests
         env:
-          FRONTEND_HOST: ${{ env.FRONTEND_HOST }}
+          FRONTEND_HOST: ${{ vars.FRONTEND_HOST }}
         run: dotnet test --logger "trx;LogFileName=e2e_results.trx" -e FRONTEND_HOST="$FRONTEND_HOST"
 
       - name: Upload E2E Test Results
