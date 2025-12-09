@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev/api-test
     paths:
       - "backend/**"
       - ".github/workflows/push-main-backend.yml"
@@ -41,3 +42,11 @@ jobs:
     uses: ./.github/workflows/api-test.yml
     secrets:
       POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+      audience: ${{ secrets.AUDIENCE }}
+      grant_type: ${{ secrets.GRANT_TYPE }}
+
+    permissions:
+      contents: read
+      actions: read
