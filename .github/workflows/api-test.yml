@@ -1,0 +1,48 @@
+name: Automated API tests using Postman CLI
+
+on:
+  workflow_call:
+    secrets:
+      POSTMAN_API_KEY:
+        required: true
+      CLIENT_ID:
+        required: true
+      CLIENT_SECRET:
+        required: true
+      AUDIENCE:
+        required: true
+      GRANT_TYPE:
+        required: true
+
+jobs:
+  automated-api-tests:
+    runs-on: ubuntu-latest
+    environment: secrets
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+
+      - name: Login to Postman CLI
+        env:
+          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+        run: postman login --with-api-key "$POSTMAN_API_KEY"
+
+      - name: Run API tests
+        env:
+          HOST: ${{ vars.BACKEND_HOST_URL }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          AUDIENCE: ${{ secrets.AUDIENCE }}
+          GRANT_TYPE: ${{ secrets.GRANT_TYPE }}
+          AUTH0_URL: ${{ vars.AUTH0_URL }}
+        run: |
+          postman collection run  "${{vars.POSTMAN_COLLECTION_ID}}" \
+          -e "${{vars.POSTMAN_ENVIRONMENT_ID}}" --color red \
+          --env-var "HOST=$HOST" \
+          --env-var "CLIENT_ID=$CLIENT_ID" \
+          --env-var "CLIENT_SECRET=$CLIENT_SECRET" \
+          --env-var "AUDIENCE=$AUDIENCE" \
+          --env-var "GRANT_TYPE=$GRANT_TYPE" \
+          --env-var "AUTH0_URL=$AUTH0_URL"
