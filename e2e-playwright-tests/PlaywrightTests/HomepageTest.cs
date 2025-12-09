@@ -35,7 +35,8 @@ public class E2eTest : PageTest
     [Test]
     public async Task TestHomePage()
     {
-        await Page.GotoAsync("http://localhost:3000/");
+        var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
+        await Page.GotoAsync(host);
         await Expect(Page.GetByRole(AriaRole.Heading)).ToContainTextAsync("Welcome to Sample0");
     }
 }

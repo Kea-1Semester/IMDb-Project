@@ -5,8 +5,10 @@ on:
 
 jobs:
   e2n-tests:
-    runs-on: ubunto-latest
-  
+    runs-on: ubuntu-latest
+    env:
+      FRONTEND_HOST: ${{ vars.FRONTEND_HOST }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -17,7 +19,7 @@ jobs:
           node-version: 20
 
       - name: Install frontend deps
-        working-directory: frontend 
+        working-directory: frontend
         run: npm ci --ignore-scripts # <- Kan fremtidig fejle, hvis en dependency kræver install scripts
 
       - name: Start frontend
@@ -25,7 +27,7 @@ jobs:
         run: nom run dev &
 
       - name: Wait for frontend to be ready
-        run: | 
+        run: |
           for i in {1..30}; do
             if curl -sSf http://localhost:3000 > /dev/null; then
               echo "Frontend is up ✅" 
@@ -36,7 +38,7 @@ jobs:
           done
           echo "Frontend did not start in time ❌"
           exit 1
-      
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -61,6 +63,6 @@ jobs:
 
       - name: Upload E2E Test Results
         uses: actions/upload-artifact@v5
-        with: 
+        with:
           name: e2e-test-results
           path: "**/e2e_results.trx"

@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "frontend/**"
-      - ".github/workflows/push-main-frontend.yml"
+      - dev/*
+    # paths:
+    #   - "frontend/**"
+    #   - ".github/workflows/push-main-frontend.yml"
   workflow_dispatch:
 
 jobs:
@@ -35,3 +36,10 @@ jobs:
     secrets:
       BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
       REX_RENDER_DEPLOY_HOOK: ${{ secrets.REX_RENDER_DEPLOY_HOOK }}
+
+  E2E-Tests:
+    name: E2E Tests Workflow
+    needs: deploy-frontend
+    uses: ./.github/workflows/e2e-tests.yml
+    permissions:
+      contents: read
