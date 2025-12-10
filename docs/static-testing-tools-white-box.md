@@ -23,7 +23,6 @@ ReSharper provides on-the-fly code inspections, refactoring suggestions and quic
 
 ### **[Code coverage]()**
 
-By using code coverage, we can identify which parts of the codebase are not covered by tests and which parts may be redundant. As shown in the coverage report below, the majority of the codebase is covered by unit tests for the ``TitlesDto`` class (report name: ***EfCoreModelsLib.DTO.TitlesDto – Coverage Report.pdf***).
+By using code coverage, we can identify which parts of the codebase are not covered by tests and which parts may be redundant. As shown in the coverage report below, the majority of the codebase is covered by unit tests for the ``TitlesDto`` class (report name: _**EfCoreModelsLib.DTO.TitlesDto – Coverage Report.pdf**_).
 
 In the report, line ``104`` is not covered by any unit tests. Through white-box testing and debugging, we confirmed that the exception on line ``100`` is always triggered, regardless of the input. This means that line ``104`` is never executed in any scenario. Since the line is effectively unreachable, we removed it from the codebase.
-

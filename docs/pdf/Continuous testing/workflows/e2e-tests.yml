@@ -1,0 +1,46 @@
+name: E2E Tests
+
+on:
+  workflow_call:
+
+jobs:
+  e2n-tests:
+    name: "E2E Playwright Tests"
+    runs-on: ubuntu-latest
+    environment: secrets
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Build
+        working-directory: e2e-playwright-tests
+        run: dotnet build
+
+      - name: Install Playwright CLI
+        run: dotnet tool install --global Microsoft.Playwright.CLI
+
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Install Playwright browsers
+        working-directory: e2e-playwright-tests/PlaywrightTests
+        run: bin/Debug/net9.0/playwright.ps1 install
+
+      - name: Run E2E Playwright tests
+        working-directory: e2e-playwright-tests/PlaywrightTests
+        env:
+          FRONTEND_HOST: ${{ vars.FRONTEND_HOST }}
+        run: |
+          dotnet test --logger "trx;LogFileName=e2e_results.trx" -e FRONTEND_HOST="$FRONTEND_HOST"
+          echo "$FRONTEND_HOST"
+
+      - name: Upload E2E Test Results
+        uses: actions/upload-artifact@v5
+        with:
+          name: e2e-test-results
+          path: "**/e2e_results.trx"

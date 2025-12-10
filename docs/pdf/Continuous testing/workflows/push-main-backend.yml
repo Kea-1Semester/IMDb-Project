@@ -1,0 +1,47 @@
+name: Merge to Main Workflow - Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+      - ".github/workflows/push-main-backend.yml"
+  workflow_dispatch:
+
+jobs:
+  unit-tests:
+    name: Run Unit Tests
+    uses: ./.github/workflows/unit-tests.yml
+
+  integration-tests:
+    name: Run Integration Tests
+    needs: unit-tests
+    uses: ./.github/workflows/integration-tests.yml
+
+  build-backend-image:
+    name: CI Docker Build and Push GraphQL Docker Image
+    needs: integration-tests
+    uses: ./.github/workflows/ci-docker-builder-graphql.yml
+    permissions:
+      contents: read
+      packages: write
+
+  deploy-backend:
+    name: Deploy Backend Application
+    needs: build-backend-image
+    uses: ./.github/workflows/deploy-backend.yml
+    secrets:
+      BREZOR_BACKEND_DEPLOY_HOOK: ${{ secrets.BREZOR_BACKEND_DEPLOY_HOOK }}
+      REX_BACKEND_DEPLOY_HOOK: ${{ secrets.REX_BACKEND_DEPLOY_HOOK }}
+
+  automated-api-tests:
+    name: Run Automated API Tests
+    needs: deploy-backend
+    uses: ./.github/workflows/api-test.yml
+    secrets:
+      POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      AUDIENCE: ${{ secrets.AUDIENCE }}
+      GRANT_TYPE: ${{ secrets.GRANT_TYPE }}
