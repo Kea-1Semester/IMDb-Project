@@ -1,0 +1,11 @@
+services:
+  testdb:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpass
+      MYSQL_ROOT_PASSWORD: rootpass
+      MySqlConnectionString_test: server=localhost;port=3308;database=testdb;user=testuser;password=testpass
+    ports:
+      - "3308:3306"
