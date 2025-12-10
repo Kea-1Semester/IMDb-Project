@@ -12,11 +12,11 @@ namespace GraphQL.Services.Mysql
         Task<Episodes> DeleteMysqlEpisodes(Guid episodeId);
     }
 
-    public class MysqlEpisodesRepo : IMysqlEpisodesService
+    public class MysqlEpisodesService : IMysqlEpisodesService
     {
         private readonly IMysqlEpisodesRepo _episodesRepo;
 
-        public MysqlEpisodesRepo(IMysqlEpisodesRepo episodesRepo)
+        public MysqlEpisodesService(IMysqlEpisodesRepo episodesRepo)
         {
             _episodesRepo = episodesRepo;
         }

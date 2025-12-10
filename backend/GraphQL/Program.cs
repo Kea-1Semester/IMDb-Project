@@ -47,6 +47,9 @@ builder.Services.AddTransient<IMysqlAliasesRepo, MysqlAliasesRepo>();
 builder.Services.AddTransient<IMysqlAliasesService, MysqlAliasesService>();
 builder.Services.AddTransient<IMysqlGenresRepo, MysqlGenresRepo>();
 builder.Services.AddTransient<IMysqlGenresService, MysqlGenresService>();
+builder.Services.AddTransient<IMysqlEpisodesRepo, MysqlEpisodesRepo>();
+builder.Services.AddTransient<IMysqlEpisodesService, MysqlEpisodesService>();
+
 
 var Auth0Domain = $"https://{getEnv("Auth0Domain")}/";
 
