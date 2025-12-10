@@ -4,6 +4,7 @@ import { Box, Button, Card, HStack, Text } from '@chakra-ui/react';
 import { gql } from '@/generated';
 import type { Titles } from '@/generated/types';
 import QueryResult from '@/components/custom/QueryResult';
+import { RiArrowLeftLine } from 'react-icons/ri';
 
 const TITLE = gql(`
   query GetTitle ($id: UUID) {
@@ -34,10 +35,10 @@ const MysqlTitleDetails = () => {
   return (
     <Box>
       <QueryResult loading={loading} error={error} data={data}>
-        <Card.Root>
+        <Card.Root shadow={'sm'}>
           <Card.Body>
-            {data?.mysqlTitles?.items?.map((title: Titles) => (
-              <Box key={title.titleId}>
+            {data?.mysqlTitles?.items?.map((title: Titles, index) => (
+              <Box key={index}>
                 <HStack>
                   <Text fontWeight={'bold'}>PrimaryTitle:</Text>
                   <Text>{title.primaryTitle ?? '-'}</Text>
@@ -71,8 +72,8 @@ const MysqlTitleDetails = () => {
           </Card.Body>
           <Card.Footer>
             <HStack justify={'end'}>
-              <Button variant="outline" onClick={() => void navigate('/')}>
-                Back
+              <Button variant="outline" fontWeight={'bold'} onClick={() => void navigate('/')}>
+                <RiArrowLeftLine /> Back
               </Button>
             </HStack>
           </Card.Footer>

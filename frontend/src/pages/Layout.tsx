@@ -1,7 +1,8 @@
-import { Container, Grid, GridItem } from '@chakra-ui/react';
+import { ActionBar, Container, Grid, GridItem, Portal } from '@chakra-ui/react';
 import '@/App.css';
 import Navbar from '@/components/custom/Navbar';
 import { Outlet } from 'react-router';
+import { ColorModeButton } from '@/components/ui/color-mode';
 
 const Layout = () => {
   return (
@@ -16,6 +17,16 @@ const Layout = () => {
           </Container>
         </GridItem>
       </Grid>
+
+      <ActionBar.Root>
+        <Portal>
+          <ActionBar.Positioner>
+            <ActionBar.Content>
+              <ColorModeButton />
+            </ActionBar.Content>
+          </ActionBar.Positioner>
+        </Portal>
+      </ActionBar.Root>
     </Container>
   );
 };

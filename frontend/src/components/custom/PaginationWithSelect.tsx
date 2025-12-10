@@ -1,4 +1,4 @@
-import { ButtonGroup, For, HStack, IconButton, NativeSelect, Pagination } from '@chakra-ui/react';
+import { ButtonGroup, createListCollection, HStack, IconButton, Pagination, Portal, Select } from '@chakra-ui/react';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 function PaginationWithSelect({
@@ -14,7 +14,15 @@ function PaginationWithSelect({
   defaultPageSize: number;
   count: number | undefined;
 }) {
-  const itemsPerPageOptions: Array<number> = [10, defaultPageSize, 50, 100];
+  const defaultPageSizeLabel = `${defaultPageSize}`;
+  const itemsPerPageOptions = createListCollection({
+    items: [
+      { label: '10', value: 10 },
+      { label: defaultPageSizeLabel, value: defaultPageSize },
+      { label: '50', value: 50 },
+      { label: '100', value: 100 },
+    ],
+  });
 
   return (
     <HStack justifyContent={'center'} marginY={4}>
@@ -42,24 +50,37 @@ function PaginationWithSelect({
             </IconButton>
           </Pagination.NextTrigger>
 
-          <NativeSelect.Root
+          <Select.Root
+            collection={itemsPerPageOptions}
             variant={'outline'}
-            defaultValue={defaultPageSize}
-            onChange={(value) => {
-              setTake(Number((value.target as HTMLSelectElement).value));
-            }}
+            width={'75px'}
+            value={[defaultPageSizeLabel]}
+            defaultValue={[defaultPageSizeLabel]}
+            positioning={{ sameWidth: true }}
+            onValueChange={(details) => void setTake(Number(details.value))}
           >
-            <NativeSelect.Field bg={'black'} _hover={{ bg: 'gray.900', cursor: 'pointer' }}>
-              <For each={itemsPerPageOptions}>
-                {(option) => (
-                  <option key={option} defaultValue={defaultPageSize} value={option}>
-                    {option}
-                  </option>
-                )}
-              </For>
-            </NativeSelect.Field>
-            <NativeSelect.Indicator />
-          </NativeSelect.Root>
+            <Select.HiddenSelect />
+            <Select.Control>
+              <Select.Trigger>
+                <Select.ValueText placeholder={'Items'} />
+              </Select.Trigger>
+              <Select.IndicatorGroup>
+                <Select.Indicator />
+              </Select.IndicatorGroup>
+            </Select.Control>
+            <Portal>
+              <Select.Positioner>
+                <Select.Content>
+                  {itemsPerPageOptions.items.map((item) => (
+                    <Select.Item item={item} key={item.value}>
+                      {item.label}
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Positioner>
+            </Portal>
+          </Select.Root>
         </ButtonGroup>
       </Pagination.Root>
     </HStack>

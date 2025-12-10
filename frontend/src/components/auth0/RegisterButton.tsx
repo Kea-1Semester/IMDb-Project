@@ -1,5 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@chakra-ui/react';
+import { RiAccountCircleLine } from 'react-icons/ri';
 
 const RegisterButton = () => {
   const { loginWithRedirect } = useAuth0();
@@ -10,10 +11,10 @@ const RegisterButton = () => {
       }}
       font={'lg'}
       fontWeight={'bold'}
-      variant={'outline'}
+      variant={'surface'}
       colorPalette={'teal'}
     >
-      Register
+      Register <RiAccountCircleLine />
     </Button>
   );
 };

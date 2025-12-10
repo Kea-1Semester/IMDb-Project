@@ -7,7 +7,8 @@ const TitleCard: FC<{ title: Titles }> = ({ title }) => {
   const navigate = useNavigate();
   return (
     <Card.Root
-      _hover={{ bg: 'gray.800', cursor: 'pointer' }}
+      shadow={'sm'}
+      _hover={{ bg: 'gray.subtle', cursor: 'pointer' }}
       onClick={() => {
         if (!title.titleId) return;
         void navigate(`/MysqlTitle/${title.titleId}`);
