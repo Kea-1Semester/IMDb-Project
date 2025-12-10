@@ -4,20 +4,11 @@ import { RiLoginBoxLine } from 'react-icons/ri';
 
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
-  const handleLogin = async () => {
-    await (async () => {
-      try {
-        await loginWithRedirect({ authorizationParams: { screen_hint: 'signin' } });
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  };
 
   return (
     <Button
       onClick={() => {
-        void handleLogin();
+        void loginWithRedirect({ authorizationParams: { screen_hint: 'signin' } });
       }}
       font={'lg'}
       fontWeight={'bold'}
