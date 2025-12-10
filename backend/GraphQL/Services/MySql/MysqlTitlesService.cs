@@ -9,7 +9,6 @@ namespace GraphQL.Services.Mysql
     public interface IMysqlTitlesService
     {
         IQueryable<Titles> GetMysqlTitles();
-        Task<Titles?> GetMysqlTitle(Guid id);
         Task<Titles> CreateMysqlTitle(TitlesDto titlesDto);
         Task<Titles> UpdateMysqlTitle(TitlesDto titlesDto, Guid id);
         Task<Titles> DeleteMysqlTitle(Guid id);
@@ -27,11 +26,6 @@ namespace GraphQL.Services.Mysql
         public IQueryable<Titles> GetMysqlTitles()
         {
             return _titlesRepo.GetMySqlTitles();
-        }
-
-        public async Task<Titles?> GetMysqlTitle(Guid id)
-        {
-            return await _titlesRepo.GetMySqlTitle(id);
         }
 
         public async Task<Titles> CreateMysqlTitle(TitlesDto titlesDto)
@@ -57,7 +51,7 @@ namespace GraphQL.Services.Mysql
         {
             titlesDto.Validate();
 
-            Titles? updateTitle = await _titlesRepo.GetMySqlTitle(id);
+            Titles? updateTitle = await _titlesRepo.GetMySqlTitles().FirstOrDefaultAsync(t => t.TitleId == id);
             if (updateTitle is null)
             {
                 throw new GraphQLException(new Error("Title was not found", "TITLE_NOT_FOUND"));
@@ -75,7 +69,7 @@ namespace GraphQL.Services.Mysql
 
         public async Task<Titles> DeleteMysqlTitle(Guid id)
         {
-            Titles? deleteTitle = await _titlesRepo.GetMySqlTitle(id);
+            Titles? deleteTitle = await _titlesRepo.GetMySqlTitles().FirstOrDefaultAsync(t => t.TitleId == id);
             if (deleteTitle is null)
             {
                 throw new GraphQLException(new Error("Title was not found", "TITLE_NOT_FOUND"));

@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace integration.tests.Database
 {
-    public class TitlesTest 
+    public class TitlesTest
     {
         private MysqlTitlesRepo _titlesRepo;
         private IMysqlTitlesService _titlesService;
@@ -63,9 +63,9 @@ namespace integration.tests.Database
             // arrange
             var titleId = MockTitles.GetMockTitles()[0].TitleId;
             // act
-            var titles = _titlesService.GetMysqlTitle(titleId);
+            var titles = _titlesService.GetMysqlTitles().FirstOrDefault(t => t.TitleId == titleId);
             // assert
-            Assert.That(titleId, Is.EqualTo(titles.Result!.TitleId));
+            Assert.That(titleId, Is.EqualTo(titles!.TitleId));
         }
 
         [Test]
@@ -79,9 +79,9 @@ namespace integration.tests.Database
                 OriginalTitle = "The Matrix",
                 IsAdult = false,
                 StartYear = 1999,
-                EndYear = null 
+                EndYear = null
             };
-            
+
             // act
             var createdTitle = _titlesService.CreateMysqlTitle(_titlesDto);
 

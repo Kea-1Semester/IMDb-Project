@@ -1,23 +1,22 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@chakra-ui/react';
-import { RiLoginBoxLine } from 'react-icons/ri';
+import { RiAccountCircleLine } from 'react-icons/ri';
 
-const LoginButton = () => {
+const RegisterButton = () => {
   const { loginWithRedirect } = useAuth0();
-
   return (
     <Button
       onClick={() => {
-        void loginWithRedirect({ authorizationParams: { screen_hint: 'signin' } });
+        void loginWithRedirect({ authorizationParams: { screen_hint: 'signup' } });
       }}
       font={'lg'}
       fontWeight={'bold'}
-      variant={'solid'}
+      variant={'surface'}
       colorPalette={'teal'}
     >
-      Log In <RiLoginBoxLine />
+      Register <RiAccountCircleLine />
     </Button>
   );
 };
 
-export default LoginButton;
+export default RegisterButton;
