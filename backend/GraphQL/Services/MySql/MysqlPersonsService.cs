@@ -57,7 +57,7 @@ namespace GraphQL.Services.Mysql
 
         public async Task<Persons> DeleteMysqlPerson(Guid PersonId)
         {
-            Persons? personToDelete = await _personsRepo.GetMySqlPersons().FirstOrDefaultAsync(p => p.PersonId == PersonId); ;
+            Persons? personToDelete = await _personsRepo.GetMySqlPersons().FirstOrDefaultAsync(p => p.PersonId == PersonId);
             if (personToDelete == null)
             {
                 throw new GraphQLException(new Error("Person not found", "PERSON_NOT_FOUND"));
