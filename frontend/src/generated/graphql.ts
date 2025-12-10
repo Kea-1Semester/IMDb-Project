@@ -160,6 +160,18 @@ export type CreateMysqlAliasPayload = {
   errors?: Maybe<Array<CreateMysqlAliasError>>;
 };
 
+export type CreateMysqlEpisodeError = ValidationError;
+
+export type CreateMysqlEpisodeInput = {
+  episode: EpisodesDtoInput;
+};
+
+export type CreateMysqlEpisodePayload = {
+  __typename?: 'CreateMysqlEpisodePayload';
+  episodes?: Maybe<Episodes>;
+  errors?: Maybe<Array<CreateMysqlEpisodeError>>;
+};
+
 export type CreateMysqlGenreError = ValidationError;
 
 export type CreateMysqlGenreInput = {
@@ -206,6 +218,18 @@ export type DeleteMysqlAliasPayload = {
   __typename?: 'DeleteMysqlAliasPayload';
   aliases?: Maybe<Aliases>;
   errors?: Maybe<Array<DeleteMysqlAliasError>>;
+};
+
+export type DeleteMysqlEpisodeError = ValidationError;
+
+export type DeleteMysqlEpisodeInput = {
+  episodeId: Scalars['UUID']['input'];
+};
+
+export type DeleteMysqlEpisodePayload = {
+  __typename?: 'DeleteMysqlEpisodePayload';
+  episodes?: Maybe<Episodes>;
+  errors?: Maybe<Array<DeleteMysqlEpisodeError>>;
 };
 
 export type DeleteMysqlGenreError = ValidationError;
@@ -269,6 +293,13 @@ export type Episodes = {
   titleIdChildNavigation?: Maybe<Titles>;
   titleIdParent: Scalars['UUID']['output'];
   titleIdParentNavigation?: Maybe<Titles>;
+};
+
+export type EpisodesDtoInput = {
+  childId: Scalars['UUID']['input'];
+  episodeNumber: Scalars['Int']['input'];
+  parentId: Scalars['UUID']['input'];
+  seasonNumber: Scalars['Int']['input'];
 };
 
 export type EpisodesFilterInput = {
@@ -460,15 +491,18 @@ export type Mutation = {
   __typename?: 'Mutation';
   addMysqlGenre: AddMysqlGenrePayload;
   createMysqlAlias: CreateMysqlAliasPayload;
+  createMysqlEpisode: CreateMysqlEpisodePayload;
   createMysqlGenre: CreateMysqlGenrePayload;
   createMysqlPerson: CreateMysqlPersonPayload;
   createMysqlTitle: CreateMysqlTitlePayload;
   deleteMysqlAlias: DeleteMysqlAliasPayload;
+  deleteMysqlEpisode: DeleteMysqlEpisodePayload;
   deleteMysqlGenre: DeleteMysqlGenrePayload;
   deleteMysqlPerson: DeleteMysqlPersonPayload;
   deleteMysqlTitle: DeleteMysqlTitlePayload;
   removeMysqlGenre: RemoveMysqlGenrePayload;
   updateMysqlAlias: UpdateMysqlAliasPayload;
+  updateMysqlEpisode: UpdateMysqlEpisodePayload;
   updateMysqlPerson: UpdateMysqlPersonPayload;
   updateMysqlTitle: UpdateMysqlTitlePayload;
 };
@@ -481,6 +515,11 @@ export type MutationAddMysqlGenreArgs = {
 
 export type MutationCreateMysqlAliasArgs = {
   input: CreateMysqlAliasInput;
+};
+
+
+export type MutationCreateMysqlEpisodeArgs = {
+  input: CreateMysqlEpisodeInput;
 };
 
 
@@ -501,6 +540,11 @@ export type MutationCreateMysqlTitleArgs = {
 
 export type MutationDeleteMysqlAliasArgs = {
   input: DeleteMysqlAliasInput;
+};
+
+
+export type MutationDeleteMysqlEpisodeArgs = {
+  input: DeleteMysqlEpisodeInput;
 };
 
 
@@ -526,6 +570,11 @@ export type MutationRemoveMysqlGenreArgs = {
 
 export type MutationUpdateMysqlAliasArgs = {
   input: UpdateMysqlAliasInput;
+};
+
+
+export type MutationUpdateMysqlEpisodeArgs = {
+  input: UpdateMysqlEpisodeInput;
 };
 
 
@@ -628,7 +677,6 @@ export type ProfessionsFilterInput = {
 export type Query = {
   __typename?: 'Query';
   mysqlGenres?: Maybe<MysqlGenresCollectionSegment>;
-  mysqlPerson?: Maybe<Persons>;
   mysqlPersons?: Maybe<MysqlPersonsCollectionSegment>;
   mysqlTitles?: Maybe<MysqlTitlesCollectionSegment>;
 };
@@ -639,11 +687,6 @@ export type QueryMysqlGenresArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<GenresFilterInput>;
-};
-
-
-export type QueryMysqlPersonArgs = {
-  id: Scalars['UUID']['input'];
 };
 
 
@@ -806,6 +849,19 @@ export type UpdateMysqlAliasPayload = {
   __typename?: 'UpdateMysqlAliasPayload';
   aliases?: Maybe<Aliases>;
   errors?: Maybe<Array<UpdateMysqlAliasError>>;
+};
+
+export type UpdateMysqlEpisodeError = ValidationError;
+
+export type UpdateMysqlEpisodeInput = {
+  episode: EpisodesDtoInput;
+  episodeId: Scalars['UUID']['input'];
+};
+
+export type UpdateMysqlEpisodePayload = {
+  __typename?: 'UpdateMysqlEpisodePayload';
+  episodes?: Maybe<Episodes>;
+  errors?: Maybe<Array<UpdateMysqlEpisodeError>>;
 };
 
 export type UpdateMysqlPersonError = ValidationError;
