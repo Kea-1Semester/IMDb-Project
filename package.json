@@ -10,7 +10,8 @@
     "dev_up": "bash ./scripts/dev_up.sh",
     "dev_up_build": "bash ./scripts/dev_up_build.sh",
     "dev_down": "bash ./scripts/dev_down.sh",
-    "code_coverage": "bash ./scripts/code_coverage.sh"
+    "code_coverage": "bash ./scripts/code_coverage.sh",
+    "dev": "npm --prefix ./frontend run dev"
   },
   "repository": {
     "type": "git",

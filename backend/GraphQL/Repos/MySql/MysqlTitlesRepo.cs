@@ -7,7 +7,6 @@ namespace GraphQL.Repos.Mysql
     public interface IMysqlTitlesRepo
     {
         IQueryable<Titles> GetMySqlTitles();
-        Task<Titles?> GetMySqlTitle(Guid id);
         Task<Titles> AddMySqlTitle(Titles title);
         Task<Titles> UpdateMysqlTitle(Titles title);
         Task<Titles> DeleteMysqlTitle(Titles title);
@@ -25,11 +24,6 @@ namespace GraphQL.Repos.Mysql
         public IQueryable<Titles> GetMySqlTitles()
         {
             return _context.Titles.AsQueryable();
-        }
-
-        public async Task<Titles?> GetMySqlTitle(Guid id)
-        {
-            return await _context.Titles.FirstOrDefaultAsync(t => t.TitleId == id);
         }
 
         public async Task<Titles> AddMySqlTitle(Titles title)

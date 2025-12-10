@@ -34,3 +34,14 @@ jobs:
     secrets:
       BREZOR_BACKEND_DEPLOY_HOOK: ${{ secrets.BREZOR_BACKEND_DEPLOY_HOOK }}
       REX_BACKEND_DEPLOY_HOOK: ${{ secrets.REX_BACKEND_DEPLOY_HOOK }}
+
+  automated-api-tests:
+    name: Run Automated API Tests
+    needs: deploy-backend
+    uses: ./.github/workflows/api-test.yml
+    secrets:
+      POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      AUDIENCE: ${{ secrets.AUDIENCE }}
+      GRANT_TYPE: ${{ secrets.GRANT_TYPE }}

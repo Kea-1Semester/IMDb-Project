@@ -48,13 +48,13 @@ namespace GraphQL.Services.Mysql
         /* ---------- MUTATIONS ---------- */
         public async Task<Genres?> AddMysqlGenre(Guid genreId, Guid titleId)
         {
-            Genres? genre =  await _genresRepo.GetMySqlGenres().Include(g => g.TitlesTitle).FirstOrDefaultAsync(g => g.GenreId == genreId);
+            Genres? genre = await _genresRepo.GetMySqlGenres().Include(g => g.TitlesTitle).FirstOrDefaultAsync(g => g.GenreId == genreId);
             if (genre == null)
             {
                 throw new GraphQLException(new Error("Genre not found", "GENRE_NOT_FOUND"));
             }
-            
-            Titles? title = await _titlesRepo.GetMySqlTitle(titleId);
+
+            Titles? title = await _titlesRepo.GetMySqlTitles().FirstOrDefaultAsync(t => t.TitleId == titleId);
             if (title == null)
             {
                 throw new GraphQLException(new Error("Title not found", "Title_NOT_FOUND"));
@@ -71,7 +71,7 @@ namespace GraphQL.Services.Mysql
 
         public async Task<Genres?> RemoveMysqlGenre(Guid genreId, Guid titleId)
         {
-            Genres? genre =  await _genresRepo
+            Genres? genre = await _genresRepo
                 .GetMySqlGenres()
                 .Include(g => g.TitlesTitle)
                 .FirstOrDefaultAsync(g => g.GenreId == genreId);
@@ -80,7 +80,7 @@ namespace GraphQL.Services.Mysql
             {
                 throw new GraphQLException(new Error("Genre not found", "GENRE_NOT_FOUND"));
             }
-            
+
             var title = genre.TitlesTitle.FirstOrDefault(t => t.TitleId == titleId);
             if (title == null)
             {
@@ -93,8 +93,8 @@ namespace GraphQL.Services.Mysql
         }
 
         public async Task<Genres> DeleteMysqlGenre(Guid genreId)
-        {   
-            
+        {
+
             Genres? genreToDelete = await _genresRepo.GetMySqlGenres().FirstOrDefaultAsync(g => g.GenreId == genreId);
             if (genreToDelete == null)
             {
