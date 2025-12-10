@@ -4,7 +4,7 @@ import type { FC, PropsWithChildren } from 'react';
 
 type QueryResultProps = {
   loading?: boolean;
-  error?: ErrorLike | undefined;
+  error: ErrorLike | undefined;
   data?: unknown;
 };
 
