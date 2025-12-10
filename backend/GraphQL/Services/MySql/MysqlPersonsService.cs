@@ -8,7 +8,6 @@ namespace GraphQL.Services.Mysql
     public interface IMysqlPersonsService
     {
         IQueryable<Persons> GetMysqlPersons();
-        Task<Persons?> GetMysqlPerson(Guid id);
         Task<Persons> CreateMysqlPerson(PersonsDto person);
         Task<Persons> UpdateMysqlPerson(PersonsDto person, Guid id);
         Task<Persons> DeleteMysqlPerson(Guid PersonId);
@@ -28,11 +27,6 @@ namespace GraphQL.Services.Mysql
             return _personsRepo.GetMySqlPersons();
         }
 
-        public async Task<Persons?> GetMysqlPerson(Guid id)
-        {
-            return await _personsRepo.GetMySqlPerson(id);
-        }
-
         public async Task<Persons> CreateMysqlPerson(PersonsDto person)
         {
             person.Validate();
@@ -49,7 +43,7 @@ namespace GraphQL.Services.Mysql
         public async Task<Persons> UpdateMysqlPerson(PersonsDto person, Guid id)
         {
             person.Validate();
-            Persons? personToUpdate = await _personsRepo.GetMySqlPerson(id);
+            Persons? personToUpdate = await _personsRepo.GetMySqlPersons().FirstOrDefaultAsync(p => p.PersonId == id);
             if (personToUpdate == null)
             {
                 throw new GraphQLException(new Error("Person not found", "PERSON_NOT_FOUND"));
@@ -63,7 +57,7 @@ namespace GraphQL.Services.Mysql
 
         public async Task<Persons> DeleteMysqlPerson(Guid PersonId)
         {
-            Persons? personToDelete = await _personsRepo.GetMySqlPerson(PersonId);
+            Persons? personToDelete = await _personsRepo.GetMySqlPersons().FirstOrDefaultAsync(p => p.PersonId == PersonId); ;
             if (personToDelete == null)
             {
                 throw new GraphQLException(new Error("Person not found", "PERSON_NOT_FOUND"));
