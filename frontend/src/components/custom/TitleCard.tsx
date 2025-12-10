@@ -1,4 +1,4 @@
-import type { Titles } from '@/generated/types';
+import type { Titles } from '@/generated/graphql';
 import { Card, Heading, Text } from '@chakra-ui/react';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router';

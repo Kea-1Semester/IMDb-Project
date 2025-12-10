@@ -3,8 +3,8 @@ import { Container, Spinner } from '@chakra-ui/react';
 import type { FC, PropsWithChildren } from 'react';
 
 type QueryResultProps = {
-  loading?: boolean;
-  error: ErrorLike | undefined;
+  loading: boolean;
+  error?: ErrorLike;
   data?: unknown;
 };
 

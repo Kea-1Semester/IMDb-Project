@@ -14,7 +14,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  UUID: { input: any; output: any; }
+  UUID: { input: string; output: string; }
 };
 
 export type Actors = {
@@ -62,6 +62,14 @@ export type Aliases = {
   titleId: Scalars['UUID']['output'];
   titleNavigation?: Maybe<Titles>;
   typesType?: Maybe<Array<Maybe<Types>>>;
+};
+
+export type AliasesDtoInput = {
+  isOriginalTitle: Scalars['Boolean']['input'];
+  language: Scalars['String']['input'];
+  region: Scalars['String']['input'];
+  title: Scalars['String']['input'];
+  titleId: Scalars['UUID']['input'];
 };
 
 export type AliasesFilterInput = {
@@ -140,6 +148,18 @@ export type CommentsFilterInput = {
   titleId?: InputMaybe<UuidOperationFilterInput>;
 };
 
+export type CreateMysqlAliasError = ValidationError;
+
+export type CreateMysqlAliasInput = {
+  alias: AliasesDtoInput;
+};
+
+export type CreateMysqlAliasPayload = {
+  __typename?: 'CreateMysqlAliasPayload';
+  aliases?: Maybe<Aliases>;
+  errors?: Maybe<Array<CreateMysqlAliasError>>;
+};
+
 export type CreateMysqlGenreError = ValidationError;
 
 export type CreateMysqlGenreInput = {
@@ -174,6 +194,18 @@ export type CreateMysqlTitlePayload = {
   __typename?: 'CreateMysqlTitlePayload';
   errors?: Maybe<Array<CreateMysqlTitleError>>;
   titles?: Maybe<Titles>;
+};
+
+export type DeleteMysqlAliasError = ValidationError;
+
+export type DeleteMysqlAliasInput = {
+  aliasId: Scalars['UUID']['input'];
+};
+
+export type DeleteMysqlAliasPayload = {
+  __typename?: 'DeleteMysqlAliasPayload';
+  aliases?: Maybe<Aliases>;
+  errors?: Maybe<Array<DeleteMysqlAliasError>>;
 };
 
 export type DeleteMysqlGenreError = ValidationError;
@@ -427,13 +459,16 @@ export type ListFilterInputTypeOfWritersFilterInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addMysqlGenre: AddMysqlGenrePayload;
+  createMysqlAlias: CreateMysqlAliasPayload;
   createMysqlGenre: CreateMysqlGenrePayload;
   createMysqlPerson: CreateMysqlPersonPayload;
   createMysqlTitle: CreateMysqlTitlePayload;
+  deleteMysqlAlias: DeleteMysqlAliasPayload;
   deleteMysqlGenre: DeleteMysqlGenrePayload;
   deleteMysqlPerson: DeleteMysqlPersonPayload;
   deleteMysqlTitle: DeleteMysqlTitlePayload;
   removeMysqlGenre: RemoveMysqlGenrePayload;
+  updateMysqlAlias: UpdateMysqlAliasPayload;
   updateMysqlPerson: UpdateMysqlPersonPayload;
   updateMysqlTitle: UpdateMysqlTitlePayload;
 };
@@ -441,6 +476,11 @@ export type Mutation = {
 
 export type MutationAddMysqlGenreArgs = {
   input: AddMysqlGenreInput;
+};
+
+
+export type MutationCreateMysqlAliasArgs = {
+  input: CreateMysqlAliasInput;
 };
 
 
@@ -456,6 +496,11 @@ export type MutationCreateMysqlPersonArgs = {
 
 export type MutationCreateMysqlTitleArgs = {
   input: CreateMysqlTitleInput;
+};
+
+
+export type MutationDeleteMysqlAliasArgs = {
+  input: DeleteMysqlAliasInput;
 };
 
 
@@ -476,6 +521,11 @@ export type MutationDeleteMysqlTitleArgs = {
 
 export type MutationRemoveMysqlGenreArgs = {
   input: RemoveMysqlGenreInput;
+};
+
+
+export type MutationUpdateMysqlAliasArgs = {
+  input: UpdateMysqlAliasInput;
 };
 
 
@@ -674,15 +724,15 @@ export type Titles = {
   episodesTitleIdChildNavigation?: Maybe<Array<Maybe<Episodes>>>;
   episodesTitleIdParentNavigation?: Maybe<Array<Maybe<Episodes>>>;
   genresGenre?: Maybe<Array<Maybe<Genres>>>;
-  isAdult: Scalars['Boolean']['output'];
+  isAdult?: Scalars['Boolean']['output'];
   knownFor?: Maybe<Array<Maybe<KnownFor>>>;
-  originalTitle: Scalars['String']['output'];
-  primaryTitle: Scalars['String']['output'];
+  originalTitle?: Scalars['String']['output'];
+  primaryTitle?: Scalars['String']['output'];
   ratings?: Maybe<Array<Maybe<Ratings>>>;
   runtimeMinutes?: Maybe<Scalars['Int']['output']>;
-  startYear: Scalars['Int']['output'];
-  titleId: Scalars['UUID']['output'];
-  titleType: Scalars['String']['output'];
+  startYear?: Scalars['Int']['output'];
+  titleId?: Scalars['UUID']['output'];
+  titleType?: Scalars['String']['output'];
   writers?: Maybe<Array<Maybe<Writers>>>;
 };
 
@@ -743,6 +793,19 @@ export type TypesFilterInput = {
   or?: InputMaybe<Array<TypesFilterInput>>;
   type?: InputMaybe<StringOperationFilterInput>;
   typeId?: InputMaybe<UuidOperationFilterInput>;
+};
+
+export type UpdateMysqlAliasError = ValidationError;
+
+export type UpdateMysqlAliasInput = {
+  alias: AliasesDtoInput;
+  aliasId: Scalars['UUID']['input'];
+};
+
+export type UpdateMysqlAliasPayload = {
+  __typename?: 'UpdateMysqlAliasPayload';
+  aliases?: Maybe<Aliases>;
+  errors?: Maybe<Array<UpdateMysqlAliasError>>;
 };
 
 export type UpdateMysqlPersonError = ValidationError;
@@ -838,15 +901,15 @@ export type GetTitlesQueryVariables = Exact<{
 }>;
 
 
-export type GetTitlesQuery = { __typename?: 'Query', mysqlTitles?: { __typename?: 'MysqlTitlesCollectionSegment', totalCount: number, items?: Array<{ __typename?: 'Titles', titleId: any, primaryTitle: string, originalTitle: string, startYear: number }> | null } | null };
+export type GetTitlesQuery = { __typename?: 'Query', mysqlTitles?: { __typename?: 'MysqlTitlesCollectionSegment', totalCount: number, items?: Array<{ __typename?: 'Titles', titleId: string, primaryTitle: string, originalTitle: string, startYear: number }> | null } | null };
 
 export type GetTitleQueryVariables = Exact<{
   id?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
-export type GetTitleQuery = { __typename?: 'Query', mysqlTitles?: { __typename?: 'MysqlTitlesCollectionSegment', items?: Array<{ __typename?: 'Titles', titleId: any, primaryTitle: string, originalTitle: string, isAdult: boolean, startYear: number, endYear?: number | null, runtimeMinutes?: number | null, titleType: string, genresGenre?: Array<{ __typename?: 'Genres', genreId: any, genre: string } | null> | null }> | null } | null };
+export type GetTitleQuery = { __typename?: 'Query', mysqlTitles?: { __typename?: 'MysqlTitlesCollectionSegment', items?: Array<{ __typename?: 'Titles', titleId: string, primaryTitle: string, originalTitle: string, isAdult: boolean, startYear: number, endYear?: number | null, runtimeMinutes?: number | null, titleType: string, genresGenre?: Array<{ __typename?: 'Genres', genreId: string, genre: string } | null> | null }> | null } | null };
 
 
-export const GetTitlesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTitles"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"take"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mysqlTitles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"take"},"value":{"kind":"Variable","name":{"kind":"Name","value":"take"}}},{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"startYear"},"value":{"kind":"EnumValue","value":"DESC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalCount"}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"titleId"}},{"kind":"Field","name":{"kind":"Name","value":"primaryTitle"}},{"kind":"Field","name":{"kind":"Name","value":"originalTitle"}},{"kind":"Field","name":{"kind":"Name","value":"startYear"}}]}}]}}]}}]} as unknown as DocumentNode<GetTitlesQuery, GetTitlesQueryVariables>;
-export const GetTitleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTitle"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mysqlTitles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"titleId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"titleId"}},{"kind":"Field","name":{"kind":"Name","value":"primaryTitle"}},{"kind":"Field","name":{"kind":"Name","value":"originalTitle"}},{"kind":"Field","name":{"kind":"Name","value":"isAdult"}},{"kind":"Field","name":{"kind":"Name","value":"startYear"}},{"kind":"Field","name":{"kind":"Name","value":"endYear"}},{"kind":"Field","name":{"kind":"Name","value":"runtimeMinutes"}},{"kind":"Field","name":{"kind":"Name","value":"titleType"}},{"kind":"Field","name":{"kind":"Name","value":"genresGenre"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"genreId"}},{"kind":"Field","name":{"kind":"Name","value":"genre"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetTitleQuery, GetTitleQueryVariables>;
+export const GetTitlesDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "GetTitles" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "skip" } }, "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "take" } }, "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "mysqlTitles" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "skip" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "skip" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "take" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "take" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "order" }, "value": { "kind": "ObjectValue", "fields": [{ "kind": "ObjectField", "name": { "kind": "Name", "value": "startYear" }, "value": { "kind": "EnumValue", "value": "DESC" } }] } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "totalCount" } }, { "kind": "Field", "name": { "kind": "Name", "value": "items" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "titleId" } }, { "kind": "Field", "name": { "kind": "Name", "value": "primaryTitle" } }, { "kind": "Field", "name": { "kind": "Name", "value": "originalTitle" } }, { "kind": "Field", "name": { "kind": "Name", "value": "startYear" } }] } }] } }] } }] } as unknown as DocumentNode<GetTitlesQuery, GetTitlesQueryVariables>;
+export const GetTitleDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "GetTitle" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "id" } }, "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "UUID" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "mysqlTitles" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "where" }, "value": { "kind": "ObjectValue", "fields": [{ "kind": "ObjectField", "name": { "kind": "Name", "value": "titleId" }, "value": { "kind": "ObjectValue", "fields": [{ "kind": "ObjectField", "name": { "kind": "Name", "value": "eq" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "id" } } }] } }] } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "items" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "titleId" } }, { "kind": "Field", "name": { "kind": "Name", "value": "primaryTitle" } }, { "kind": "Field", "name": { "kind": "Name", "value": "originalTitle" } }, { "kind": "Field", "name": { "kind": "Name", "value": "isAdult" } }, { "kind": "Field", "name": { "kind": "Name", "value": "startYear" } }, { "kind": "Field", "name": { "kind": "Name", "value": "endYear" } }, { "kind": "Field", "name": { "kind": "Name", "value": "runtimeMinutes" } }, { "kind": "Field", "name": { "kind": "Name", "value": "titleType" } }, { "kind": "Field", "name": { "kind": "Name", "value": "genresGenre" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "genreId" } }, { "kind": "Field", "name": { "kind": "Name", "value": "genre" } }] } }] } }] } }] } }] } as unknown as DocumentNode<GetTitleQuery, GetTitleQueryVariables>;
