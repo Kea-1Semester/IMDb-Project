@@ -37,7 +37,7 @@ const MysqlTitleDetails = () => {
         <Card.Root>
           <Card.Body>
             {data?.mysqlTitles?.items?.map((title: Titles) => (
-              <Box>
+              <Box key={title.titleId}>
                 <HStack>
                   <Text fontWeight={'bold'}>PrimaryTitle:</Text>
                   <Text>{title.primaryTitle ?? '-'}</Text>

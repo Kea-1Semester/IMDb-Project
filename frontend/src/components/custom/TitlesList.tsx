@@ -28,15 +28,15 @@ function TitlesList() {
 
   return (
     <Box>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4} mb={4}>
-        <QueryResult error={error} loading={loading} data={data}>
+      <QueryResult error={error} loading={loading} data={data}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4} mb={4}>
           {data?.mysqlTitles?.items?.map((title) => (
-            <TitleCardContainer>
+            <TitleCardContainer key={title.titleId}>
               <TitleCard title={title} />
             </TitleCardContainer>
           ))}
-        </QueryResult>
-      </SimpleGrid>
+        </SimpleGrid>
+      </QueryResult>
       <PaginationWithSelect
         setSkip={setSkip}
         setTake={setTake}
