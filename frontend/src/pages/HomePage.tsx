@@ -30,8 +30,8 @@ const HomePage = () => {
     <Box>
       <QueryResult error={error} loading={loading} data={data}>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4} mb={4}>
-          {data?.mysqlTitles?.items?.map((title, index) => (
-            <TitleCardContainer key={index}>
+          {data?.mysqlTitles?.items?.map((title) => (
+            <TitleCardContainer key={title.titleId}>
               <TitleCard title={title} />
             </TitleCardContainer>
           ))}
