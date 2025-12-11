@@ -1,0 +1,892 @@
+{
+	"info": {
+		"_postman_id": "7dfd3665-71a9-4fdd-bd50-e5c6d3d81fc2",
+		"name": "Api-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50651964",
+		"_collection_link": "https://rtfm-983842.postman.co/workspace/Team-Workspace~40179e69-a961-4814-860e-3989a4c82ddf/collection/50651964-7dfd3665-71a9-4fdd-bd50-e5c6d3d81fc2?action=share&source=collection_link&creator=50651964"
+	},
+	"item": [
+		{
+			"name": "Auth0",
+			"item": [
+				{
+					"name": "Auth0",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"// Minimal snippet appended by Postman's AI agent — saves access_token from JSON response",
+									"(function () {",
+									"    try {",
+									"        var text = pm.response.text();",
+									"        var obj = JSON.parse(text);",
+									"        if (obj && obj.access_token) {",
+									"            pm.environment.set('access_token', obj.access_token);",
+									"            console.log('access_token saved to environment.');",
+									"        } else {",
+									"            console.log('access_token not found in JSON body.');",
+									"        }",
+									"    } catch (e) {",
+									"        console.log('Response body is not valid JSON.');",
+									"    }",
+									"})();",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"client_id\": \"{{CLIENT_ID}}\",\r\n    \"client_secret\": \"{{CLIENT_SECRET}}\",\r\n    \"audience\":\"{{AUDIENCE}}\",\r\n    \"grant_type\": \"{{GRANT_TYPE}}\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_URL}}",
+							"host": [
+								"{{AUTH0_URL}}"
+							]
+						},
+						"description": "## Auth0: Get Access Token\n\nThis request retrieves an OAuth 2.0 access token from Auth0 using the Client Credentials grant.\n\n### Endpoint\n- URL: `{{AUTH0_URL}}`\n- Method: POST\n\nEnsure the following variables are set in your active environment before sending the request:\n- `{{AUTH0_URL}}`: Your Auth0 token endpoint, typically `https://YOUR_DOMAIN/oauth/token`\n- `{{CLIENT_ID}}`: Auth0 application Client ID\n- `{{CLIENT_SECRET}}`: Auth0 application Client Secret (store securely)\n- `{{AUDIENCE}}`: Identifier of the API you want tokens for, e.g. `https://api.example.com/`\n- `{{GRANT_TYPE}}`: For client credentials, use `client_credentials`\n\n### Headers\n- Content-Type: `application/json`\n\n### Request Body (raw JSON)\n```json\n{\n  \"client_id\": \"{{CLIENT_ID}}\",\n  \"client_secret\": \"{{CLIENT_SECRET}}\",\n  \"audience\": \"{{AUDIENCE}}\",\n  \"grant_type\": \"{{GRANT_TYPE}}\"\n}\n```\n\n### Successful Response\nA successful request returns HTTP 200 with a JSON body like:\n```json\n{\n  \"access_token\": \"eyJ...\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 86400\n}\n```\n\n### Post-response behavior\nThis request includes a test script that parses the JSON response and saves `access_token` to the current environment as `access_token`. You can reference it in subsequent requests via `{{access_token}}` (e.g., Authorization header: `Bearer {{access_token}}`).\n\n### Notes\n- Make sure the Audience matches an Auth0 API configured in your tenant.\n- Keep CLIENT_SECRET in a secure variable store (Environment/Vault).\n- If you receive 401/403 errors on downstream calls, verify audience and token scope.\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MySQLTitels",
+			"item": [
+				{
+					"name": "GetMySQLTitles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query MysqlTitles {\r\n    mysqlTitles(skip: 0, take: 20) {\r\n        totalCount\r\n        items {\r\n            titleId\r\n            titleType\r\n            primaryTitle\r\n            originalTitle\r\n            isAdult\r\n            startYear\r\n            endYear\r\n            runtimeMinutes\r\n        }\r\n    }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateMysqlTitle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"(function () {\r",
+									"    try {\r",
+									"        // If pm.response.json exists (Postman standard response)\r",
+									"        var obj = typeof pm.response.json === \"function\" ? pm.response.json() : pm.response;\r",
+									"\r",
+									"        var id = obj?.data?.createMysqlTitle?.titles?.titleId;\r",
+									"\r",
+									"        if (id != null) {\r",
+									"            pm.environment.set('titleId', String(id));\r",
+									"            console.log('titleId saved to TitlesId and titleId.');\r",
+									"        } else {\r",
+									"            console.log('titleId not found at data.createMysqlTitle.titles.titleId');\r",
+									"        }\r",
+									"    } catch (e) {\r",
+									"        console.log('Failed to access titleId.', e);\r",
+									"    }\r",
+									"})();\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateMysqlTitle {\r\n    createMysqlTitle(\r\n        input: {\r\n            title: {\r\n                titleType: \"movie\"\r\n                primaryTitle: \"The Movie\"\r\n                originalTitle: \"The Movie\"\r\n                isAdult: true\r\n                startYear: 2025\r\n                endYear: null\r\n                runtimeMinutes: 50\r\n            }\r\n        }\r\n    ) {\r\n        errors {\r\n            ... on ArgumentError {\r\n                message\r\n                paramName\r\n            }\r\n            ... on InvalidOperationError {\r\n                message\r\n            }\r\n        }\r\n        titles {\r\n            titleId\r\n            titleType\r\n            primaryTitle\r\n            originalTitle\r\n            isAdult\r\n            startYear\r\n            endYear\r\n            runtimeMinutes\r\n        }\r\n    }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						},
+						"description": "## createMysqlTitle\n\nCreates a new title record in MySQL via GraphQL. This mutation returns either validation/operation errors or the created title object.\n\n### Endpoint\n\n- URL: `{{HOST}}`\n    \n- Protocol: GraphQL over HTTP (POST)\n    \n\n### Authentication\n\n- If your server requires auth, set an appropriate Authorization header (e.g., Bearer {{access_token}}) using an environment variable.\n    \n\n### Variables\n\n- `{{HOST}}`: Base GraphQL endpoint for your backend.\n    \n- `{{access_token}}` (optional): Bearer token if required by your API.\n    \n\n### Mutation\n\n``` graphql\nmutation CreateMysqlTitle {\n  createMysqlTitle(\n    input: {\n      title: {\n        titleType: \"movie\"\n        primaryTitle: \"The Movie\"\n        originalTitle: \"The Movie\"\n        isAdult: true\n        startYear: 2025\n        endYear: null\n        runtimeMinutes: 50\n      }\n    }\n  ) {\n    errors {\n      ... on ArgumentError {\n        message\n        paramName\n      }\n      ... on InvalidOperationError {\n        message\n      }\n    }\n    titles {\n      titleId\n      titleType\n      primaryTitle\n      originalTitle\n      isAdult\n      startYear\n      endYear\n      runtimeMinutes\n    }\n  }\n}\n\n ```\n\n### Request Body (GraphQL)\n\n- Operation type: `mutation`\n    \n- Operation name: `CreateMysqlTitle`\n    \n- Variables: none (empty)\n    \n\n### Input Fields\n\n- `title.titleType` (string): e.g., `\"movie\"`.\n    \n- `title.primaryTitle` (string): Human-readable title.\n    \n- `title.originalTitle` (string): Original/primary language title.\n    \n- `title.isAdult` (boolean): If the title is adult content.\n    \n- `title.startYear` (number): Release year.\n    \n- `title.endYear` (number|null): End year if applicable; `null` for ongoing or single release.\n    \n- `title.runtimeMinutes` (number): Duration in minutes.\n    \n\n### Successful Response\n\nOn success, the `titles` field contains the created record.\n\n``` json\n{\n  \"data\": {\n    \"createMysqlTitle\": {\n      \"errors\": [],\n      \"titles\": {\n        \"titleId\": 123,\n        \"titleType\": \"movie\",\n        \"primaryTitle\": \"The Movie\",\n        \"originalTitle\": \"The Movie\",\n        \"isAdult\": true,\n        \"startYear\": 2025,\n        \"endYear\": null,\n        \"runtimeMinutes\": 50\n      }\n    }\n  }\n}\n\n ```\n\n### Error Handling\n\n- `errors.ArgumentError`: Input validation issues (e.g., missing/invalid fields).\n    \n- `errors.InvalidOperationError`: Operation-level errors.\n    \n\n### Test/Chaining Note\n\nThis request includes a test script that extracts `data.createMysqlTitle.titles.titleId` and saves it to the environment variable `titleId` for use in subsequent requests.\n\n### Usage Tips\n\n- Ensure `{{HOST}}` points to your GraphQL endpoint (e.g., `https://your-domain.com/graphql`).\n    \n- Associate an environment (e.g., Backend) and set `HOST` there.\n    \n- If authentication is enforced, set `access_token` in the environment and configure Authorization accordingly."
+					},
+					"response": []
+				},
+				{
+					"name": "GetMySQLTitleById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\r\nquery MysqlTitle {\r\n    mysqlTitles( where: { titleId: {eq: \"{{titleId}}\"}}) {\r\n        items {\r\n            titleId\r\n            titleType\r\n            primaryTitle\r\n            originalTitle\r\n            isAdult\r\n            startYear\r\n            endYear\r\n            runtimeMinutes\r\n        }\r\n    }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						},
+						"description": "### Summary\n\nRetrieves a MySQL title by its ID using a GraphQL query. This request queries the `mysqlTitles` field and returns a single item (if found) matching the provided `titleId`.\n\n### Endpoint\n\n- URL: `{{HOST}}`\n    \n- Protocol: GraphQL over HTTP (POST)\n    \n\n### Variables\n\n- `{{HOST}}` (required): Base URL for the GraphQL server (for example: `https://your-server.com/graphql`).\n    \n- `{{titleId}}` (required): The title identifier to filter on.\n    \n- `{{access_token}}` (optional): If your server requires authentication, supply this via a Bearer token in the Authorization header at the request level or through an environment.\n    \n\n### GraphQL Query\n\n```\nquery MysqlTitle {\n  mysqlTitles(where: { titleId: { eq: \"{{titleId}}\" } }) {\n    items {\n      titleId\n      titleType\n      primaryTitle\n      originalTitle\n      isAdult\n      startYear\n      endYear\n      runtimeMinutes\n    }\n  }\n}\n\n ```\n\n### Expected Response\n\n- 200 OK with `data.mysqlTitles.items` as an array. If no item matches, the array may be empty.\n    \n- On auth errors, you may receive 401/403 responses depending on server configuration.\n    \n\n### Setup\n\n1. Select an environment that defines `HOST` and `titleId`.\n    \n2. If authentication is required, add an Authorization header or configure the Authorization tab to use a Bearer token (e.g., `{{access_token}}`).\n    \n\n### Notes\n\n- This request does not include pre-request or test scripts.\n    \n- No saved examples are present yet. Consider adding saved responses to improve documentation and enable mock servers."
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteMySQLTitleById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = pm.response.json();\r",
+									"\r",
+									"let item = json?.data?.deleteMysqlTitle?.titles;\r",
+									"\r",
+									"pm.test(\"Checks_That_Response_Contains_Expected_Title_Data\", function () {\r",
+									"    pm.expect(item).to.be.an(\"object\");\r",
+									"\r",
+									"    pm.expect(item.titleType).to.equal(\"movie\");\r",
+									"    pm.expect(item.primaryTitle).to.equal(\"The Movie\");\r",
+									"    pm.expect(item.originalTitle).to.equal(\"The Movie\");\r",
+									"    pm.expect(item.isAdult).to.equal(true);\r",
+									"    pm.expect(item.startYear).to.equal(2025);\r",
+									"    pm.expect(item.endYear).to.be.null;\r",
+									"    pm.expect(item.runtimeMinutes).to.equal(50);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation DeleteMysqlTitle {\r\n    deleteMysqlTitle(input: { id: \"{{titleId}}\" }) {\r\n        titles {\r\n            titleId\r\n            titleType\r\n            primaryTitle\r\n            originalTitle\r\n            isAdult\r\n            startYear\r\n            endYear\r\n            runtimeMinutes\r\n        }\r\n    }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						},
+						"description": "Deletes a MySQL title by ID via GraphQL.\n\nWhat this request does\n\n- Executes the DeleteMysqlTitle mutation against {{HOST}} to remove a title record.\n    \n- Expects a valid title ID and returns the deleted title’s fields for verification.\n    \n\nRequired variables\n\n- {{HOST}}: GraphQL endpoint base URL (e.g., [https://your-backend/graphql](https://your-backend/graphql))\n    \n- {{titleId}}: The ID of the title to delete.\n    \n\nAuthentication\n\n- Inherit or apply the same auth as the collection/folder. If bearer/OAuth is required by your API, ensure the token is present (e.g., Authorization: Bearer {{access_token}}). This request does not set auth locally.\n    \n\nGraphQL body (already configured)  \nmutation DeleteMysqlTitle {  \ndeleteMysqlTitle(input: { id: \"{{titleId}}\" }) {  \ntitles {  \ntitleId  \ntitleType  \nprimaryTitle  \noriginalTitle  \nisAdult  \nstartYear  \nendYear  \nruntimeMinutes  \n}  \n}  \n}\n\nExample responses\n\n- Success (200):  \n    {  \n    \"data\": {  \n    \"deleteMysqlTitle\": {\n    \n    ```\n    \"titles\": {\n      \"titleId\": \"{{titleId}}\",\n      \"titleType\": \"movie\",\n      \"primaryTitle\": \"The Movie\",\n      \"originalTitle\": \"The Movie\",\n      \"isAdult\": true,\n      \"startYear\": 2025,\n      \"endYear\": null,\n      \"runtimeMinutes\": 50\n    }\n    \n     ```\n    \n    }  \n    }  \n    }\n    \n- Failure (200 with errors array):  \n    {  \n    \"errors\": \\[  \n    { \"message\": \"Title not found\", \"path\": \\[\"deleteMysqlTitle\"\\] }  \n    \\],  \n    \"data\": { \"deleteMysqlTitle\": null }  \n    }\n    \n- Failure (401/403): Authentication missing or invalid (ensure access token is set if your API requires it).\n    \n\nNotes\n\n- Post-response tests in this request validate the returned fields when a known title is deleted. Adjust expectations if your dataset differs."
+					},
+					"response": []
+				},
+				{
+					"name": "GetMySQLTitleById_Checkes_The_Tiltles_Has_Been_Deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = pm.response.json();\r",
+									"\r",
+									"let items = json?.data?.mysqlTitles?.items;\r",
+									"\r",
+									"if (!items || items.length === 0) {\r",
+									"    console.log(\"Response is empty\");\r",
+									"    pm.test(\"Items array is empty, which means that the titles been deleted\", function () {\r",
+									"        pm.expect(items).to.be.an('array').that.is.empty;\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(\"Response contains data\");\r",
+									"    pm.test(\"Items array is not empty\", function () {\r",
+									"        pm.expect(items.length).to.be.greaterThan(0);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "\r\nquery MysqlTitle {\r\n    mysqlTitles( where: { titleId: {eq: \"{{titleId}}\"}}) {\r\n        items {\r\n            titleId\r\n            titleType\r\n            primaryTitle\r\n            originalTitle\r\n            isAdult\r\n            startYear\r\n            endYear\r\n            runtimeMinutes\r\n        }\r\n    }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "MySQLGenres",
+			"item": [
+				{
+					"name": "GetMysqlGenres",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query MysqlGenres {\r\n    mysqlGenres {\r\n        totalCount\r\n        items {\r\n            genreId\r\n            genre\r\n        }\r\n    }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateMySQLGenre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"(function () {\r",
+									"    try {\r",
+									"        // If pm.response.json exists (Postman standard response)\r",
+									"        var obj = typeof pm.response.json === \"function\" ? pm.response.json() : pm.response;\r",
+									"\r",
+									"        var id = obj?.data?.createMysqlGenre?.genres?.genreId;\r",
+									"\r",
+									"        if (id != null) {\r",
+									"            pm.environment.set('genreId', String(id));\r",
+									"            console.log('genreId saved to genreId.');\r",
+									"        } else {\r",
+									"            console.log('genreId not found at data.createMysqlGenre.genres.genreId');\r",
+									"        }\r",
+									"    } catch (e) {\r",
+									"        console.log('Failed to access genreId.', e);\r",
+									"    }\r",
+									"})();\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateMysqlGenre {\r\n    createMysqlGenre(input: { genre: { genre: \"TestGenre\" } }) {\r\n        genres {\r\n            genreId\r\n            genre\r\n        }\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetMySQLGenreById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query MysqlGenresById {\r\n    mysqlGenres(where: { genreId: { eq: \"{{genreId}}\" } }) {\r\n        where: items {\r\n            genreId\r\n            genre\r\n        }\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateMysqlTitle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"(function () {\r",
+									"    try {\r",
+									"        // If pm.response.json exists (Postman standard response)\r",
+									"        var obj = typeof pm.response.json === \"function\" ? pm.response.json() : pm.response;\r",
+									"\r",
+									"        var id = obj?.data?.createMysqlTitle?.titles?.titleId;\r",
+									"\r",
+									"        if (id != null) {\r",
+									"            pm.environment.set('titleId', String(id));\r",
+									"            console.log('titleId saved to TitlesId and titleId.');\r",
+									"        } else {\r",
+									"            console.log('titleId not found at data.createMysqlTitle.titles.titleId');\r",
+									"        }\r",
+									"    } catch (e) {\r",
+									"        console.log('Failed to access titleId.', e);\r",
+									"    }\r",
+									"})();\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateMysqlTitle {\r\n    createMysqlTitle(\r\n        input: {\r\n            title: {\r\n                titleType: \"movie\"\r\n                primaryTitle: \"The Movie\"\r\n                originalTitle: \"The Movie\"\r\n                isAdult: true\r\n                startYear: 2025\r\n                endYear: null\r\n                runtimeMinutes: 50\r\n            }\r\n        }\r\n    ) {\r\n        errors {\r\n            ... on ArgumentError {\r\n                message\r\n                paramName\r\n            }\r\n            ... on InvalidOperationError {\r\n                message\r\n            }\r\n        }\r\n        titles {\r\n            titleId\r\n            titleType\r\n            primaryTitle\r\n            originalTitle\r\n            isAdult\r\n            startYear\r\n            endYear\r\n            runtimeMinutes\r\n        }\r\n    }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						},
+						"description": "## createMysqlTitle\n\nCreates a new title record in MySQL via GraphQL. This mutation returns either validation/operation errors or the created title object.\n\n### Endpoint\n\n- URL: `{{HOST}}`\n    \n- Protocol: GraphQL over HTTP (POST)\n    \n\n### Authentication\n\n- If your server requires auth, set an appropriate Authorization header (e.g., Bearer {{access_token}}) using an environment variable.\n    \n\n### Variables\n\n- `{{HOST}}`: Base GraphQL endpoint for your backend.\n    \n- `{{access_token}}` (optional): Bearer token if required by your API.\n    \n\n### Mutation\n\n``` graphql\nmutation CreateMysqlTitle {\n  createMysqlTitle(\n    input: {\n      title: {\n        titleType: \"movie\"\n        primaryTitle: \"The Movie\"\n        originalTitle: \"The Movie\"\n        isAdult: true\n        startYear: 2025\n        endYear: null\n        runtimeMinutes: 50\n      }\n    }\n  ) {\n    errors {\n      ... on ArgumentError {\n        message\n        paramName\n      }\n      ... on InvalidOperationError {\n        message\n      }\n    }\n    titles {\n      titleId\n      titleType\n      primaryTitle\n      originalTitle\n      isAdult\n      startYear\n      endYear\n      runtimeMinutes\n    }\n  }\n}\n\n ```\n\n### Request Body (GraphQL)\n\n- Operation type: `mutation`\n    \n- Operation name: `CreateMysqlTitle`\n    \n- Variables: none (empty)\n    \n\n### Input Fields\n\n- `title.titleType` (string): e.g., `\"movie\"`.\n    \n- `title.primaryTitle` (string): Human-readable title.\n    \n- `title.originalTitle` (string): Original/primary language title.\n    \n- `title.isAdult` (boolean): If the title is adult content.\n    \n- `title.startYear` (number): Release year.\n    \n- `title.endYear` (number|null): End year if applicable; `null` for ongoing or single release.\n    \n- `title.runtimeMinutes` (number): Duration in minutes.\n    \n\n### Successful Response\n\nOn success, the `titles` field contains the created record.\n\n``` json\n{\n  \"data\": {\n    \"createMysqlTitle\": {\n      \"errors\": [],\n      \"titles\": {\n        \"titleId\": 123,\n        \"titleType\": \"movie\",\n        \"primaryTitle\": \"The Movie\",\n        \"originalTitle\": \"The Movie\",\n        \"isAdult\": true,\n        \"startYear\": 2025,\n        \"endYear\": null,\n        \"runtimeMinutes\": 50\n      }\n    }\n  }\n}\n\n ```\n\n### Error Handling\n\n- `errors.ArgumentError`: Input validation issues (e.g., missing/invalid fields).\n    \n- `errors.InvalidOperationError`: Operation-level errors.\n    \n\n### Test/Chaining Note\n\nThis request includes a test script that extracts `data.createMysqlTitle.titles.titleId` and saves it to the environment variable `titleId` for use in subsequent requests.\n\n### Usage Tips\n\n- Ensure `{{HOST}}` points to your GraphQL endpoint (e.g., `https://your-domain.com/graphql`).\n    \n- Associate an environment (e.g., Backend) and set `HOST` there.\n    \n- If authentication is enforced, set `access_token` in the environment and configure Authorization accordingly."
+					},
+					"response": []
+				},
+				{
+					"name": "AddGenreWithTitles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation AddMysqlGenre {\r\n    addMysqlGenre(input: { genreId: \"{{genreId}}\", titleId: \"{{titleId}}\" }) {\r\n        genres {\r\n            genreId\r\n            genre\r\n            titlesTitle {\r\n                titleId\r\n                titleType\r\n                primaryTitle\r\n                originalTitle\r\n                isAdult\r\n                startYear\r\n                endYear\r\n                runtimeMinutes\r\n            }\r\n        }\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveMySQLGenre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation RemoveMySQLGenre {\r\n    removeMysqlGenre(input: { genreId: \"{{genreId}}\", titleId: \"{{titleId}}\" }) {\r\n        genres {\r\n            genreId\r\n            genre\r\n            titlesTitle {\r\n                titleId\r\n            }\r\n        }\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteMySQLGenre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = pm.response.json();\r",
+									"\r",
+									"let item = json?.data?.deleteMysqlGenre?.genres;\r",
+									"\r",
+									"pm.test(\"Checks_That_Response_Contains_Expected_Genre_Data\", function () {\r",
+									"    pm.expect(item).to.be.an(\"object\");\r",
+									"\r",
+									"    pm.expect(item.genre).to.equal(\"TestGenre\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation DeleteMySQLGenre {\r\n    deleteMysqlGenre(input: { id: \"{{genreId}}\" }) {\r\n        genres {\r\n            genreId\r\n            genre\r\n        }\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetMySQLGenreById_Checkes_The_Genres_Has_Been_Deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = pm.response.json;\r",
+									"\r",
+									"let items = json.data?.mysqlGenres?.genres?.where;\r",
+									"\r",
+									"if (!items || items.length === 0) {\r",
+									"    console.log(\"Response is empty\");\r",
+									"    pm.test(\"Items array is empty, which means that the Gneres has been deleted\", function () {\r",
+									"        pm.expect(items || []).to.be.an('array').that.is.empty;\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(\"Response contains data\");\r",
+									"    pm.test(\"Items array is not empty\", function () {\r",
+									"        pm.expect(items.length).to.be.greaterThan(0);\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query MysqlGenresById {\r\n    mysqlGenres(where: { genreId: { eq: \"{{genreId}}\" } }) {\r\n        where: items {\r\n            genreId\r\n            genre\r\n        }\r\n    }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "NegativeTesting",
+			"item": [
+				{
+					"name": "UpdateTitlesNegativeTesting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = pm.response.json();\r",
+									"\r",
+									"let item = json?.data?.updateMysqlTitle.errors[0];\r",
+									"\r",
+									"pm.test(\"Returns validation error when TitleType length is invalid\", function () {\r",
+									"\r",
+									"    pm.expect(item.message).to.equal(\"TitleType must be between 5 and 25 characters long. (Parameter 'tst')\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation UpdateMysqlTitle {\r\n    updateMysqlTitle(\r\n        input: {\r\n            id: \"7ca085bb-6098-4403-8a45-ceb0bca7723b\"\r\n            title: {\r\n                titleType: \"tst\"\r\n                primaryTitle: \"The Movie\"\r\n                originalTitle: \"The Movie\"\r\n                isAdult: true\r\n                startYear: 2025\r\n                endYear: null\r\n                runtimeMinutes: 50\r\n            }\r\n        }\r\n    ) {\r\n        errors {\r\n            ... on ArgumentError {\r\n                message\r\n                paramName\r\n            }\r\n            ... on InvalidOperationError {\r\n                message\r\n            }\r\n        }\r\n        titles {\r\n            titleId\r\n            titleType\r\n            primaryTitle\r\n            originalTitle\r\n            isAdult\r\n            startYear\r\n            endYear\r\n            runtimeMinutes\r\n        }\r\n    }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						},
+						"description": "Purpose\n\n- Negative test for the UpdateMysqlTitle GraphQL mutation. Validates server-side schema and business rules by sending intentionally invalid data (e.g., a too-short titleType).\n    \n\nAuthentication\n\n- Uses bearer token if required by your backend. Set {{access_token}} in your selected environment and configure Authorization at the collection or request level.\n    \n\nEndpoint\n\n- Method: POST\n    \n- URL: {{HOST}}\n    \n- Protocol: GraphQL request body\n    \n\nMutation\n\n- updateMysqlTitle(input: { id, title { titleType, primaryTitle, originalTitle, isAdult, startYear, endYear, runtimeMinutes } })\n    \n- This request intentionally sets titleType to \"tst\" to trigger validation.\n    \n\nVariables\n\n- This request does not use GraphQL variables; all fields are inlined in the mutation.\n    \n- Workspace variables referenced: {{HOST}}, {{access_token}}. Ensure your active environment defines these values.\n    \n\nExpected Behavior\n\n- When titleType is shorter than the allowed length, the API returns an errors array with a validation message.\n    \n- Titles object may be null/omitted on validation failure depending on server implementation.\n    \n\nTests\n\n- The post-response script asserts that the response contains the expected validation error:  \n    \"TitleType must be between 5 and 25 characters long. (Parameter 'tst')\".\n    \n\nSuccessful Request (for reference)\n\n- Using a valid titleType (e.g., \"movie\") should result in data.updateMysqlTitle.titles containing the updated resource with fields: titleId, titleType, primaryTitle, originalTitle, isAdult, startYear, endYear, runtimeMinutes.\n    \n\nExample Request Body (Negative)\n\n``` graphql\nmutation UpdateMysqlTitle {\n  updateMysqlTitle(\n    input: {\n      id: \"7ca085bb-6098-4403-8a45-ceb0bca7723b\"\n      title: {\n        titleType: \"tst\"\n        primaryTitle: \"The Movie\"\n        originalTitle: \"The Movie\"\n        isAdult: true\n        startYear: 2025\n        endYear: null\n        runtimeMinutes: 50\n      }\n    }\n  ) {\n    errors {\n      ... on ArgumentError {\n        message\n        paramName\n      }\n      ... on InvalidOperationError {\n        message\n      }\n    }\n    titles {\n      titleId\n      titleType\n      primaryTitle\n      originalTitle\n      isAdult\n      startYear\n      endYear\n      runtimeMinutes\n    }\n  }\n}\n\n ```\n\nExample Response (Validation Error)\n\n``` json\n{\n  \"data\": {\n    \"updateMysqlTitle\": {\n      \"errors\": [\n        {\n          \"message\": \"TitleType must be between 5 and 25 characters long. (Parameter 'tst')\",\n          \"paramName\": \"titleType\"\n        }\n      ],\n      \"titles\": null\n    }\n  }\n}\n\n ```\n\nNotes\n\n- Keep this request as-is for negative testing. Create a separate positive test request if needed (e.g., \"UpdateMysqlTitle Positive\").\n    \n- If your API uses role-based auth, ensure the token has permission to update titles."
+					},
+					"response": []
+				},
+				{
+					"name": "NegativeTestOnAddGenreToTitles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = pm.response.json();\r",
+									"\r",
+									"let item = json?.errors[0];\r",
+									"\r",
+									"pm.test(\"Returns validation error when Genre not been found\", function () {\r",
+									"    console.log(item)\r",
+									"    pm.expect(item.message).to.equal(\"Genre not found\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is Bad Request\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation AddMysqlGenre {\r\n    addMysqlGenre(input: { genreId: \"7ca085bb-6098-4403-8a45-ceb0bca7723b\", titleId: \"7ca085bb-6098-4403-8a45-ceb0bca7723b\" }) {\r\n        genres {\r\n            genreId\r\n            genre\r\n            titlesTitle {\r\n                titleId\r\n                titleType\r\n                primaryTitle\r\n                originalTitle\r\n                isAdult\r\n                startYear\r\n                endYear\r\n                runtimeMinutes\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}",
+							"host": [
+								"{{HOST}}"
+							]
+						},
+						"description": "Purpose\n\n- Negative test for the UpdateMysqlTitle GraphQL mutation. Validates server-side schema and business rules by sending intentionally invalid data (e.g., a too-short titleType).\n    \n\nAuthentication\n\n- Uses bearer token if required by your backend. Set {{access_token}} in your selected environment and configure Authorization at the collection or request level.\n    \n\nEndpoint\n\n- Method: POST\n    \n- URL: {{HOST}}\n    \n- Protocol: GraphQL request body\n    \n\nMutation\n\n- updateMysqlTitle(input: { id, title { titleType, primaryTitle, originalTitle, isAdult, startYear, endYear, runtimeMinutes } })\n    \n- This request intentionally sets titleType to \"tst\" to trigger validation.\n    \n\nVariables\n\n- This request does not use GraphQL variables; all fields are inlined in the mutation.\n    \n- Workspace variables referenced: {{HOST}}, {{access_token}}. Ensure your active environment defines these values.\n    \n\nExpected Behavior\n\n- When titleType is shorter than the allowed length, the API returns an errors array with a validation message.\n    \n- Titles object may be null/omitted on validation failure depending on server implementation.\n    \n\nTests\n\n- The post-response script asserts that the response contains the expected validation error:  \n    \"TitleType must be between 5 and 25 characters long. (Parameter 'tst')\".\n    \n\nSuccessful Request (for reference)\n\n- Using a valid titleType (e.g., \"movie\") should result in data.updateMysqlTitle.titles containing the updated resource with fields: titleId, titleType, primaryTitle, originalTitle, isAdult, startYear, endYear, runtimeMinutes.\n    \n\nExample Request Body (Negative)\n\n``` graphql\nmutation UpdateMysqlTitle {\n  updateMysqlTitle(\n    input: {\n      id: \"7ca085bb-6098-4403-8a45-ceb0bca7723b\"\n      title: {\n        titleType: \"tst\"\n        primaryTitle: \"The Movie\"\n        originalTitle: \"The Movie\"\n        isAdult: true\n        startYear: 2025\n        endYear: null\n        runtimeMinutes: 50\n      }\n    }\n  ) {\n    errors {\n      ... on ArgumentError {\n        message\n        paramName\n      }\n      ... on InvalidOperationError {\n        message\n      }\n    }\n    titles {\n      titleId\n      titleType\n      primaryTitle\n      originalTitle\n      isAdult\n      startYear\n      endYear\n      runtimeMinutes\n    }\n  }\n}\n\n ```\n\nExample Response (Validation Error)\n\n``` json\n{\n  \"data\": {\n    \"updateMysqlTitle\": {\n      \"errors\": [\n        {\n          \"message\": \"TitleType must be between 5 and 25 characters long. (Parameter 'tst')\",\n          \"paramName\": \"titleType\"\n        }\n      ],\n      \"titles\": null\n    }\n  }\n}\n\n ```\n\nNotes\n\n- Keep this request as-is for negative testing. Create a separate positive test request if needed (e.g., \"UpdateMysqlTitle Positive\").\n    \n- If your API uses role-based auth, ensure the token has permission to update titles."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"// Check if this request has a custom expected status code\r",
+					"if (pm.variables.get(\"skip_status_test\")) {\r",
+					"\r",
+					"    pm.test(\"Status code is 400\", function () {\r",
+					"        pm.response.to.have.status(400);\r",
+					"    });\r",
+					"\r",
+					"} else {\r",
+					"\r",
+					"    pm.test(\"Status code is 200\", function () {\r",
+					"        pm.response.to.have.status(200);\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"// clear the flag so it doesn't affect the next request\r",
+					"pm.variables.unset(\"skip_status_test\");\r",
+					"\r",
+					"\r",
+					"// We are using a free render server. The first pipeline run may fail because the server\r",
+					"// might not be fully started yet. For this reason, you may need to comment out this test\r",
+					"// or run the API tests manually the first time to allow the server to initialize properly.\r",
+					"\r",
+					"pm.test(\"Response time is under 500ms\", function () {\r",
+					"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+					"});\r",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": ""
+		},
+		{
+			"key": "HOST",
+			"value": ""
+		},
+		{
+			"key": "CLIENT_ID",
+			"value": ""
+		},
+		{
+			"key": "CLIENT_SECRET",
+			"value": ""
+		},
+		{
+			"key": "AUDIENCE",
+			"value": ""
+		},
+		{
+			"key": "GRANT_TYPE",
+			"value": ""
+		},
+		{
+			"key": "AUTH0_URL",
+			"value": ""
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "titleId",
+			"value": ""
+		}
+	]
+}

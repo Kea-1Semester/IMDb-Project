@@ -1,4 +1,4 @@
-# Software Requirements Specification (SRS) for IMDb Project
+# Software Requirements Specification (SRS) for IMDb Project Written by Shero
 
 ## SRS
 

@@ -39,7 +39,7 @@ jobs:
           AUTH0_URL: ${{ vars.AUTH0_URL }}
         run: |
           postman collection run  "${{vars.POSTMAN_COLLECTION_ID}}" \
-          -e "${{vars.POSTMAN_ENVIRONMENT_ID}}" \
+          -e "${{vars.POSTMAN_ENVIRONMENT_ID}}" --color red \
           --env-var "HOST=$HOST" \
           --env-var "CLIENT_ID=$CLIENT_ID" \
           --env-var "CLIENT_SECRET=$CLIENT_SECRET" \
