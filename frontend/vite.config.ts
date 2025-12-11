@@ -17,8 +17,11 @@ export default defineConfig({
   preview: {
     allowedHosts: process.env.ALLOWED_HOSTS
       ? process.env.ALLOWED_HOSTS.split(',')
-          .map((h) => h.trim())
-          .filter(Boolean)
+        .map((h) => h.trim())
+        .filter(Boolean)
       : ['0.0.0.0', 'localhost'],
+  },
+  build: {
+    sourcemap: 'inline',
   },
 });
