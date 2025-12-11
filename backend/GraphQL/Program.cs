@@ -101,11 +101,6 @@ builder.AddGraphQL()
         options.IncludeExceptionDetails =
             builder.Environment.IsDevelopment();
     })
-    .ModifyCostOptions(options =>
-    {
-        options.MaxFieldCost = 10000;
-        options.MaxTypeCost = 10000;
-    })
     .DisableIntrospection(!builder.Environment.IsDevelopment())
     .AddMutationConventions(applyToAllMutations: true);
 
