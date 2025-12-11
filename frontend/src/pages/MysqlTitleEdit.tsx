@@ -3,25 +3,21 @@ import { useNavigate, useParams } from 'react-router';
 import { Box, Button, Card, Heading, HStack, Text } from '@chakra-ui/react';
 import type { GetTitleQuery, Titles } from '@/generated/graphql';
 import QueryResult from '@/components/custom/QueryResult';
-import { RiArrowLeftLine, RiDeleteBin2Line, RiEditBoxLine } from 'react-icons/ri';
+import { RiArrowLeftLine } from 'react-icons/ri';
 import { MYSQL_TITLE } from '@/queries/mysqlTitle';
-import { useAuth0 } from '@auth0/auth0-react';
 
-const MysqlTitleDetails = () => {
+const MysqlTitleEdit = () => {
   const { id } = useParams<{ id: string }>();
-  const { isAuthenticated } = useAuth0();
   const { loading, error, data } = useQuery<GetTitleQuery>(MYSQL_TITLE, { variables: { id: id ?? '' } });
 
   const navigate = useNavigate();
-
-  if (!data) return <Text>No Title with id: {id}</Text>;
 
   return (
     <Box>
       <QueryResult loading={loading} error={error} data={data}>
         <Card.Root shadow={'sm'}>
           <Card.Header>
-            <Heading as={'h1'}>Title Details</Heading>
+            <Heading as={'h1'}>Title Edit</Heading>
           </Card.Header>
           <Card.Body>
             {data &&
@@ -61,34 +57,10 @@ const MysqlTitleDetails = () => {
               ))}
           </Card.Body>
           <Card.Footer>
-            <HStack justify={'space-between'} w={'100%'}>
+            <HStack justify={'end'}>
               <Button variant="outline" fontWeight={'bold'} onClick={() => void navigate(-1)}>
                 <RiArrowLeftLine /> Back
               </Button>
-              <Box>
-                <HStack gap={'0.5rem'}>
-                  {isAuthenticated && (
-                    <>
-                      <Button
-                        variant="solid"
-                        colorPalette={'teal'}
-                        fontWeight={'bold'}
-                        onClick={() => void navigate(`/mysqltitle/${id}/edit`)}
-                      >
-                        <RiEditBoxLine /> Edit
-                      </Button>
-                      <Button
-                        variant="solid"
-                        colorPalette={'red'}
-                        fontWeight={'bold'}
-                        onClick={() => void navigate(-1)}
-                      >
-                        <RiDeleteBin2Line /> Delete
-                      </Button>
-                    </>
-                  )}
-                </HStack>
-              </Box>
             </HStack>
           </Card.Footer>
         </Card.Root>
@@ -97,4 +69,4 @@ const MysqlTitleDetails = () => {
   );
 };
 
-export default MysqlTitleDetails;
+export default MysqlTitleEdit;

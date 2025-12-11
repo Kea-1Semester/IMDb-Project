@@ -2,31 +2,17 @@ import PaginationWithSelect from '@/components/custom/PaginationWithSelect';
 import QueryResult from '@/components/custom/QueryResult';
 import TitleCard from '@/components/custom/TitleCard';
 import TitleCardContainer from '@/components/custom/TitleCardContainer';
-import { graphql } from '@/generated/gql';
 import { GetTitlesQuery, Titles } from '@/generated/graphql';
+import { MYSQL_TITLES } from '@/queries/mysqlTitles';
 import { useQuery } from '@apollo/client/react';
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import { useState } from 'react';
-
-const TITLES = graphql(`
-  query GetTitles($skip: Int, $take: Int) {
-    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {
-      totalCount
-      items {
-        titleId
-        primaryTitle
-        originalTitle
-        startYear
-      }
-    }
-  }
-`);
 
 const HomePage = () => {
   const defaultPageSize = 25;
   const [skip, setSkip] = useState<number>(0);
   const [take, setTake] = useState<number>(defaultPageSize);
-  const { loading, error, data } = useQuery<GetTitlesQuery>(TITLES, { variables: { skip: skip, take: take } });
+  const { loading, error, data } = useQuery<GetTitlesQuery>(MYSQL_TITLES, { variables: { skip: skip, take: take } });
 
   return (
     <Box>

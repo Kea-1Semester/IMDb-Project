@@ -14,12 +14,12 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n  query GetTitles($skip: Int, $take: Int) {\n    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {\n      totalCount\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        startYear\n      }\n    }\n  }\n": typeof types.GetTitlesDocument,
     "\n  query GetTitle($id: UUID) {\n    mysqlTitles(where: { titleId: { eq: $id } }) {\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        isAdult\n        startYear\n        endYear\n        runtimeMinutes\n        titleType\n        genresGenre {\n          genreId\n          genre\n        }\n      }\n    }\n  }\n": typeof types.GetTitleDocument,
+    "\n  query GetTitles($skip: Int, $take: Int) {\n    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {\n      totalCount\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        startYear\n      }\n    }\n  }\n": typeof types.GetTitlesDocument,
 };
 const documents: Documents = {
-    "\n  query GetTitles($skip: Int, $take: Int) {\n    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {\n      totalCount\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        startYear\n      }\n    }\n  }\n": types.GetTitlesDocument,
     "\n  query GetTitle($id: UUID) {\n    mysqlTitles(where: { titleId: { eq: $id } }) {\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        isAdult\n        startYear\n        endYear\n        runtimeMinutes\n        titleType\n        genresGenre {\n          genreId\n          genre\n        }\n      }\n    }\n  }\n": types.GetTitleDocument,
+    "\n  query GetTitles($skip: Int, $take: Int) {\n    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {\n      totalCount\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        startYear\n      }\n    }\n  }\n": types.GetTitlesDocument,
 };
 
 /**
@@ -39,11 +39,11 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetTitles($skip: Int, $take: Int) {\n    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {\n      totalCount\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        startYear\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetTitles($skip: Int, $take: Int) {\n    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {\n      totalCount\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        startYear\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query GetTitle($id: UUID) {\n    mysqlTitles(where: { titleId: { eq: $id } }) {\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        isAdult\n        startYear\n        endYear\n        runtimeMinutes\n        titleType\n        genresGenre {\n          genreId\n          genre\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetTitle($id: UUID) {\n    mysqlTitles(where: { titleId: { eq: $id } }) {\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        isAdult\n        startYear\n        endYear\n        runtimeMinutes\n        titleType\n        genresGenre {\n          genreId\n          genre\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetTitle($id: UUID) {\n    mysqlTitles(where: { titleId: { eq: $id } }) {\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        isAdult\n        startYear\n        endYear\n        runtimeMinutes\n        titleType\n        genresGenre {\n          genreId\n          genre\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetTitle($id: UUID) {\n    mysqlTitles(where: { titleId: { eq: $id } }) {\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        isAdult\n        startYear\n        endYear\n        runtimeMinutes\n        titleType\n        genresGenre {\n          genreId\n          genre\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query GetTitles($skip: Int, $take: Int) {\n    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {\n      totalCount\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        startYear\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetTitles($skip: Int, $take: Int) {\n    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {\n      totalCount\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        startYear\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
