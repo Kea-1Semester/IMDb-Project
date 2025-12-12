@@ -15,10 +15,12 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 type Documents = {
     "\n  query GetTitle($id: UUID) {\n    mysqlTitles(where: { titleId: { eq: $id } }) {\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        isAdult\n        startYear\n        endYear\n        runtimeMinutes\n        titleType\n        genresGenre {\n          genreId\n          genre\n        }\n      }\n    }\n  }\n": typeof types.GetTitleDocument,
+    "\n  mutation EditTitle($id: UUID!, $title: TitlesDtoInput!) {\n    updateMysqlTitle(input: { id: $id, title: $title }) {\n      titles {\n        endYear\n        isAdult\n        originalTitle\n        primaryTitle\n        runtimeMinutes\n        startYear\n        titleId\n        titleType\n      }\n      errors {\n        ... on Error {\n          message\n        }\n      }\n    }\n  }\n": typeof types.EditTitleDocument,
     "\n  query GetTitles($skip: Int, $take: Int) {\n    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {\n      totalCount\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        startYear\n      }\n    }\n  }\n": typeof types.GetTitlesDocument,
 };
 const documents: Documents = {
     "\n  query GetTitle($id: UUID) {\n    mysqlTitles(where: { titleId: { eq: $id } }) {\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        isAdult\n        startYear\n        endYear\n        runtimeMinutes\n        titleType\n        genresGenre {\n          genreId\n          genre\n        }\n      }\n    }\n  }\n": types.GetTitleDocument,
+    "\n  mutation EditTitle($id: UUID!, $title: TitlesDtoInput!) {\n    updateMysqlTitle(input: { id: $id, title: $title }) {\n      titles {\n        endYear\n        isAdult\n        originalTitle\n        primaryTitle\n        runtimeMinutes\n        startYear\n        titleId\n        titleType\n      }\n      errors {\n        ... on Error {\n          message\n        }\n      }\n    }\n  }\n": types.EditTitleDocument,
     "\n  query GetTitles($skip: Int, $take: Int) {\n    mysqlTitles(skip: $skip, take: $take, order: { startYear: DESC }) {\n      totalCount\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        startYear\n      }\n    }\n  }\n": types.GetTitlesDocument,
 };
 
@@ -40,6 +42,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetTitle($id: UUID) {\n    mysqlTitles(where: { titleId: { eq: $id } }) {\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        isAdult\n        startYear\n        endYear\n        runtimeMinutes\n        titleType\n        genresGenre {\n          genreId\n          genre\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetTitle($id: UUID) {\n    mysqlTitles(where: { titleId: { eq: $id } }) {\n      items {\n        titleId\n        primaryTitle\n        originalTitle\n        isAdult\n        startYear\n        endYear\n        runtimeMinutes\n        titleType\n        genresGenre {\n          genreId\n          genre\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation EditTitle($id: UUID!, $title: TitlesDtoInput!) {\n    updateMysqlTitle(input: { id: $id, title: $title }) {\n      titles {\n        endYear\n        isAdult\n        originalTitle\n        primaryTitle\n        runtimeMinutes\n        startYear\n        titleId\n        titleType\n      }\n      errors {\n        ... on Error {\n          message\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation EditTitle($id: UUID!, $title: TitlesDtoInput!) {\n    updateMysqlTitle(input: { id: $id, title: $title }) {\n      titles {\n        endYear\n        isAdult\n        originalTitle\n        primaryTitle\n        runtimeMinutes\n        startYear\n        titleId\n        titleType\n      }\n      errors {\n        ... on Error {\n          message\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

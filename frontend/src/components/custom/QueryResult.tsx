@@ -1,5 +1,5 @@
 import type { ErrorLike } from '@apollo/client';
-import { Container, Spinner } from '@chakra-ui/react';
+import { Container, Spinner, Text } from '@chakra-ui/react';
 import type { FC, PropsWithChildren } from 'react';
 
 type QueryResultProps = {
@@ -10,7 +10,7 @@ type QueryResultProps = {
 
 const QueryResult: FC<PropsWithChildren<QueryResultProps>> = ({ loading, error, data, children }) => {
   if (error) {
-    return <p>ERROR: {error.message}</p>;
+    return <Text>ERROR: {error.message}</Text>;
   }
   if (loading) {
     return (
@@ -22,7 +22,7 @@ const QueryResult: FC<PropsWithChildren<QueryResultProps>> = ({ loading, error, 
   if (data) {
     return <>{children}</>;
   }
-  return <p>Nothing to show...</p>;
+  return <Text>Nothing to show...</Text>;
 };
 
 export default QueryResult;

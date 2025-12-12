@@ -1,16 +1,108 @@
-import { useQuery } from '@apollo/client/react';
+import { useMutation, useQuery } from '@apollo/client/react';
 import { useNavigate, useParams } from 'react-router';
-import { Box, Button, Card, Heading, HStack, Text } from '@chakra-ui/react';
-import type { GetTitleQuery, Titles } from '@/generated/graphql';
+import {
+  Box,
+  Button,
+  Card,
+  Field,
+  Heading,
+  HStack,
+  Input,
+  NumberInput,
+  NumberInputValueChangeDetails,
+  Switch,
+  SwitchCheckedChangeDetails,
+  Text,
+} from '@chakra-ui/react';
+import type { TitlesDtoInput } from '@/generated/graphql';
 import QueryResult from '@/components/custom/QueryResult';
-import { RiArrowLeftLine } from 'react-icons/ri';
+import { RiArrowLeftLine, RiSave2Line } from 'react-icons/ri';
 import { MYSQL_TITLE } from '@/queries/mysqlTitle';
+import { EDIT_MYSQL_TITLE } from '@/queries/mysqlTitleEdit';
+import { ChangeEvent, useState } from 'react';
 
 const MysqlTitleEdit = () => {
   const { id } = useParams<{ id: string }>();
-  const { loading, error, data } = useQuery<GetTitleQuery>(MYSQL_TITLE, { variables: { id: id ?? '' } });
-
+  const { loading, error, data } = useQuery(MYSQL_TITLE, { variables: { id: id ?? '' } });
+  const [updateTitle, { error: editError, data: editData }] = useMutation(EDIT_MYSQL_TITLE);
   const navigate = useNavigate();
+
+  const title = data?.mysqlTitles?.items?.at(0);
+  const [titleDto, setTitleDto] = useState<TitlesDtoInput>({
+    primaryTitle: title?.primaryTitle ?? '',
+    originalTitle: title?.originalTitle ?? '',
+    titleType: title?.titleType ?? '',
+    isAdult: title?.isAdult ?? false,
+    startYear: title?.startYear ?? 0,
+    endYear: title?.endYear,
+    runtimeMinutes: title?.runtimeMinutes,
+  });
+
+  const handlePrimaryTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitleDto({
+      ...titleDto,
+      primaryTitle: e.target.value,
+    });
+  };
+
+  const handleOriginalTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitleDto({
+      ...titleDto,
+      originalTitle: e.target.value,
+    });
+  };
+
+  const handleTitleTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitleDto({
+      ...titleDto,
+      titleType: e.target.value,
+    });
+  };
+
+  const handleStartYearChange = (e: NumberInputValueChangeDetails) => {
+    setTitleDto({
+      ...titleDto,
+      startYear: e.valueAsNumber,
+    });
+  };
+
+  const handleEndYearChange = (e: NumberInputValueChangeDetails) => {
+    setTitleDto({
+      ...titleDto,
+      endYear: e.valueAsNumber,
+    });
+  };
+
+  const handleRuntimeMinutesChange = (e: NumberInputValueChangeDetails) => {
+    setTitleDto({
+      ...titleDto,
+      runtimeMinutes: e.valueAsNumber,
+    });
+  };
+
+  const handleIsAdultChange = (e: SwitchCheckedChangeDetails) => {
+    setTitleDto({
+      ...titleDto,
+      isAdult: e.checked,
+    });
+  };
+
+  const saveChanges = async () => {
+    if (title) {
+      await updateTitle({
+        variables: {
+          id: title.titleId,
+          title: titleDto,
+        },
+      });
+
+      if (!editError && editData && !editData.updateMysqlTitle.errors) {
+        await navigate('/');
+      }
+    }
+  };
+
+  if (!title) return <Text>No Title with id: {id}</Text>;
 
   return (
     <Box>
@@ -20,46 +112,91 @@ const MysqlTitleEdit = () => {
             <Heading as={'h1'}>Title Edit</Heading>
           </Card.Header>
           <Card.Body>
-            {data &&
-              data.mysqlTitles &&
-              data.mysqlTitles.items &&
-              data.mysqlTitles.items.map((title: Titles) => (
-                <Box key={title.titleId}>
-                  <HStack>
-                    <Text fontWeight={'bold'}>PrimaryTitle:</Text>
-                    <Text>{title.primaryTitle ?? '-'}</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight={'bold'}>OriginalTitle:</Text>
-                    <Text>{title.originalTitle ?? '-'}</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight={'bold'}>IsAdult:</Text>
-                    <Text>{title.isAdult ? 'Yes' : 'No'}</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight={'bold'}>StartYear:</Text>
-                    <Text>{title.startYear ?? '-'}</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight={'bold'}>EndYear:</Text>
-                    <Text>{title.endYear ?? '-'}</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight={'bold'}>RuntimeMinutes:</Text>
-                    <Text>{title.runtimeMinutes ?? '-'}</Text>
-                  </HStack>
-                  <HStack>
-                    <Text fontWeight={'bold'}>Genres:</Text>
-                    <Text>{title.genresGenre?.map((genre) => genre?.genre).join(', ') ?? '-'}</Text>
-                  </HStack>
-                </Box>
-              ))}
+            {editError && <Text>{editError.message}</Text>}
+            {editData?.updateMysqlTitle.errors?.map((error) => (
+              <Text color={'red'} marginBottom={'0.5rem'}>
+                {error.message}
+              </Text>
+            ))}
+            <Field.Root>
+              <Field.Label>PrimaryTitle</Field.Label>
+              <Input
+                name={'primaryTitle'}
+                value={titleDto.primaryTitle}
+                onChange={(event) => handlePrimaryTitleChange(event)}
+              />
+            </Field.Root>
+
+            <Field.Root>
+              <Field.Label>OriginalTitle</Field.Label>
+              <Input
+                name={'originalTitle'}
+                value={titleDto.originalTitle}
+                onChange={(event) => handleOriginalTitleChange(event)}
+              />
+            </Field.Root>
+
+            <Field.Root>
+              <Field.Label>TitleType</Field.Label>
+              <Input name={'titleType'} value={titleDto.titleType} onChange={(event) => handleTitleTypeChange(event)} />
+            </Field.Root>
+
+            <Field.Root>
+              <Field.Label>StartYear</Field.Label>
+              <NumberInput.Root
+                name={'startYear'}
+                value={titleDto.startYear.toString()}
+                onValueChange={(event) => handleStartYearChange(event)}
+                min={1888}
+                max={new Date().getUTCFullYear()}
+              >
+                <NumberInput.Input />
+              </NumberInput.Root>
+            </Field.Root>
+
+            <Field.Root>
+              <Field.Label>EndYear</Field.Label>
+              <NumberInput.Root
+                name={'endYear'}
+                value={titleDto.endYear ? titleDto.endYear.toString() : undefined}
+                onValueChange={(event) => handleEndYearChange(event)}
+                max={new Date().getUTCFullYear()}
+              >
+                <NumberInput.Input />
+              </NumberInput.Root>
+            </Field.Root>
+
+            <Field.Root>
+              <Field.Label>RuntimeMinutes</Field.Label>
+              <NumberInput.Root
+                name={'runtimeMinutes'}
+                value={titleDto.runtimeMinutes ? titleDto.runtimeMinutes.toString() : undefined}
+                onValueChange={(event) => handleRuntimeMinutesChange(event)}
+                max={500}
+              >
+                <NumberInput.Input />
+              </NumberInput.Root>
+            </Field.Root>
+
+            <Field.Root>
+              <Field.Label>IsAdult</Field.Label>
+              <Switch.Root
+                name={'isAdult'}
+                checked={titleDto.isAdult}
+                onCheckedChange={(event) => handleIsAdultChange(event)}
+              >
+                <Switch.HiddenInput />
+                <Switch.Control />
+              </Switch.Root>
+            </Field.Root>
           </Card.Body>
           <Card.Footer>
-            <HStack justify={'end'}>
+            <HStack justify={'space-between'} w={'100%'}>
               <Button variant="outline" fontWeight={'bold'} onClick={() => void navigate(-1)}>
                 <RiArrowLeftLine /> Back
+              </Button>
+              <Button variant="solid" colorPalette={'teal'} fontWeight={'bold'} onClick={() => void saveChanges()}>
+                <RiSave2Line /> Save
               </Button>
             </HStack>
           </Card.Footer>
