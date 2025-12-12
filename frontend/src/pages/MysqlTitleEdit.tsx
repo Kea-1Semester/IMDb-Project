@@ -9,9 +9,9 @@ import {
   HStack,
   Input,
   NumberInput,
-  NumberInputValueChangeDetails,
+  type NumberInputValueChangeDetails,
   Switch,
-  SwitchCheckedChangeDetails,
+  type SwitchCheckedChangeDetails,
   Text,
 } from '@chakra-ui/react';
 import { type TitlesDtoInput } from '@/generated/graphql';
@@ -19,7 +19,7 @@ import QueryResult from '@/components/custom/QueryResult';
 import { RiArrowLeftLine, RiSave2Line } from 'react-icons/ri';
 import { MYSQL_TITLE } from '@/queries/mysqlTitle';
 import { EDIT_MYSQL_TITLE } from '@/queries/mysqlTitleEdit';
-import { ChangeEvent, useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 
 const MysqlTitleEdit = () => {
   const { id } = useParams<{ id: string }>();

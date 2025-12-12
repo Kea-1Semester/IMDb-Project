@@ -24,7 +24,7 @@ const MysqlTitleDetails = () => {
           </Card.Header>
           <Card.Body>
             {title && (
-              <Box key={title.titleId}>
+              <Box key={String(title.titleId)}>
                 <HStack>
                   <Text fontWeight={'bold'}>PrimaryTitle:</Text>
                   <Text>{title.primaryTitle ?? '-'}</Text>
