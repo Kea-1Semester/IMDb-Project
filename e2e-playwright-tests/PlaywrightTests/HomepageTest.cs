@@ -67,12 +67,22 @@ public class HomePage : PageTest
         await Expect(card.Locator("p")).ToHaveCountAsync(2);
     }
     
-    // [Test]
-    // public async Task Page_Navigate_To_Page()
-    // {
-    //     await Page.GotoAsync("/");
+    [Test]
+    public async Task Page_Navigate_To_Page()
+    {
+        //Find page one value 
+        await Expect(page.Locator("#root")).ToContainTextAsync("Hitz");
+
+        //Goto Page 2
+        await page.GetByRole(AriaRole.Button, new() { Name = "page 2" }).ClickAsync();
+
+        // Match value 1 and this value to see if changed
+        await Expect(page.Locator("#root")).ToContainTextAsync("Easy Money");
+
+        //Check bottom if 2 is darker colour (as if its page 2)
+
         
-    // }
+    }
 
     // [Test]
     // public async Task Page_Contains_Items_Or_Less()
