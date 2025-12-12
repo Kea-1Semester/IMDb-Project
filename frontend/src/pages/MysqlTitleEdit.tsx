@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client/react';
+import { useApolloClient, useMutation, useQuery } from '@apollo/client/react';
 import { useNavigate, useParams } from 'react-router';
 import {
   Box,
@@ -14,7 +14,7 @@ import {
   SwitchCheckedChangeDetails,
   Text,
 } from '@chakra-ui/react';
-import type { TitlesDtoInput } from '@/generated/graphql';
+import { type TitlesDtoInput } from '@/generated/graphql';
 import QueryResult from '@/components/custom/QueryResult';
 import { RiArrowLeftLine, RiSave2Line } from 'react-icons/ri';
 import { MYSQL_TITLE } from '@/queries/mysqlTitle';
@@ -23,9 +23,11 @@ import { ChangeEvent, useState } from 'react';
 
 const MysqlTitleEdit = () => {
   const { id } = useParams<{ id: string }>();
-  const { loading, error, data } = useQuery(MYSQL_TITLE, { variables: { id: id ?? '' } });
-  const [updateTitle, { error: editError, data: editData }] = useMutation(EDIT_MYSQL_TITLE);
   const navigate = useNavigate();
+
+  const { loading, error, data } = useQuery(MYSQL_TITLE, { variables: { id: id ?? '' } });
+  const [updateTitle, { error: updateError, data: updateData }] = useMutation(EDIT_MYSQL_TITLE);
+  const client = useApolloClient();
 
   const title = data?.mysqlTitles?.items?.at(0);
   const [titleDto, setTitleDto] = useState<TitlesDtoInput>({
@@ -88,18 +90,23 @@ const MysqlTitleEdit = () => {
   };
 
   const saveChanges = async () => {
-    if (title) {
-      await updateTitle({
-        variables: {
-          id: title.titleId,
-          title: titleDto,
-        },
-      });
+    if (!title) return;
+    const result = await updateTitle({
+      variables: {
+        id: title.titleId,
+        title: titleDto,
+      },
+    });
 
-      if (!editError && editData && !editData.updateMysqlTitle.errors) {
-        await navigate('/');
-      }
+    const updatedTitle = result.data?.updateMysqlTitle?.titles;
+
+    if (!updatedTitle) {
+      return;
     }
+
+    await client.clearStore();
+
+    await navigate(-1);
   };
 
   if (!title) return <Text>No Title with id: {id}</Text>;
@@ -112,8 +119,8 @@ const MysqlTitleEdit = () => {
             <Heading as={'h1'}>Title Edit</Heading>
           </Card.Header>
           <Card.Body>
-            {editError && <Text>{editError.message}</Text>}
-            {editData?.updateMysqlTitle.errors?.map((error) => (
+            {updateError && <Text>{updateError.message}</Text>}
+            {updateData?.updateMysqlTitle.errors?.map((error) => (
               <Text color={'red'} marginBottom={'0.5rem'}>
                 {error.message}
               </Text>
