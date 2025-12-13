@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - main
-      - dev/*
-    # paths:
-    #   - "frontend/**"
-    #   - ".github/workflows/push-main-frontend.yml"
+    paths:
+      - "frontend/**"
+      - ".github/workflows/push-main-frontend.yml"
   workflow_dispatch:
     inputs:
       TEST_USER_EMAIL:
-        description: 'Email for the test user account'
+        description: "Email for the test user account"
         required: true
         type: string
 
@@ -26,25 +25,25 @@ jobs:
       - name: Run a Simple Command
         run: echo "This is a test job for push main."
 
-  # build-frontend-image:
-  #   name: CI Docker Build and Push Frontend Docker Image
-  #   needs: test
-  #   uses: ./.github/workflows/ci-docker-builder-frontend.yml
-  #   permissions:
-  #     contents: read
-  #     packages: write
+  build-frontend-image:
+    name: CI Docker Build and Push Frontend Docker Image
+    needs: test
+    uses: ./.github/workflows/ci-docker-builder-frontend.yml
+    permissions:
+      contents: read
+      packages: write
 
-  # deploy-frontend:
-  #   name: Deploy Frontend Application
-  #   needs: build-frontend-image
-  #   uses: ./.github/workflows/deploy-frontend.yml
-  #   secrets:
-  #     BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
-  #     REX_RENDER_DEPLOY_HOOK: ${{ secrets.REX_RENDER_DEPLOY_HOOK }}
+  deploy-frontend:
+    name: Deploy Frontend Application
+    needs: build-frontend-image
+    uses: ./.github/workflows/deploy-frontend.yml
+    secrets:
+      BREZOR_DEPLOY_HOOK: ${{ secrets.BREZOR_DEPLOY_HOOK }}
+      REX_RENDER_DEPLOY_HOOK: ${{ secrets.REX_RENDER_DEPLOY_HOOK }}
 
   E2E-Tests:
     name: E2E Tests Workflow
-    # needs: deploy-frontend
+    needs: deploy-frontend
     uses: ./.github/workflows/e2e-tests.yml
     with:
       TEST_USER_EMAIL: ${{ github.event.inputs.TEST_USER_EMAIL }}
