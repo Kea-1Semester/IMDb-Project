@@ -27,9 +27,7 @@ const RouterProviderWithAuth0 = () => {
             {
               path: ':id/edit',
               Component:
-                isAuthenticated &&
-                  permissions.includes(auth0Permissions.updatePermission) &&
-                  permissions.includes(auth0Permissions.deletePermission)
+                isAuthenticated && permissions.includes(auth0Permissions.updatePermission)
                   ? MysqlTitleEdit
                   : AuthErrorPage,
             },
