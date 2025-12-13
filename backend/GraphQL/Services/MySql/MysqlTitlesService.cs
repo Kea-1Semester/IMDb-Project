@@ -63,6 +63,7 @@ namespace GraphQL.Services.Mysql
             updateTitle.IsAdult = titlesDto.IsAdult;
             updateTitle.StartYear = titlesDto.StartYear;
             updateTitle.EndYear = titlesDto.EndYear;
+            updateTitle.RuntimeMinutes = titlesDto.RuntimeMinutes;
 
             return await _titlesRepo.UpdateMysqlTitle(updateTitle);
         }
