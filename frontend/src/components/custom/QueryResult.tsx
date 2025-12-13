@@ -1,5 +1,5 @@
 import type { ErrorLike } from '@apollo/client';
-import { Container, Spinner, Text } from '@chakra-ui/react';
+import { Container, HStack, Spinner, Text } from '@chakra-ui/react';
 import type { FC, PropsWithChildren } from 'react';
 
 type QueryResultProps = {
@@ -14,8 +14,10 @@ const QueryResult: FC<PropsWithChildren<QueryResultProps>> = ({ loading, error, 
   }
   if (loading) {
     return (
-      <Container justifyItems={'center'} alignItems={'center'}>
-        <Spinner size={'lg'} color={'gray'} />
+      <Container>
+        <HStack justify={'center'}>
+          <Spinner size={'lg'} color={'gray'} />
+        </HStack>
       </Container>
     );
   }

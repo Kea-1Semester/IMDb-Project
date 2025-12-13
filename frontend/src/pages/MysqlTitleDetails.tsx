@@ -5,12 +5,15 @@ import QueryResult from '@/components/custom/QueryResult';
 import { RiArrowLeftLine, RiDeleteBin2Line, RiEditBoxLine } from 'react-icons/ri';
 import { MYSQL_TITLE } from '@/queries/mysqlTitle';
 import { useAuth0 } from '@auth0/auth0-react';
+import usePermissions from '@/hooks/UsePermissions';
+import { auth0Permissions } from '@/types/Auth0Permissions';
 
 const MysqlTitleDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { isAuthenticated } = useAuth0();
   const { loading, error, data } = useQuery(MYSQL_TITLE, { variables: { id: id ?? '' } });
   const navigate = useNavigate();
+  const permissions = usePermissions();
   const title = data?.mysqlTitles?.items?.at(0);
 
   if (!title) return <Text>No Title with id: {id}</Text>;
@@ -62,9 +65,9 @@ const MysqlTitleDetails = () => {
                 <RiArrowLeftLine /> Back
               </Button>
               <Box>
-                <HStack gap={'0.5rem'}>
-                  {isAuthenticated && (
-                    <>
+                {isAuthenticated && (
+                  <HStack gap={'0.5rem'}>
+                    {permissions.includes(auth0Permissions.updatePermission) && (
                       <Button
                         variant="solid"
                         colorPalette={'teal'}
@@ -73,6 +76,8 @@ const MysqlTitleDetails = () => {
                       >
                         <RiEditBoxLine /> Edit
                       </Button>
+                    )}
+                    {permissions.includes(auth0Permissions.deletePermission) && (
                       <Button
                         variant="solid"
                         colorPalette={'red'}
@@ -81,9 +86,9 @@ const MysqlTitleDetails = () => {
                       >
                         <RiDeleteBin2Line /> Delete
                       </Button>
-                    </>
-                  )}
-                </HStack>
+                    )}
+                  </HStack>
+                )}
               </Box>
             </HStack>
           </Card.Footer>
