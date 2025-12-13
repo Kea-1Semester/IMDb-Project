@@ -70,8 +70,9 @@ public class E2eTest : PageTest
         await Expect(Page).ToHaveTitleAsync(new Regex("Sign up \\| imdb-app"));
 
         // insert email
+        var mailInput = Environment.GetEnvironmentVariable("TEST_USER_EMAIL") ?? "";
         var emailInput = Page.Locator("input[name='email']");
-        await emailInput.FillAsync("testuser@example.com");
+        await emailInput.FillAsync(mailInput);
         // insert password
         var passwordInput = Page.Locator("input[name='password']");
         await passwordInput.FillAsync("TestPassword123!");
