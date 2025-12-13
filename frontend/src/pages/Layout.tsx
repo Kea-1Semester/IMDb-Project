@@ -12,7 +12,7 @@ const Layout = () => {
           <Navbar />
         </GridItem>
         <GridItem area={'main'}>
-          <Container>
+          <Container as={'main'}>
             <Outlet />
           </Container>
         </GridItem>

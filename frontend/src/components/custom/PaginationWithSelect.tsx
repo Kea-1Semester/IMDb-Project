@@ -12,16 +12,10 @@ function PaginationWithSelect({
   setTake: (take: number) => void;
   take: number;
   defaultPageSize: number;
-  count: number | undefined;
+  count: number;
 }) {
-  const defaultPageSizeLabel = `${defaultPageSize}`;
   const itemsPerPageOptions = createListCollection({
-    items: [
-      { label: '10', value: 10 },
-      { label: defaultPageSizeLabel, value: defaultPageSize },
-      { label: '50', value: 50 },
-      { label: '100', value: 100 },
-    ],
+    items: [{ value: '10' }, { value: defaultPageSize.toString() }, { value: '50' }, { value: '100' }],
   });
 
   return (
@@ -31,7 +25,9 @@ function PaginationWithSelect({
         pageSize={take}
         defaultPage={1}
         defaultPageSize={defaultPageSize}
-        onPageChange={(e) => void setSkip(e.page)}
+        onPageChange={(e) => {
+          void setSkip((e.page - 1) * e.pageSize);
+        }}
       >
         <ButtonGroup variant={'outline'}>
           <Pagination.PrevTrigger asChild>
@@ -54,15 +50,15 @@ function PaginationWithSelect({
             collection={itemsPerPageOptions}
             variant={'outline'}
             width={'75px'}
-            value={[defaultPageSizeLabel]}
-            defaultValue={[defaultPageSizeLabel]}
+            value={[take.toString()]}
+            defaultValue={[defaultPageSize.toString()]}
             positioning={{ sameWidth: true }}
             onValueChange={(details) => void setTake(Number(details.value))}
           >
             <Select.HiddenSelect />
             <Select.Control>
               <Select.Trigger>
-                <Select.ValueText placeholder={'Items'} />
+                <Select.ValueText />
               </Select.Trigger>
               <Select.IndicatorGroup>
                 <Select.Indicator />
@@ -73,7 +69,7 @@ function PaginationWithSelect({
                 <Select.Content>
                   {itemsPerPageOptions.items.map((item) => (
                     <Select.Item item={item} key={item.value}>
-                      {item.label}
+                      {item.value}
                       <Select.ItemIndicator />
                     </Select.Item>
                   ))}

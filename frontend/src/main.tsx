@@ -3,8 +3,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import ApolloProviderWithAuth0 from '@/components/custom/ApolloProviderWithAuth0.tsx';
-import { RouterProvider } from 'react-router';
-import router from './routes.tsx';
+import RouterProviderWithAuth0 from '@/routes.tsx';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -19,7 +18,7 @@ createRoot(document.getElementById('root')!).render(
     >
       <ApolloProviderWithAuth0>
         <Provider>
-          <RouterProvider router={router} />
+          <RouterProviderWithAuth0 />
         </Provider>
       </ApolloProviderWithAuth0>
     </Auth0Provider>
