@@ -43,7 +43,7 @@ public class E2eTest : PageTest
         // check of the page exists
         await Expect(Page).ToHaveTitleAsync(new Regex("imdb-frontend"));
 
-        // get type button and hase text Home
+        // get type button and has text Home
         var homeButton = Page.Locator("button", new PageLocatorOptions { HasTextString = "Home" });
         await Expect(homeButton).ToBeVisibleAsync();
 
