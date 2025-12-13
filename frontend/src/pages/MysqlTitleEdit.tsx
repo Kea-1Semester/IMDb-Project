@@ -121,7 +121,7 @@ const MysqlTitleEdit = () => {
           <Card.Body>
             {updateError && <Text>{updateError.message}</Text>}
             {updateData?.updateMysqlTitle.errors?.map((error) => (
-              <Text color={'red'} marginBottom={'0.5rem'}>
+              <Text key={error.message} color={'red'} marginBottom={'0.5rem'}>
                 {error.message}
               </Text>
             ))}
