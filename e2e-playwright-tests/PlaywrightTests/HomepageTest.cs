@@ -40,7 +40,7 @@ public class E2eTest : PageTest
         var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
         await Page.GotoAsync(host);
         
-        // check of the page exists
+        // check if the page exists
         await Expect(Page).ToHaveTitleAsync(new Regex("imdb-frontend"));
 
         // get type button and has text Home
