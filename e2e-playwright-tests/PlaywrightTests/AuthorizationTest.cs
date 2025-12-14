@@ -8,7 +8,7 @@ using DotNetEnv;
 
 namespace E2E.Playwright.Tests;
 
-[Parallelizable(ParallelScope.Self)]
+[NonParallelizable]
 [TestFixture]
 [Category("E2ETest")]
 public class AuthorizationPages : PageTest
