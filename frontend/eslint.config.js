@@ -8,7 +8,7 @@ import tseslint from 'typescript-eslint';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'src/generated/**/*']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

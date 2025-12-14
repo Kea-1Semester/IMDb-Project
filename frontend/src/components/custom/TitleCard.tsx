@@ -3,7 +3,7 @@ import { Card, Heading, Text } from '@chakra-ui/react';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router';
 
-const TitleCard: FC<{ title: Titles }> = ({ title }) => {
+const TitleCard: FC<{ title: Partial<Titles> }> = ({ title }) => {
   const navigate = useNavigate();
   return (
     <Card.Root
@@ -11,7 +11,7 @@ const TitleCard: FC<{ title: Titles }> = ({ title }) => {
       _hover={{ bg: 'gray.subtle', cursor: 'pointer' }}
       onClick={() => {
         if (!title.titleId) return;
-        void navigate(`/MysqlTitle/${title.titleId}`);
+        void navigate(`/mysqltitle/${title.titleId}`);
       }}
     >
       <Card.Body>

@@ -2,9 +2,14 @@ name: E2E Tests
 
 on:
   workflow_call:
+    inputs:
+      TEST_USER_EMAIL:
+        description: "Email for the test user account"
+        required: true
+        type: string
 
 jobs:
-  e2n-tests:
+  e2e-tests:
     name: "E2E Playwright Tests"
     runs-on: ubuntu-latest
     environment: secrets
@@ -35,9 +40,9 @@ jobs:
         working-directory: e2e-playwright-tests/PlaywrightTests
         env:
           FRONTEND_HOST: ${{ vars.FRONTEND_HOST }}
+          TEST_USER_EMAIL: ${{ inputs.TEST_USER_EMAIL }}
         run: |
-          dotnet test --logger "trx;LogFileName=e2e_results.trx" -e FRONTEND_HOST="$FRONTEND_HOST"
-          echo "$FRONTEND_HOST"
+          dotnet test --logger "trx;LogFileName=e2e_results.trx" -e FRONTEND_HOST="$FRONTEND_HOST" -e TEST_USER_EMAIL="$TEST_USER_EMAIL"
 
       - name: Upload E2E Test Results
         uses: actions/upload-artifact@v5

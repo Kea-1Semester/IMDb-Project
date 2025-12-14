@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -14,16 +14,16 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  UUID: { input: string; output: string; }
+  UUID: { input: unknown; output: unknown; }
 };
 
 export type Actors = {
-  __typename?: 'Actors';
+  __typename: 'Actors';
   actorId: Scalars['UUID']['output'];
-  personsPerson?: Maybe<Persons>;
+  personsPerson: Maybe<Persons>;
   personsPersonId: Scalars['UUID']['output'];
   role: Scalars['String']['output'];
-  titlesTitle?: Maybe<Titles>;
+  titlesTitle: Maybe<Titles>;
   titlesTitleId: Scalars['UUID']['output'];
 };
 
@@ -46,22 +46,22 @@ export type AddMysqlGenreInput = {
 };
 
 export type AddMysqlGenrePayload = {
-  __typename?: 'AddMysqlGenrePayload';
-  errors?: Maybe<Array<AddMysqlGenreError>>;
-  genres?: Maybe<Genres>;
+  __typename: 'AddMysqlGenrePayload';
+  errors: Maybe<Array<AddMysqlGenreError>>;
+  genres: Maybe<Genres>;
 };
 
 export type Aliases = {
-  __typename?: 'Aliases';
+  __typename: 'Aliases';
   aliasId: Scalars['UUID']['output'];
-  attributesAttribute?: Maybe<Array<Maybe<Attributes>>>;
+  attributesAttribute: Maybe<Array<Maybe<Attributes>>>;
   isOriginalTitle: Scalars['Boolean']['output'];
   language: Scalars['String']['output'];
   region: Scalars['String']['output'];
   title: Scalars['String']['output'];
   titleId: Scalars['UUID']['output'];
-  titleNavigation?: Maybe<Titles>;
-  typesType?: Maybe<Array<Maybe<Types>>>;
+  titleNavigation: Maybe<Titles>;
+  typesType: Maybe<Array<Maybe<Types>>>;
 };
 
 export type AliasesDtoInput = {
@@ -97,14 +97,14 @@ export enum ApplyPolicy {
 }
 
 export type ArgumentError = Error & {
-  __typename?: 'ArgumentError';
+  __typename: 'ArgumentError';
   message: Scalars['String']['output'];
-  paramName?: Maybe<Scalars['String']['output']>;
+  paramName: Maybe<Scalars['String']['output']>;
 };
 
 export type Attributes = {
-  __typename?: 'Attributes';
-  aliasesAlias?: Maybe<Array<Maybe<Aliases>>>;
+  __typename: 'Attributes';
+  aliasesAlias: Maybe<Array<Maybe<Aliases>>>;
   attribute: Scalars['String']['output'];
   attributeId: Scalars['UUID']['output'];
 };
@@ -124,7 +124,7 @@ export type BooleanOperationFilterInput = {
 
 /** Information about the offset pagination. */
 export type CollectionSegmentInfo = {
-  __typename?: 'CollectionSegmentInfo';
+  __typename: 'CollectionSegmentInfo';
   /** Indicates whether more items exist following the set defined by the clients arguments. */
   hasNextPage: Scalars['Boolean']['output'];
   /** Indicates whether more items exist prior the set defined by the clients arguments. */
@@ -132,10 +132,10 @@ export type CollectionSegmentInfo = {
 };
 
 export type Comments = {
-  __typename?: 'Comments';
+  __typename: 'Comments';
   comment: Scalars['String']['output'];
   commentId: Scalars['UUID']['output'];
-  title?: Maybe<Titles>;
+  title: Maybe<Titles>;
   titleId: Scalars['UUID']['output'];
 };
 
@@ -155,9 +155,9 @@ export type CreateMysqlAliasInput = {
 };
 
 export type CreateMysqlAliasPayload = {
-  __typename?: 'CreateMysqlAliasPayload';
-  aliases?: Maybe<Aliases>;
-  errors?: Maybe<Array<CreateMysqlAliasError>>;
+  __typename: 'CreateMysqlAliasPayload';
+  aliases: Maybe<Aliases>;
+  errors: Maybe<Array<CreateMysqlAliasError>>;
 };
 
 export type CreateMysqlEpisodeError = ValidationError;
@@ -167,9 +167,9 @@ export type CreateMysqlEpisodeInput = {
 };
 
 export type CreateMysqlEpisodePayload = {
-  __typename?: 'CreateMysqlEpisodePayload';
-  episodes?: Maybe<Episodes>;
-  errors?: Maybe<Array<CreateMysqlEpisodeError>>;
+  __typename: 'CreateMysqlEpisodePayload';
+  episodes: Maybe<Episodes>;
+  errors: Maybe<Array<CreateMysqlEpisodeError>>;
 };
 
 export type CreateMysqlGenreError = ValidationError;
@@ -179,9 +179,9 @@ export type CreateMysqlGenreInput = {
 };
 
 export type CreateMysqlGenrePayload = {
-  __typename?: 'CreateMysqlGenrePayload';
-  errors?: Maybe<Array<CreateMysqlGenreError>>;
-  genres?: Maybe<Genres>;
+  __typename: 'CreateMysqlGenrePayload';
+  errors: Maybe<Array<CreateMysqlGenreError>>;
+  genres: Maybe<Genres>;
 };
 
 export type CreateMysqlPersonError = ValidationError;
@@ -191,9 +191,9 @@ export type CreateMysqlPersonInput = {
 };
 
 export type CreateMysqlPersonPayload = {
-  __typename?: 'CreateMysqlPersonPayload';
-  errors?: Maybe<Array<CreateMysqlPersonError>>;
-  persons?: Maybe<Persons>;
+  __typename: 'CreateMysqlPersonPayload';
+  errors: Maybe<Array<CreateMysqlPersonError>>;
+  persons: Maybe<Persons>;
 };
 
 export type CreateMysqlTitleError = ArgumentError | InvalidOperationError;
@@ -203,9 +203,9 @@ export type CreateMysqlTitleInput = {
 };
 
 export type CreateMysqlTitlePayload = {
-  __typename?: 'CreateMysqlTitlePayload';
-  errors?: Maybe<Array<CreateMysqlTitleError>>;
-  titles?: Maybe<Titles>;
+  __typename: 'CreateMysqlTitlePayload';
+  errors: Maybe<Array<CreateMysqlTitleError>>;
+  titles: Maybe<Titles>;
 };
 
 export type DeleteMysqlAliasError = ValidationError;
@@ -215,9 +215,9 @@ export type DeleteMysqlAliasInput = {
 };
 
 export type DeleteMysqlAliasPayload = {
-  __typename?: 'DeleteMysqlAliasPayload';
-  aliases?: Maybe<Aliases>;
-  errors?: Maybe<Array<DeleteMysqlAliasError>>;
+  __typename: 'DeleteMysqlAliasPayload';
+  aliases: Maybe<Aliases>;
+  errors: Maybe<Array<DeleteMysqlAliasError>>;
 };
 
 export type DeleteMysqlEpisodeError = ValidationError;
@@ -227,9 +227,9 @@ export type DeleteMysqlEpisodeInput = {
 };
 
 export type DeleteMysqlEpisodePayload = {
-  __typename?: 'DeleteMysqlEpisodePayload';
-  episodes?: Maybe<Episodes>;
-  errors?: Maybe<Array<DeleteMysqlEpisodeError>>;
+  __typename: 'DeleteMysqlEpisodePayload';
+  episodes: Maybe<Episodes>;
+  errors: Maybe<Array<DeleteMysqlEpisodeError>>;
 };
 
 export type DeleteMysqlGenreError = ValidationError;
@@ -239,9 +239,9 @@ export type DeleteMysqlGenreInput = {
 };
 
 export type DeleteMysqlGenrePayload = {
-  __typename?: 'DeleteMysqlGenrePayload';
-  errors?: Maybe<Array<DeleteMysqlGenreError>>;
-  genres?: Maybe<Genres>;
+  __typename: 'DeleteMysqlGenrePayload';
+  errors: Maybe<Array<DeleteMysqlGenreError>>;
+  genres: Maybe<Genres>;
 };
 
 export type DeleteMysqlPersonError = ValidationError;
@@ -251,9 +251,9 @@ export type DeleteMysqlPersonInput = {
 };
 
 export type DeleteMysqlPersonPayload = {
-  __typename?: 'DeleteMysqlPersonPayload';
-  errors?: Maybe<Array<DeleteMysqlPersonError>>;
-  persons?: Maybe<Persons>;
+  __typename: 'DeleteMysqlPersonPayload';
+  errors: Maybe<Array<DeleteMysqlPersonError>>;
+  persons: Maybe<Persons>;
 };
 
 export type DeleteMysqlTitleInput = {
@@ -261,16 +261,16 @@ export type DeleteMysqlTitleInput = {
 };
 
 export type DeleteMysqlTitlePayload = {
-  __typename?: 'DeleteMysqlTitlePayload';
-  titles?: Maybe<Titles>;
+  __typename: 'DeleteMysqlTitlePayload';
+  titles: Maybe<Titles>;
 };
 
 export type Directors = {
-  __typename?: 'Directors';
+  __typename: 'Directors';
   directorsId: Scalars['UUID']['output'];
-  personsPerson?: Maybe<Persons>;
+  personsPerson: Maybe<Persons>;
   personsPersonId: Scalars['UUID']['output'];
-  titlesTitle?: Maybe<Titles>;
+  titlesTitle: Maybe<Titles>;
   titlesTitleId: Scalars['UUID']['output'];
 };
 
@@ -285,14 +285,14 @@ export type DirectorsFilterInput = {
 };
 
 export type Episodes = {
-  __typename?: 'Episodes';
+  __typename: 'Episodes';
   episodeId: Scalars['UUID']['output'];
   episodeNumber: Scalars['Int']['output'];
   seasonNumber: Scalars['Int']['output'];
   titleIdChild: Scalars['UUID']['output'];
-  titleIdChildNavigation?: Maybe<Titles>;
+  titleIdChildNavigation: Maybe<Titles>;
   titleIdParent: Scalars['UUID']['output'];
-  titleIdParentNavigation?: Maybe<Titles>;
+  titleIdParentNavigation: Maybe<Titles>;
 };
 
 export type EpisodesDtoInput = {
@@ -334,10 +334,10 @@ export type FloatOperationFilterInput = {
 };
 
 export type Genres = {
-  __typename?: 'Genres';
+  __typename: 'Genres';
   genre: Scalars['String']['output'];
   genreId: Scalars['UUID']['output'];
-  titlesTitle?: Maybe<Array<Maybe<Titles>>>;
+  titlesTitle: Maybe<Array<Maybe<Titles>>>;
 };
 
 export type GenresDtoInput = {
@@ -373,16 +373,16 @@ export type IntOperationFilterInput = {
 };
 
 export type InvalidOperationError = Error & {
-  __typename?: 'InvalidOperationError';
+  __typename: 'InvalidOperationError';
   message: Scalars['String']['output'];
 };
 
 export type KnownFor = {
-  __typename?: 'KnownFor';
+  __typename: 'KnownFor';
   knownForId: Scalars['UUID']['output'];
-  personsPerson?: Maybe<Persons>;
+  personsPerson: Maybe<Persons>;
   personsPersonId: Scalars['UUID']['output'];
-  titlesTitle?: Maybe<Titles>;
+  titlesTitle: Maybe<Titles>;
   titlesTitleId: Scalars['UUID']['output'];
 };
 
@@ -488,7 +488,7 @@ export type ListFilterInputTypeOfWritersFilterInput = {
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
+  __typename: 'Mutation';
   addMysqlGenre: AddMysqlGenrePayload;
   createMysqlAlias: CreateMysqlAliasPayload;
   createMysqlEpisode: CreateMysqlEpisodePayload;
@@ -589,9 +589,9 @@ export type MutationUpdateMysqlTitleArgs = {
 
 /** A segment of a collection. */
 export type MysqlGenresCollectionSegment = {
-  __typename?: 'MysqlGenresCollectionSegment';
+  __typename: 'MysqlGenresCollectionSegment';
   /** A flattened list of the items. */
-  items?: Maybe<Array<Genres>>;
+  items: Maybe<Array<Genres>>;
   /** Information to aid in pagination. */
   pageInfo: CollectionSegmentInfo;
   totalCount: Scalars['Int']['output'];
@@ -599,9 +599,9 @@ export type MysqlGenresCollectionSegment = {
 
 /** A segment of a collection. */
 export type MysqlPersonsCollectionSegment = {
-  __typename?: 'MysqlPersonsCollectionSegment';
+  __typename: 'MysqlPersonsCollectionSegment';
   /** A flattened list of the items. */
-  items?: Maybe<Array<Persons>>;
+  items: Maybe<Array<Persons>>;
   /** Information to aid in pagination. */
   pageInfo: CollectionSegmentInfo;
   totalCount: Scalars['Int']['output'];
@@ -609,25 +609,25 @@ export type MysqlPersonsCollectionSegment = {
 
 /** A segment of a collection. */
 export type MysqlTitlesCollectionSegment = {
-  __typename?: 'MysqlTitlesCollectionSegment';
+  __typename: 'MysqlTitlesCollectionSegment';
   /** A flattened list of the items. */
-  items?: Maybe<Array<Titles>>;
+  items: Maybe<Array<Titles>>;
   /** Information to aid in pagination. */
   pageInfo: CollectionSegmentInfo;
   totalCount: Scalars['Int']['output'];
 };
 
 export type Persons = {
-  __typename?: 'Persons';
-  actors?: Maybe<Array<Maybe<Actors>>>;
+  __typename: 'Persons';
+  actors: Maybe<Array<Maybe<Actors>>>;
   birthYear: Scalars['Int']['output'];
-  directors?: Maybe<Array<Maybe<Directors>>>;
-  endYear?: Maybe<Scalars['Int']['output']>;
-  knownFor?: Maybe<Array<Maybe<KnownFor>>>;
+  directors: Maybe<Array<Maybe<Directors>>>;
+  endYear: Maybe<Scalars['Int']['output']>;
+  knownFor: Maybe<Array<Maybe<KnownFor>>>;
   name: Scalars['String']['output'];
   personId: Scalars['UUID']['output'];
-  professions?: Maybe<Array<Maybe<Professions>>>;
-  writers?: Maybe<Array<Maybe<Writers>>>;
+  professions: Maybe<Array<Maybe<Professions>>>;
+  writers: Maybe<Array<Maybe<Writers>>>;
 };
 
 export type PersonsDtoInput = {
@@ -658,8 +658,8 @@ export type PersonsSortInput = {
 };
 
 export type Professions = {
-  __typename?: 'Professions';
-  person?: Maybe<Persons>;
+  __typename: 'Professions';
+  person: Maybe<Persons>;
   personId: Scalars['UUID']['output'];
   profession: Scalars['String']['output'];
   professionId: Scalars['UUID']['output'];
@@ -675,10 +675,10 @@ export type ProfessionsFilterInput = {
 };
 
 export type Query = {
-  __typename?: 'Query';
-  mysqlGenres?: Maybe<MysqlGenresCollectionSegment>;
-  mysqlPersons?: Maybe<MysqlPersonsCollectionSegment>;
-  mysqlTitles?: Maybe<MysqlTitlesCollectionSegment>;
+  __typename: 'Query';
+  mysqlGenres: Maybe<MysqlGenresCollectionSegment>;
+  mysqlPersons: Maybe<MysqlPersonsCollectionSegment>;
+  mysqlTitles: Maybe<MysqlTitlesCollectionSegment>;
 };
 
 
@@ -706,11 +706,11 @@ export type QueryMysqlTitlesArgs = {
 };
 
 export type Ratings = {
-  __typename?: 'Ratings';
+  __typename: 'Ratings';
   averageRating: Scalars['Float']['output'];
   numVotes: Scalars['Int']['output'];
   ratingId: Scalars['UUID']['output'];
-  title?: Maybe<Titles>;
+  title: Maybe<Titles>;
   titleId: Scalars['UUID']['output'];
 };
 
@@ -732,9 +732,9 @@ export type RemoveMysqlGenreInput = {
 };
 
 export type RemoveMysqlGenrePayload = {
-  __typename?: 'RemoveMysqlGenrePayload';
-  errors?: Maybe<Array<RemoveMysqlGenreError>>;
-  genres?: Maybe<Genres>;
+  __typename: 'RemoveMysqlGenrePayload';
+  errors: Maybe<Array<RemoveMysqlGenreError>>;
+  genres: Maybe<Genres>;
 };
 
 export enum SortEnumType {
@@ -758,25 +758,25 @@ export type StringOperationFilterInput = {
 };
 
 export type Titles = {
-  __typename?: 'Titles';
-  actors?: Maybe<Array<Maybe<Actors>>>;
-  aliases?: Maybe<Array<Maybe<Aliases>>>;
-  comments?: Maybe<Array<Maybe<Comments>>>;
-  directors?: Maybe<Array<Maybe<Directors>>>;
-  endYear?: Maybe<Scalars['Int']['output']>;
-  episodesTitleIdChildNavigation?: Maybe<Array<Maybe<Episodes>>>;
-  episodesTitleIdParentNavigation?: Maybe<Array<Maybe<Episodes>>>;
-  genresGenre?: Maybe<Array<Maybe<Genres>>>;
-  isAdult?: Scalars['Boolean']['output'];
-  knownFor?: Maybe<Array<Maybe<KnownFor>>>;
-  originalTitle?: Scalars['String']['output'];
-  primaryTitle?: Scalars['String']['output'];
-  ratings?: Maybe<Array<Maybe<Ratings>>>;
-  runtimeMinutes?: Maybe<Scalars['Int']['output']>;
-  startYear?: Scalars['Int']['output'];
-  titleId?: Scalars['UUID']['output'];
-  titleType?: Scalars['String']['output'];
-  writers?: Maybe<Array<Maybe<Writers>>>;
+  __typename: 'Titles';
+  actors: Maybe<Array<Maybe<Actors>>>;
+  aliases: Maybe<Array<Maybe<Aliases>>>;
+  comments: Maybe<Array<Maybe<Comments>>>;
+  directors: Maybe<Array<Maybe<Directors>>>;
+  endYear: Maybe<Scalars['Int']['output']>;
+  episodesTitleIdChildNavigation: Maybe<Array<Maybe<Episodes>>>;
+  episodesTitleIdParentNavigation: Maybe<Array<Maybe<Episodes>>>;
+  genresGenre: Maybe<Array<Maybe<Genres>>>;
+  isAdult: Scalars['Boolean']['output'];
+  knownFor: Maybe<Array<Maybe<KnownFor>>>;
+  originalTitle: Scalars['String']['output'];
+  primaryTitle: Scalars['String']['output'];
+  ratings: Maybe<Array<Maybe<Ratings>>>;
+  runtimeMinutes: Maybe<Scalars['Int']['output']>;
+  startYear: Scalars['Int']['output'];
+  titleId: Scalars['UUID']['output'];
+  titleType: Scalars['String']['output'];
+  writers: Maybe<Array<Maybe<Writers>>>;
 };
 
 export type TitlesDtoInput = {
@@ -824,8 +824,8 @@ export type TitlesSortInput = {
 };
 
 export type Types = {
-  __typename?: 'Types';
-  aliasesAlias?: Maybe<Array<Maybe<Aliases>>>;
+  __typename: 'Types';
+  aliasesAlias: Maybe<Array<Maybe<Aliases>>>;
   type: Scalars['String']['output'];
   typeId: Scalars['UUID']['output'];
 };
@@ -846,9 +846,9 @@ export type UpdateMysqlAliasInput = {
 };
 
 export type UpdateMysqlAliasPayload = {
-  __typename?: 'UpdateMysqlAliasPayload';
-  aliases?: Maybe<Aliases>;
-  errors?: Maybe<Array<UpdateMysqlAliasError>>;
+  __typename: 'UpdateMysqlAliasPayload';
+  aliases: Maybe<Aliases>;
+  errors: Maybe<Array<UpdateMysqlAliasError>>;
 };
 
 export type UpdateMysqlEpisodeError = ValidationError;
@@ -859,9 +859,9 @@ export type UpdateMysqlEpisodeInput = {
 };
 
 export type UpdateMysqlEpisodePayload = {
-  __typename?: 'UpdateMysqlEpisodePayload';
-  episodes?: Maybe<Episodes>;
-  errors?: Maybe<Array<UpdateMysqlEpisodeError>>;
+  __typename: 'UpdateMysqlEpisodePayload';
+  episodes: Maybe<Episodes>;
+  errors: Maybe<Array<UpdateMysqlEpisodeError>>;
 };
 
 export type UpdateMysqlPersonError = ValidationError;
@@ -872,9 +872,9 @@ export type UpdateMysqlPersonInput = {
 };
 
 export type UpdateMysqlPersonPayload = {
-  __typename?: 'UpdateMysqlPersonPayload';
-  errors?: Maybe<Array<UpdateMysqlPersonError>>;
-  persons?: Maybe<Persons>;
+  __typename: 'UpdateMysqlPersonPayload';
+  errors: Maybe<Array<UpdateMysqlPersonError>>;
+  persons: Maybe<Persons>;
 };
 
 export type UpdateMysqlTitleError = ArgumentError | InvalidOperationError;
@@ -885,9 +885,9 @@ export type UpdateMysqlTitleInput = {
 };
 
 export type UpdateMysqlTitlePayload = {
-  __typename?: 'UpdateMysqlTitlePayload';
-  errors?: Maybe<Array<UpdateMysqlTitleError>>;
-  titles?: Maybe<Titles>;
+  __typename: 'UpdateMysqlTitlePayload';
+  errors: Maybe<Array<UpdateMysqlTitleError>>;
+  titles: Maybe<Titles>;
 };
 
 export type UuidOperationFilterInput = {
@@ -906,9 +906,9 @@ export type UuidOperationFilterInput = {
 };
 
 export type ValidationAttribute = {
-  __typename?: 'ValidationAttribute';
-  errorMessage?: Maybe<Scalars['String']['output']>;
-  errorMessageResourceName?: Maybe<Scalars['String']['output']>;
+  __typename: 'ValidationAttribute';
+  errorMessage: Maybe<Scalars['String']['output']>;
+  errorMessageResourceName: Maybe<Scalars['String']['output']>;
   formatErrorMessage: Scalars['String']['output'];
   isDefaultAttribute: Scalars['Boolean']['output'];
   requiresValidationContext: Scalars['Boolean']['output'];
@@ -920,23 +920,23 @@ export type ValidationAttributeFormatErrorMessageArgs = {
 };
 
 export type ValidationError = Error & {
-  __typename?: 'ValidationError';
+  __typename: 'ValidationError';
   message: Scalars['String']['output'];
-  validationAttribute?: Maybe<ValidationAttribute>;
+  validationAttribute: Maybe<ValidationAttribute>;
   validationResult: ValidationResult;
 };
 
 export type ValidationResult = {
-  __typename?: 'ValidationResult';
-  errorMessage?: Maybe<Scalars['String']['output']>;
+  __typename: 'ValidationResult';
+  errorMessage: Maybe<Scalars['String']['output']>;
   memberNames: Array<Scalars['String']['output']>;
 };
 
 export type Writers = {
-  __typename?: 'Writers';
-  personsPerson?: Maybe<Persons>;
+  __typename: 'Writers';
+  personsPerson: Maybe<Persons>;
   personsPersonId: Scalars['UUID']['output'];
-  titlesTitle?: Maybe<Titles>;
+  titlesTitle: Maybe<Titles>;
   titlesTitleId: Scalars['UUID']['output'];
   writersId: Scalars['UUID']['output'];
 };
@@ -951,21 +951,33 @@ export type WritersFilterInput = {
   writersId?: InputMaybe<UuidOperationFilterInput>;
 };
 
+export type GetTitleQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['UUID']['input']>;
+}>;
+
+
+export type GetTitleQuery = { mysqlTitles: { __typename: 'MysqlTitlesCollectionSegment', items: Array<{ __typename: 'Titles', titleId: unknown, primaryTitle: string, originalTitle: string, isAdult: boolean, startYear: number, endYear: number | null, runtimeMinutes: number | null, titleType: string, genresGenre: Array<{ __typename: 'Genres', genreId: unknown, genre: string } | null> | null }> | null } | null };
+
+export type EditTitleMutationVariables = Exact<{
+  id: Scalars['UUID']['input'];
+  title: TitlesDtoInput;
+}>;
+
+
+export type EditTitleMutation = { updateMysqlTitle: { __typename: 'UpdateMysqlTitlePayload', titles: { __typename: 'Titles', endYear: number | null, isAdult: boolean, originalTitle: string, primaryTitle: string, runtimeMinutes: number | null, startYear: number, titleId: unknown, titleType: string } | null, errors: Array<
+      | { __typename: 'ArgumentError', message: string }
+      | { __typename: 'InvalidOperationError', message: string }
+    > | null } };
+
 export type GetTitlesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type GetTitlesQuery = { __typename?: 'Query', mysqlTitles?: { __typename?: 'MysqlTitlesCollectionSegment', totalCount: number, items?: Array<{ __typename?: 'Titles', titleId: string, primaryTitle: string, originalTitle: string, startYear: number }> | null } | null };
-
-export type GetTitleQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['UUID']['input']>;
-}>;
+export type GetTitlesQuery = { mysqlTitles: { __typename: 'MysqlTitlesCollectionSegment', totalCount: number, items: Array<{ __typename: 'Titles', titleId: unknown, primaryTitle: string, originalTitle: string, startYear: number }> | null } | null };
 
 
-export type GetTitleQuery = { __typename?: 'Query', mysqlTitles?: { __typename?: 'MysqlTitlesCollectionSegment', items?: Array<{ __typename?: 'Titles', titleId: string, primaryTitle: string, originalTitle: string, isAdult: boolean, startYear: number, endYear?: number | null, runtimeMinutes?: number | null, titleType: string, genresGenre?: Array<{ __typename?: 'Genres', genreId: string, genre: string } | null> | null }> | null } | null };
-
-
-export const GetTitlesDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "GetTitles" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "skip" } }, "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "take" } }, "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "mysqlTitles" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "skip" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "skip" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "take" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "take" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "order" }, "value": { "kind": "ObjectValue", "fields": [{ "kind": "ObjectField", "name": { "kind": "Name", "value": "startYear" }, "value": { "kind": "EnumValue", "value": "DESC" } }] } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "totalCount" } }, { "kind": "Field", "name": { "kind": "Name", "value": "items" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "titleId" } }, { "kind": "Field", "name": { "kind": "Name", "value": "primaryTitle" } }, { "kind": "Field", "name": { "kind": "Name", "value": "originalTitle" } }, { "kind": "Field", "name": { "kind": "Name", "value": "startYear" } }] } }] } }] } }] } as unknown as DocumentNode<GetTitlesQuery, GetTitlesQueryVariables>;
-export const GetTitleDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "GetTitle" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "id" } }, "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "UUID" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "mysqlTitles" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "where" }, "value": { "kind": "ObjectValue", "fields": [{ "kind": "ObjectField", "name": { "kind": "Name", "value": "titleId" }, "value": { "kind": "ObjectValue", "fields": [{ "kind": "ObjectField", "name": { "kind": "Name", "value": "eq" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "id" } } }] } }] } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "items" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "titleId" } }, { "kind": "Field", "name": { "kind": "Name", "value": "primaryTitle" } }, { "kind": "Field", "name": { "kind": "Name", "value": "originalTitle" } }, { "kind": "Field", "name": { "kind": "Name", "value": "isAdult" } }, { "kind": "Field", "name": { "kind": "Name", "value": "startYear" } }, { "kind": "Field", "name": { "kind": "Name", "value": "endYear" } }, { "kind": "Field", "name": { "kind": "Name", "value": "runtimeMinutes" } }, { "kind": "Field", "name": { "kind": "Name", "value": "titleType" } }, { "kind": "Field", "name": { "kind": "Name", "value": "genresGenre" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "genreId" } }, { "kind": "Field", "name": { "kind": "Name", "value": "genre" } }] } }] } }] } }] } }] } as unknown as DocumentNode<GetTitleQuery, GetTitleQueryVariables>;
+export const GetTitleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTitle"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mysqlTitles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"titleId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"titleId"}},{"kind":"Field","name":{"kind":"Name","value":"primaryTitle"}},{"kind":"Field","name":{"kind":"Name","value":"originalTitle"}},{"kind":"Field","name":{"kind":"Name","value":"isAdult"}},{"kind":"Field","name":{"kind":"Name","value":"startYear"}},{"kind":"Field","name":{"kind":"Name","value":"endYear"}},{"kind":"Field","name":{"kind":"Name","value":"runtimeMinutes"}},{"kind":"Field","name":{"kind":"Name","value":"titleType"}},{"kind":"Field","name":{"kind":"Name","value":"genresGenre"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"genreId"}},{"kind":"Field","name":{"kind":"Name","value":"genre"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetTitleQuery, GetTitleQueryVariables>;
+export const EditTitleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"EditTitle"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TitlesDtoInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateMysqlTitle"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"titles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"endYear"}},{"kind":"Field","name":{"kind":"Name","value":"isAdult"}},{"kind":"Field","name":{"kind":"Name","value":"originalTitle"}},{"kind":"Field","name":{"kind":"Name","value":"primaryTitle"}},{"kind":"Field","name":{"kind":"Name","value":"runtimeMinutes"}},{"kind":"Field","name":{"kind":"Name","value":"startYear"}},{"kind":"Field","name":{"kind":"Name","value":"titleId"}},{"kind":"Field","name":{"kind":"Name","value":"titleType"}}]}},{"kind":"Field","name":{"kind":"Name","value":"errors"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]}}]} as unknown as DocumentNode<EditTitleMutation, EditTitleMutationVariables>;
+export const GetTitlesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTitles"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"take"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mysqlTitles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"take"},"value":{"kind":"Variable","name":{"kind":"Name","value":"take"}}},{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"startYear"},"value":{"kind":"EnumValue","value":"DESC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalCount"}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"titleId"}},{"kind":"Field","name":{"kind":"Name","value":"primaryTitle"}},{"kind":"Field","name":{"kind":"Name","value":"originalTitle"}},{"kind":"Field","name":{"kind":"Name","value":"startYear"}}]}}]}}]}}]} as unknown as DocumentNode<GetTitlesQuery, GetTitlesQueryVariables>;

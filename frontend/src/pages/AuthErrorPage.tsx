@@ -3,8 +3,8 @@ import { Container, Heading, Text } from '@chakra-ui/react';
 const ErrorPage = () => {
   return (
     <Container textAlign="center" mt={10}>
-      <Heading>Error - 404</Heading>
-      <Text>The requested URL was not found on this server.</Text>
+      <Heading>Authentication Error!</Heading>
+      <Text>User not logged in or doesn't have permission</Text>
     </Container>
   );
 };
