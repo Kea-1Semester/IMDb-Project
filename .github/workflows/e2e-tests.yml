@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - "fix/e2e-pipeline"
+  push:
+    branches:
+      - "fix/e2e-pipeline"
   workflow_call:
     inputs:
       TEST_USER_EMAIL:
