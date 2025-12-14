@@ -16,8 +16,6 @@ const MysqlTitleDetails = () => {
   const permissions = usePermissions();
   const title = data?.mysqlTitles?.items?.at(0);
 
-  if (!title) return <Text>No Title with id: {id}</Text>;
-
   return (
     <Box>
       <QueryResult loading={loading} error={error} data={data}>
