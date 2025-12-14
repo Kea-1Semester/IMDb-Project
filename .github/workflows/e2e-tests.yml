@@ -16,7 +16,8 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
@@ -26,23 +27,17 @@ jobs:
         working-directory: e2e-playwright-tests
         run: dotnet build
 
-      - name: Install Playwright CLI
-        run: dotnet tool install --global Microsoft.Playwright.CLI
-
-      - name: Add dotnet tools to PATH
-        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
       - name: Install Playwright browsers
         working-directory: e2e-playwright-tests/PlaywrightTests
-        run: bin/Debug/net9.0/playwright.ps1 install
+        run: bin/Debug/net9.0/playwright.ps1 install --with-deps
 
       - name: Run E2E Playwright tests
         working-directory: e2e-playwright-tests/PlaywrightTests
         env:
           FRONTEND_HOST: ${{ vars.FRONTEND_HOST }}
-          TEST_USER_EMAIL: ${{ inputs.TEST_USER_EMAIL }}
+          TEST_USER_EMAIL: ${{ inputs.TEST_USER_EMAIL || secrets.TEST_USER_EMAIL }}
         run: |
-          dotnet test --logger "trx;LogFileName=e2e_results.trx" -e FRONTEND_HOST="$FRONTEND_HOST" -e TEST_USER_EMAIL="$TEST_USER_EMAIL"
+          dotnet test -- NUnit.NumberOfTestWorkers=1 --logger "trx;LogFileName=e2e_results.trx" -e FRONTEND_HOST="$FRONTEND_HOST" -e TEST_USER_EMAIL="$TEST_USER_EMAIL"
 
       - name: Upload E2E Test Results
         uses: actions/upload-artifact@v5

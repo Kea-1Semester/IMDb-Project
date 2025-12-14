@@ -8,7 +8,7 @@ using DotNetEnv;
 
 namespace E2E.Playwright.Tests;
 
-[Parallelizable(ParallelScope.Self)]
+[NonParallelizable]
 [TestFixture]
 [Category("E2ETest")]
 public class AuthorizationPages : PageTest
@@ -16,47 +16,55 @@ public class AuthorizationPages : PageTest
     [SetUp]
     public async Task SetupTests()
     {
-        Env.TraversePath().Load();
-
-        var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
-        await Page.GotoAsync(host);
+        await Page.GotoAsync("/");
     }
 
     [Test]
-        public async Task Test_Login()
+    public async Task Test_Login()
+    {
+        var loginButton = Page.Locator("button", new PageLocatorOptions { HasTextString = "Log In " });
+        await Expect(loginButton).ToBeVisibleAsync();
+
+        // click login button
+        await loginButton.ClickAsync();
+
+        // check login page
+        await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
+        await Expect(Page).ToHaveTitleAsync(new Regex("Log in \\| imdb-app"));
+
+        //---------------
+
+        var mailInput = Environment.GetEnvironmentVariable("TEST_USER_EMAIL") ?? "";
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email address" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email address" }).FillAsync(mailInput);
+
+        await Page.GetByText("Password *").ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("TestPassword123!");
+
+
+        var submitButton = Page.Locator("button.c04b3dedf.c837aaff8.cea427a68.cfb672822.cdda8fe19", new PageLocatorOptions { HasTextString = "Continue" });
+
+        await Expect(submitButton).ToBeVisibleAsync();
+        await submitButton.ClickAsync();
+
+        await Page.WaitForTimeoutAsync(5000);
+
+        //---------------
+
+        await Expect(Page).ToHaveTitleAsync(new Regex("imdb-frontend"));
+
+        var logoutButton = Page.GetByRole(AriaRole.Button, new() { Name = "Log Out" });
+        await Expect(logoutButton).ToBeVisibleAsync();
+    }
+
+    public override BrowserNewContextOptions ContextOptions()
+    {
+        Env.TraversePath().Load();
+        return new BrowserNewContextOptions
         {
-            var loginButton = Page.Locator("button", new PageLocatorOptions { HasTextString = "Log In " });
-            await Expect(loginButton).ToBeVisibleAsync();
-
-            // click login button
-            await loginButton.ClickAsync();
-
-            // check login page
-            await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
-            await Expect(Page).ToHaveTitleAsync(new Regex("Log in \\| imdb-app"));
-
-            //---------------
-
-            var mailInput = Environment.GetEnvironmentVariable("TEST_USER_EMAIL") ?? "";
-            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email address" }).ClickAsync();
-            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email address" }).FillAsync(mailInput);
-            
-            await Page.GetByText("Password *").ClickAsync();
-            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("TestPassword123!");
-
-
-            var submitButton = Page.Locator("button.c04b3dedf.c837aaff8.cea427a68.cfb672822.cdda8fe19", new PageLocatorOptions { HasTextString = "Continue" });
-           
-            await Expect(submitButton).ToBeVisibleAsync();
-            await submitButton.ClickAsync();
-
-            await Page.WaitForTimeoutAsync(5000);
-
-            //---------------
-
-            await Expect(Page).ToHaveTitleAsync(new Regex("imdb-frontend"));
-
-            var logoutButton = Page.GetByRole(AriaRole.Button, new() { Name = "Log Out" });
-            await Expect(logoutButton).ToBeVisibleAsync();
-        }
+            ColorScheme = ColorScheme.Dark,
+            ViewportSize = new() { Width = 1280, Height = 720 },
+            BaseURL = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000",
+        };
+    }
 }

@@ -8,7 +8,7 @@ using DotNetEnv;
 
 namespace E2E.Playwright.Tests;
 
-[Parallelizable(ParallelScope.Self)]
+[NonParallelizable]
 [TestFixture]
 [Category("E2ETest")]
 public class TitleDetail : PageTest
@@ -16,10 +16,7 @@ public class TitleDetail : PageTest
     [SetUp]
     public async Task SetupTests()
     {
-        Env.TraversePath().Load();
-
-        var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
-        await Page.GotoAsync(host);
+        await Page.GotoAsync("/");
         var card = Page.Locator("div.chakra-card__root").First;
         await card.ClickAsync();
     }
@@ -44,7 +41,7 @@ public class TitleDetail : PageTest
 
     [Test]
     public async Task Title_Details()
-    {   
+    {
         // Page Fields
         await Expect(Page.GetByRole(AriaRole.Main)).ToContainTextAsync("PrimaryTitle:");
         await Expect(Page.GetByRole(AriaRole.Main)).ToContainTextAsync("OriginalTitle:");
@@ -77,5 +74,16 @@ public class TitleDetail : PageTest
     public async Task TestEndYear_Is_4Digits_Or_Null()
     {
         await Expect(Page.GetByRole(AriaRole.Main)).ToHaveTextAsync(new Regex(@".*EndYear:\s*(\d{4}|-).*"));
+    }
+
+    public override BrowserNewContextOptions ContextOptions()
+    {
+        Env.TraversePath().Load();
+        return new BrowserNewContextOptions
+        {
+            ColorScheme = ColorScheme.Dark,
+            ViewportSize = new() { Width = 1280, Height = 720 },
+            BaseURL = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000",
+        };
     }
 }
