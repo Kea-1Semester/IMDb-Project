@@ -4,6 +4,7 @@ using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using System;
 using System.Text.RegularExpressions;
+using DotNetEnv;
 
 namespace E2E.Playwright.Tests;
 
@@ -34,9 +35,17 @@ public class HomePage : PageTest
         }
     */
 
+    /*
+        Debug tests write       $env:PWDEBUG=1 
+            run tests 
+        Turn off again use      $env:PWDEBUG=0
+    */
+
     [SetUp]
     public async Task SetupTests()
     {
+        Env.TraversePath().Load();
+
         var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
         await Page.GotoAsync(host);
     }

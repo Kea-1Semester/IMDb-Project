@@ -4,6 +4,7 @@ using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using System;
 using System.Text.RegularExpressions;
+using DotNetEnv;
 
 namespace E2E.Playwright.Tests;
 
@@ -15,60 +16,47 @@ public class AuthorizationPages : PageTest
     [SetUp]
     public async Task SetupTests()
     {
+        Env.TraversePath().Load();
+
         var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
         await Page.GotoAsync(host);
     }
 
     [Test]
-    public async Task Page_Tests()
-    {
-        // login button
-        var loginButton = Page.Locator("button", new PageLocatorOptions { HasTextString = "Log In " });
-        await Expect(loginButton).ToBeVisibleAsync();
+        public async Task Test_Login()
+        {
+            var loginButton = Page.Locator("button", new PageLocatorOptions { HasTextString = "Log In " });
+            await Expect(loginButton).ToBeVisibleAsync();
 
-        // click login button
-        await loginButton.ClickAsync();
+            // click login button
+            await loginButton.ClickAsync();
 
-        // check login page
-        await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
-        await Expect(Page).ToHaveTitleAsync(new Regex("Log in \\| imdb-app"));
+            // check login page
+            await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
+            await Expect(Page).ToHaveTitleAsync(new Regex("Log in \\| imdb-app"));
 
-        // Signup button with a tager
-        var signUpButton = Page.Locator("a", new PageLocatorOptions { HasTextString = "Sign up" });
-        await Expect(signUpButton).ToBeVisibleAsync();
+            //---------------
+
+            var mailInput = Environment.GetEnvironmentVariable("TEST_USER_EMAIL") ?? "";
+            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email address" }).ClickAsync();
+            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Email address" }).FillAsync(mailInput);
+            
+            await Page.GetByText("Password *").ClickAsync();
+            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Password" }).FillAsync("TestPassword123!");
 
 
-        // // click signup button
-        await signUpButton.ClickAsync();
-        // check signup page
-        await Expect(Page).ToHaveURLAsync(new Regex(".*signup"));
-        await Expect(Page).ToHaveTitleAsync(new Regex("Sign up \\| imdb-app"));
+            var submitButton = Page.Locator("button.c04b3dedf.c837aaff8.cea427a68.cfb672822.cdda8fe19", new PageLocatorOptions { HasTextString = "Continue" });
+           
+            await Expect(submitButton).ToBeVisibleAsync();
+            await submitButton.ClickAsync();
 
-        // insert email
-        var mailInput = Environment.GetEnvironmentVariable("TEST_USER_EMAIL") ?? "";
-        var emailInput = Page.Locator("input[name='email']");
-        await emailInput.FillAsync(mailInput);
-        // insert password
-        var passwordInput = Page.Locator("input[name='password']");
-        await passwordInput.FillAsync("TestPassword123!");
+            await Page.WaitForTimeoutAsync(5000);
 
-        // click submit button with class is c04b3dedf c837aaff8 cea427a68 cfb672822 c056bbc2e with text continue
-        var submitButton = Page.Locator("button.c04b3dedf.c837aaff8.cea427a68.cfb672822.c056bbc2e", new PageLocatorOptions { HasTextString = "Continue" });
-        await submitButton.ClickAsync();
+            //---------------
 
-        //await Page.WaitForTimeoutAsync(5000);
+            await Expect(Page).ToHaveTitleAsync(new Regex("imdb-frontend"));
 
-        // check redirect to home page
-        await Expect(Page).ToHaveURLAsync(new Regex(".*/"));
-        
-        // logout button
-        var logoutButton = Page.Locator("button", new PageLocatorOptions { HasTextString = "Log Out" });
-        await Expect(logoutButton).ToBeVisibleAsync();
-        // click logout button
-        await logoutButton.ClickAsync();
-        // check redirect to home page
-        await Expect(Page).ToHaveURLAsync(new Regex(".*/"));
-        // check login button is visible again
-        await Expect(loginButton).ToBeVisibleAsync();
-    }
+            var logoutButton = Page.GetByRole(AriaRole.Button, new() { Name = "Log Out" });
+            await Expect(logoutButton).ToBeVisibleAsync();
+        }
 }

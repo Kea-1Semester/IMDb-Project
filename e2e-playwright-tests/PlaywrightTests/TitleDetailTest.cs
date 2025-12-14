@@ -4,6 +4,7 @@ using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using System;
 using System.Text.RegularExpressions;
+using DotNetEnv;
 
 namespace E2E.Playwright.Tests;
 
@@ -15,6 +16,8 @@ public class TitleDetail : PageTest
     [SetUp]
     public async Task SetupTests()
     {
+        Env.TraversePath().Load();
+
         var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
         await Page.GotoAsync(host);
         var card = Page.Locator("div.chakra-card__root").First;
