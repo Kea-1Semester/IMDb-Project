@@ -8,7 +8,7 @@ using DotNetEnv;
 
 namespace E2E.Playwright.Tests;
 
-[Parallelizable(ParallelScope.Self)]
+[NonParallelizable]
 [TestFixture]
 [Category("E2ETest")]
 public class TitleDetail : PageTest
@@ -44,7 +44,7 @@ public class TitleDetail : PageTest
 
     [Test]
     public async Task Title_Details()
-    {   
+    {
         // Page Fields
         await Expect(Page.GetByRole(AriaRole.Main)).ToContainTextAsync("PrimaryTitle:");
         await Expect(Page.GetByRole(AriaRole.Main)).ToContainTextAsync("OriginalTitle:");

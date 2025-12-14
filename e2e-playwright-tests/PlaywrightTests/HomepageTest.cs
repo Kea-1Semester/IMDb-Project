@@ -8,7 +8,7 @@ using DotNetEnv;
 
 namespace E2E.Playwright.Tests;
 
-[Parallelizable(ParallelScope.Self)]
+[NonParallelizable]
 [TestFixture]
 [Category("E2ETest")]
 public class HomePage : PageTest
@@ -54,7 +54,7 @@ public class HomePage : PageTest
     [Test]
     public async Task TestTemplate()
     {
-         // check if the page exists
+        // check if the page exists
         await Expect(Page).ToHaveTitleAsync(new Regex("imdb-frontend"));
     }
 
@@ -70,21 +70,21 @@ public class HomePage : PageTest
 
     [Test]
     public async Task Page_Titles_Has_Attributes()
-    {  
+    {
         var card = Page.Locator("div.chakra-card__root").First;
 
         await Expect(card).ToBeVisibleAsync();
         await Expect(card.Locator("h2")).ToHaveCountAsync(1);
         await Expect(card.Locator("p")).ToHaveCountAsync(2);
     }
-    
+
     [Test]
     public async Task Page_Navigate_To_Page()
     {
 
         var Page1Button = Page.GetByRole(AriaRole.Button, new() { Name = "page 1" });
         var Page2Button = Page.GetByRole(AriaRole.Button, new() { Name = "page 2" });
-          
+
         await Expect(Page1Button).ToBeVisibleAsync();
         await Expect(Page2Button).ToBeVisibleAsync();
 
@@ -98,12 +98,12 @@ public class HomePage : PageTest
         Assert.That(page1CardText, Is.Not.Empty, "First card on page 1 is empty");
 
         // ----- Page 2 -----
-        await Page2Button.ClickAsync(); 
+        await Page2Button.ClickAsync();
 
         var firstCardPage2 = Page.Locator("div.chakra-card__root").First;
         var page2CardText = (await firstCardPage2.InnerTextAsync()).Trim();
 
-         Assert.That(page2CardText, Is.Not.Empty, "First card on page 2 is empty");
+        Assert.That(page2CardText, Is.Not.Empty, "First card on page 2 is empty");
 
         // ----- Assert -----
         Assert.That(page1CardText, Is.Not.EqualTo(page2CardText), "First card on page 1 and page 2 should be diffrent");
