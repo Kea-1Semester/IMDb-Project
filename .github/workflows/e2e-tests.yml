@@ -43,7 +43,7 @@ jobs:
           FRONTEND_HOST: ${{ vars.FRONTEND_HOST }}
           TEST_USER_EMAIL: ${{ inputs.TEST_USER_EMAIL || secrets.TEST_USER_EMAIL }}
         run: |
-          dotnet test --logger "trx;LogFileName=e2e_results.trx" -e FRONTEND_HOST="$FRONTEND_HOST" -e TEST_USER_EMAIL="$TEST_USER_EMAIL"
+          dotnet test -- NUnit.NumberOfTestWorkers=1 --logger "trx;LogFileName=e2e_results.trx" -e FRONTEND_HOST="$FRONTEND_HOST" -e TEST_USER_EMAIL="$TEST_USER_EMAIL"
 
       - name: Upload E2E Test Results
         uses: actions/upload-artifact@v5
