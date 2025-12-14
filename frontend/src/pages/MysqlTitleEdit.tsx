@@ -26,7 +26,7 @@ const MysqlTitleEdit = () => {
   const navigate = useNavigate();
 
   const { loading, error, data } = useQuery(MYSQL_TITLE, { variables: { id: id ?? '' } });
-  const [updateTitle, { error: updateError, data: updateData }] = useMutation(EDIT_MYSQL_TITLE);
+  const [updateTitle, { loading: updateLoading, error: updateError, data: updateData }] = useMutation(EDIT_MYSQL_TITLE);
   const client = useApolloClient();
 
   const title = data?.mysqlTitles?.items?.at(0);
@@ -109,11 +109,9 @@ const MysqlTitleEdit = () => {
     await navigate(-1);
   };
 
-  if (!title) return <Text>No Title with id: {id}</Text>;
-
   return (
     <Box>
-      <QueryResult loading={loading} error={error} data={data}>
+      <QueryResult loading={loading || updateLoading} error={error} data={data}>
         <Card.Root shadow={'sm'}>
           <Card.Header>
             <Heading as={'h1'}>Title Edit</Heading>
