@@ -8,7 +8,7 @@ using DotNetEnv;
 
 namespace E2E.Playwright.Tests;
 
-[NonParallelizable]
+[Parallelizable(ParallelScope.Self)]
 [TestFixture]
 [Category("E2ETest")]
 public class HomePage : PageTest
