@@ -8,6 +8,11 @@ on:
       - "frontend/**"
       - ".github/workflows/push-main-frontend.yml"
   workflow_dispatch:
+    inputs:
+      TEST_USER_EMAIL:
+        description: "Email for the test user account"
+        required: true
+        type: string
 
 jobs:
   test:
@@ -40,3 +45,5 @@ jobs:
     name: E2E Tests Workflow
     needs: deploy-frontend
     uses: ./.github/workflows/e2e-tests.yml
+    with:
+      TEST_USER_EMAIL: ${{ github.event.inputs.TEST_USER_EMAIL }}
