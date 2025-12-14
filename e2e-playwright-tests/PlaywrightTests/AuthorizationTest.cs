@@ -16,10 +16,7 @@ public class AuthorizationPages : PageTest
     [SetUp]
     public async Task SetupTests()
     {
-        Env.TraversePath().Load();
-
-        var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
-        await Page.GotoAsync(host);
+        await Page.GotoAsync("/");
     }
 
     [Test]
@@ -58,5 +55,16 @@ public class AuthorizationPages : PageTest
 
         var logoutButton = Page.GetByRole(AriaRole.Button, new() { Name = "Log Out" });
         await Expect(logoutButton).ToBeVisibleAsync();
+    }
+
+    public override BrowserNewContextOptions ContextOptions()
+    {
+        Env.TraversePath().Load();
+        return new BrowserNewContextOptions
+        {
+            ColorScheme = ColorScheme.Dark,
+            ViewportSize = new() { Width = 1280, Height = 720 },
+            BaseURL = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000",
+        };
     }
 }

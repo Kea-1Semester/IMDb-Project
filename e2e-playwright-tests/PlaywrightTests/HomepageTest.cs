@@ -44,10 +44,7 @@ public class HomePage : PageTest
     [SetUp]
     public async Task SetupTests()
     {
-        Env.TraversePath().Load();
-
-        var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
-        await Page.GotoAsync(host);
+        await Page.GotoAsync("/");
     }
 
 
@@ -107,5 +104,16 @@ public class HomePage : PageTest
 
         // ----- Assert -----
         Assert.That(page1CardText, Is.Not.EqualTo(page2CardText), "First card on page 1 and page 2 should be diffrent");
+    }
+
+    public override BrowserNewContextOptions ContextOptions()
+    {
+        Env.TraversePath().Load();
+        return new BrowserNewContextOptions
+        {
+            ColorScheme = ColorScheme.Dark,
+            ViewportSize = new() { Width = 1280, Height = 720 },
+            BaseURL = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000",
+        };
     }
 }
