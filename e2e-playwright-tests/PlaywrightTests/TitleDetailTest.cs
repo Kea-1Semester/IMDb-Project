@@ -15,7 +15,7 @@ public class TitleDetail : PageTest
     [SetUp]
     public async Task SetupTests()
     {
-        var host = /*Environment.GetEnvironmentVariable("FRONTEND_HOST") ??*/ "http://localhost:3000";
+        var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
         await Page.GotoAsync(host);
         var card = Page.Locator("div.chakra-card__root").First;
         await card.ClickAsync();
