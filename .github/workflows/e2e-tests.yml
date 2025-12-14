@@ -1,6 +1,9 @@
 name: E2E Tests
 
 on:
+  pull_request:
+    branches:
+      - "fix/e2e-pipeline"
   workflow_call:
     inputs:
       TEST_USER_EMAIL:
@@ -16,7 +19,8 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
@@ -26,15 +30,9 @@ jobs:
         working-directory: e2e-playwright-tests
         run: dotnet build
 
-      - name: Install Playwright CLI
-        run: dotnet tool install --global Microsoft.Playwright.CLI
-
-      - name: Add dotnet tools to PATH
-        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
       - name: Install Playwright browsers
         working-directory: e2e-playwright-tests/PlaywrightTests
-        run: bin/Debug/net9.0/playwright.ps1 install
+        run: bin/Debug/net9.0/playwright.ps1 install --with-deps
 
       - name: Run E2E Playwright tests
         working-directory: e2e-playwright-tests/PlaywrightTests
