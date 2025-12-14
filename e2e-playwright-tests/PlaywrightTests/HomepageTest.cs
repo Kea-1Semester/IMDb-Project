@@ -4,13 +4,14 @@ using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using System;
 using System.Text.RegularExpressions;
+using DotNetEnv;
 
 namespace E2E.Playwright.Tests;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 [Category("E2ETest")]
-public class E2eTest : PageTest
+public class HomePage : PageTest
 {
     /*Run Test with Browser:
 
@@ -34,67 +35,77 @@ public class E2eTest : PageTest
         }
     */
 
-    [Test]
-    public async Task TestHomePage()
+    /*
+        Debug tests write       $env:PWDEBUG=1 
+            run tests 
+        Turn off again use      $env:PWDEBUG=0
+    */
+
+    [SetUp]
+    public async Task SetupTests()
     {
+        Env.TraversePath().Load();
+
         var host = Environment.GetEnvironmentVariable("FRONTEND_HOST") ?? "http://localhost:3000";
         await Page.GotoAsync(host);
-        
-        // check if the page exists
+    }
+
+
+    [Test]
+    public async Task TestTemplate()
+    {
+         // check if the page exists
         await Expect(Page).ToHaveTitleAsync(new Regex("imdb-frontend"));
+    }
+
+    [Test]
+    public async Task Has_Home_Button()
+    {
+        //await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Home" })).ToBeVisibleAsync();
 
         // get type button and has text Home
         var homeButton = Page.Locator("button", new PageLocatorOptions { HasTextString = "Home" });
         await Expect(homeButton).ToBeVisibleAsync();
+    }
 
-        // login button
-        var loginButton = Page.Locator("button", new PageLocatorOptions { HasTextString = "Log In " });
-        await Expect(loginButton).ToBeVisibleAsync();
+    [Test]
+    public async Task Page_Titles_Has_Attributes()
+    {  
+        var card = Page.Locator("div.chakra-card__root").First;
 
-        // click login button
-        await loginButton.ClickAsync();
+        await Expect(card).ToBeVisibleAsync();
+        await Expect(card.Locator("h2")).ToHaveCountAsync(1);
+        await Expect(card.Locator("p")).ToHaveCountAsync(2);
+    }
+    
+    [Test]
+    public async Task Page_Navigate_To_Page()
+    {
 
-        // check login page
-        await Expect(Page).ToHaveURLAsync(new Regex(".*login"));
-        await Expect(Page).ToHaveTitleAsync(new Regex("Log in \\| imdb-app"));
+        var Page1Button = Page.GetByRole(AriaRole.Button, new() { Name = "page 1" });
+        var Page2Button = Page.GetByRole(AriaRole.Button, new() { Name = "page 2" });
+          
+        await Expect(Page1Button).ToBeVisibleAsync();
+        await Expect(Page2Button).ToBeVisibleAsync();
 
-        // Signup button with a tager
-        var signUpButton = Page.Locator("a", new PageLocatorOptions { HasTextString = "Sign up" });
-        await Expect(signUpButton).ToBeVisibleAsync();
+        // ----- Page 1 -----
+        await Page1Button.ClickAsync();
 
+        var firstCardPage1 = Page.Locator("div.chakra-card__root").First;
 
-        // // click signup button
-        await signUpButton.ClickAsync();
-        // check signup page
-        await Expect(Page).ToHaveURLAsync(new Regex(".*signup"));
-        await Expect(Page).ToHaveTitleAsync(new Regex("Sign up \\| imdb-app"));
+        var page1CardText = (await firstCardPage1.InnerTextAsync()).Trim();
 
-        // insert email
-        var mailInput = Environment.GetEnvironmentVariable("TEST_USER_EMAIL") ?? "";
-        var emailInput = Page.Locator("input[name='email']");
-        await emailInput.FillAsync(mailInput);
-        // insert password
-        var passwordInput = Page.Locator("input[name='password']");
-        await passwordInput.FillAsync("TestPassword123!");
+        Assert.That(page1CardText, Is.Not.Empty, "First card on page 1 is empty");
 
-        // click submit button with class is c04b3dedf c837aaff8 cea427a68 cfb672822 c056bbc2e with text continue
-        var submitButton = Page.Locator("button.c04b3dedf.c837aaff8.cea427a68.cfb672822.c056bbc2e", new PageLocatorOptions { HasTextString = "Continue" });
-        await submitButton.ClickAsync();
+        // ----- Page 2 -----
+        await Page2Button.ClickAsync(); 
 
-        // check redirect to home page
-        await Expect(Page).ToHaveURLAsync(new Regex(".*/"));
+        var firstCardPage2 = Page.Locator("div.chakra-card__root").First;
+        var page2CardText = (await firstCardPage2.InnerTextAsync()).Trim();
 
-        // logout button
-        var logoutButton = Page.Locator("button", new PageLocatorOptions { HasTextString = "Log Out" });
-        await Expect(logoutButton).ToBeVisibleAsync();
-        // click logout button
-        await logoutButton.ClickAsync();
-        // check redirect to home page
-        await Expect(Page).ToHaveURLAsync(new Regex(".*/"));
-        // check login button is visible again
-        await Expect(loginButton).ToBeVisibleAsync();
+         Assert.That(page2CardText, Is.Not.Empty, "First card on page 2 is empty");
 
-   
-
+        // ----- Assert -----
+        Assert.That(page1CardText, Is.Not.EqualTo(page2CardText), "First card on page 1 and page 2 should be diffrent");
     }
 }
