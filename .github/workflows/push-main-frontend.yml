@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "frontend/**"
-      - ".github/workflows/push-main-frontend.yml"
+      - exam/Rasho
+    # paths:
+    #   - "frontend/**"
+    #   - ".github/workflows/push-main-frontend.yml"
   workflow_dispatch:
     inputs:
       TEST_USER_EMAIL:
