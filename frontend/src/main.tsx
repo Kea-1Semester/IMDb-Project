@@ -14,7 +14,7 @@ Sentry.init({
     Sentry.browserTracingIntegration(),
     Sentry.consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] }),
   ],
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 1,
   tracePropagationTargets: [String(import.meta.env.BASE_URL), String(import.meta.env.VITE_API_URL)],
   enableLogs: true,
   sendDefaultPii: true,

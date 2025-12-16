@@ -1,9 +1,16 @@
 import { type ReactNode, type FC, useMemo } from 'react';
-import { ApolloClient, HttpLink, InMemoryCache, ApolloLink, Observable, CombinedProtocolErrors } from '@apollo/client';
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  ApolloLink,
+  Observable,
+  CombinedProtocolErrors,
+  CombinedGraphQLErrors,
+} from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ErrorLink } from '@apollo/client/link/error';
-import { CombinedGraphQLErrors } from '@apollo/client';
 
 const ApolloProviderWithAuth0: FC<{ children: ReactNode }> = ({ children }) => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
