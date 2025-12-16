@@ -1,10 +1,32 @@
 import { type ReactNode, type FC, useMemo } from 'react';
-import { ApolloClient, HttpLink, InMemoryCache, ApolloLink, Observable } from '@apollo/client';
+import { ApolloClient, HttpLink, InMemoryCache, ApolloLink, Observable, CombinedProtocolErrors } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { ErrorLink } from '@apollo/client/link/error';
+import { CombinedGraphQLErrors } from '@apollo/client';
 
 const ApolloProviderWithAuth0: FC<{ children: ReactNode }> = ({ children }) => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+
+  const errorLink = useMemo(
+    () =>
+      new ErrorLink(({ error }) => {
+        if (CombinedGraphQLErrors.is(error)) {
+          error.errors.forEach(({ message, locations, path }) => {
+            console.log(
+              `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${JSON.stringify(path)}`,
+            );
+          });
+        } else if (CombinedProtocolErrors.is(error)) {
+          error.errors.forEach(({ message, extensions }) =>
+            console.log(`[Protocol error]: Message: ${message}, Extensions: ${JSON.stringify(extensions)}`),
+          );
+        } else {
+          console.error(`[Network error]: ${error.message}`);
+        }
+      }),
+    [],
+  );
 
   const authLink = useMemo(
     () =>
@@ -63,10 +85,10 @@ const ApolloProviderWithAuth0: FC<{ children: ReactNode }> = ({ children }) => {
   const client = useMemo(
     () =>
       new ApolloClient({
-        link: ApolloLink.from([authLink, httpLink]),
+        link: ApolloLink.from([errorLink, authLink, httpLink]),
         cache: new InMemoryCache(),
       }),
-    [authLink, httpLink],
+    [errorLink, authLink, httpLink],
   );
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
