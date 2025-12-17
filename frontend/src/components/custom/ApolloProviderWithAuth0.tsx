@@ -11,7 +11,6 @@ import {
 import { ApolloProvider } from '@apollo/client/react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ErrorLink } from '@apollo/client/link/error';
-import * as Sentry from '@sentry/react';
 
 const ApolloProviderWithAuth0: FC<{ children: ReactNode }> = ({ children }) => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -21,16 +20,16 @@ const ApolloProviderWithAuth0: FC<{ children: ReactNode }> = ({ children }) => {
       new ErrorLink(({ error }) => {
         if (CombinedGraphQLErrors.is(error)) {
           error.errors.forEach(({ message, locations, path }) => {
-            Sentry.logger.error(
+            console.error(
               `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${JSON.stringify(path)}`,
             );
           });
         } else if (CombinedProtocolErrors.is(error)) {
           error.errors.forEach(({ message, extensions }) =>
-            Sentry.logger.error(`[Protocol error]: Message: ${message}, Extensions: ${JSON.stringify(extensions)}`),
+            console.error(`[Protocol error]: Message: ${message}, Extensions: ${JSON.stringify(extensions)}`),
           );
         } else {
-          Sentry.logger.error(`[Network error]: ${error.message}`);
+          console.error(`[Network error]: ${error.message}`);
         }
       }),
     [],
