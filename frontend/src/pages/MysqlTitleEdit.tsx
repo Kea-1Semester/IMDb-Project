@@ -104,7 +104,7 @@ const MysqlTitleEdit = () => {
 
     await client.clearStore();
 
-    await navigate(`mysqltitle/${updatedTitle.titleId}`);
+    await navigate(-1);
   };
 
   return (
