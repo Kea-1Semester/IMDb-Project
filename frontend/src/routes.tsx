@@ -8,12 +8,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import AuthErrorPage from '@/pages/AuthErrorPage';
 import usePermissions from '@/hooks/UsePermissions';
 import { auth0Permissions } from '@/types/Auth0Permissions';
+import * as Sentry from '@sentry/react';
 
 const RouterProviderWithAuth0 = () => {
   const { isAuthenticated } = useAuth0();
   const permissions = usePermissions();
+  const sentryCreateBrowserRouter = Sentry.wrapCreateBrowserRouterV7(createBrowserRouter);
 
-  const router = createBrowserRouter([
+  const router = sentryCreateBrowserRouter([
     {
       path: '/',
       Component: Layout,
