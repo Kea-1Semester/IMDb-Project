@@ -14,7 +14,8 @@ const RegisterButton = () => {
       variant={'surface'}
       colorPalette={'teal'}
     >
-      Register <RiAccountCircleLine />
+      Register
+      <RiAccountCircleLine />
     </Button>
   );
 };

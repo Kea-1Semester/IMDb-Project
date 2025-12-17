@@ -100,13 +100,11 @@ const MysqlTitleEdit = () => {
 
     const updatedTitle = result.data?.updateMysqlTitle?.titles;
 
-    if (!updatedTitle) {
-      return;
-    }
+    if (!updatedTitle) return;
 
     await client.clearStore();
 
-    await navigate(-1);
+    await navigate(`mysqltitle/${updatedTitle.titleId}`);
   };
 
   return (
@@ -198,10 +196,12 @@ const MysqlTitleEdit = () => {
           <Card.Footer>
             <HStack justify={'space-between'} w={'100%'}>
               <Button variant="outline" fontWeight={'bold'} onClick={() => void navigate(-1)}>
-                <RiArrowLeftLine /> Back
+                <RiArrowLeftLine />
+                Back
               </Button>
               <Button variant="solid" colorPalette={'teal'} fontWeight={'bold'} onClick={() => void saveChanges()}>
-                <RiSave2Line /> Save
+                <RiSave2Line />
+                Save
               </Button>
             </HStack>
           </Card.Footer>
