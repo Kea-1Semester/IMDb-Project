@@ -16,7 +16,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { type TitlesDtoInput } from '@/generated/graphql';
-import { RiAddCircleLine, RiArrowLeftLine, RiSave2Line } from 'react-icons/ri';
+import { RiAddCircleLine, RiArrowLeftLine } from 'react-icons/ri';
 import { type ChangeEvent, useState } from 'react';
 import { CREATE_MYSQL_TITLE } from '@/queries/mysqlTitleCreate';
 
@@ -25,7 +25,7 @@ const MysqlTitleCreate = () => {
   const [createTitle, { loading, error, data }] = useMutation(CREATE_MYSQL_TITLE);
   const client = useApolloClient();
 
-  const [titleDto, setTitleDto] = useState<TitlesDtoInput>({
+  const [createTitleDto, setCreateTitleDto] = useState<TitlesDtoInput>({
     primaryTitle: '',
     originalTitle: '',
     titleType: '',
@@ -36,56 +36,56 @@ const MysqlTitleCreate = () => {
   });
 
   const handlePrimaryTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitleDto({
-      ...titleDto,
+    setCreateTitleDto({
+      ...createTitleDto,
       primaryTitle: e.target.value,
     });
   };
 
   const handleOriginalTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitleDto({
-      ...titleDto,
+    setCreateTitleDto({
+      ...createTitleDto,
       originalTitle: e.target.value,
     });
   };
 
   const handleTitleTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitleDto({
-      ...titleDto,
+    setCreateTitleDto({
+      ...createTitleDto,
       titleType: e.target.value,
     });
   };
 
   const handleStartYearChange = (e: NumberInputValueChangeDetails) => {
-    setTitleDto({
-      ...titleDto,
+    setCreateTitleDto({
+      ...createTitleDto,
       startYear: e.valueAsNumber,
     });
   };
 
   const handleEndYearChange = (e: NumberInputValueChangeDetails) => {
-    setTitleDto({
-      ...titleDto,
+    setCreateTitleDto({
+      ...createTitleDto,
       endYear: e.valueAsNumber,
     });
   };
 
   const handleRuntimeMinutesChange = (e: NumberInputValueChangeDetails) => {
-    setTitleDto({
-      ...titleDto,
+    setCreateTitleDto({
+      ...createTitleDto,
       runtimeMinutes: e.valueAsNumber,
     });
   };
 
   const handleIsAdultChange = (e: SwitchCheckedChangeDetails) => {
-    setTitleDto({
-      ...titleDto,
+    setCreateTitleDto({
+      ...createTitleDto,
       isAdult: e.checked,
     });
   };
 
   const saveChanges = async () => {
-    const result = await createTitle({ variables: { title: titleDto } });
+    const result = await createTitle({ variables: { title: createTitleDto } });
 
     const createdTitle = result.data?.createMysqlTitle?.titles;
 
@@ -123,7 +123,7 @@ const MysqlTitleCreate = () => {
             <Field.Label>PrimaryTitle</Field.Label>
             <Input
               name={'primaryTitle'}
-              value={titleDto.primaryTitle}
+              value={createTitleDto.primaryTitle}
               onChange={(event) => handlePrimaryTitleChange(event)}
             />
           </Field.Root>
@@ -132,21 +132,25 @@ const MysqlTitleCreate = () => {
             <Field.Label>OriginalTitle</Field.Label>
             <Input
               name={'originalTitle'}
-              value={titleDto.originalTitle}
+              value={createTitleDto.originalTitle}
               onChange={(event) => handleOriginalTitleChange(event)}
             />
           </Field.Root>
 
           <Field.Root>
             <Field.Label>TitleType</Field.Label>
-            <Input name={'titleType'} value={titleDto.titleType} onChange={(event) => handleTitleTypeChange(event)} />
+            <Input
+              name={'titleType'}
+              value={createTitleDto.titleType}
+              onChange={(event) => handleTitleTypeChange(event)}
+            />
           </Field.Root>
 
           <Field.Root>
             <Field.Label>StartYear</Field.Label>
             <NumberInput.Root
               name={'startYear'}
-              value={titleDto.startYear.toString()}
+              value={createTitleDto.startYear.toString()}
               onValueChange={(event) => handleStartYearChange(event)}
               min={1888}
               max={new Date().getUTCFullYear()}
@@ -159,7 +163,7 @@ const MysqlTitleCreate = () => {
             <Field.Label>EndYear</Field.Label>
             <NumberInput.Root
               name={'endYear'}
-              value={titleDto.endYear ? titleDto.endYear.toString() : undefined}
+              value={createTitleDto.endYear ? createTitleDto.endYear.toString() : undefined}
               onValueChange={(event) => handleEndYearChange(event)}
               max={new Date().getUTCFullYear()}
             >
@@ -171,7 +175,7 @@ const MysqlTitleCreate = () => {
             <Field.Label>RuntimeMinutes</Field.Label>
             <NumberInput.Root
               name={'runtimeMinutes'}
-              value={titleDto.runtimeMinutes ? titleDto.runtimeMinutes.toString() : undefined}
+              value={createTitleDto.runtimeMinutes ? createTitleDto.runtimeMinutes.toString() : undefined}
               onValueChange={(event) => handleRuntimeMinutesChange(event)}
               max={500}
             >
@@ -183,7 +187,7 @@ const MysqlTitleCreate = () => {
             <Field.Label>IsAdult</Field.Label>
             <Switch.Root
               name={'isAdult'}
-              checked={titleDto.isAdult}
+              checked={createTitleDto.isAdult}
               onCheckedChange={(event) => handleIsAdultChange(event)}
             >
               <Switch.HiddenInput />
