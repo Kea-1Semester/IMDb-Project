@@ -1,10 +1,32 @@
 import { Provider } from '@/components/ui/provider.tsx';
 import { Auth0Provider } from '@auth0/auth0-react';
-import { StrictMode } from 'react';
+import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import ApolloProviderWithAuth0 from '@/components/custom/ApolloProviderWithAuth0.tsx';
 import RouterProviderWithAuth0 from '@/routes.tsx';
+import * as Sentry from '@sentry/react';
 import './index.css';
+import { createRoutesFromChildren, matchRoutes, useLocation, useNavigationType } from 'react-router';
+
+Sentry.init({
+  dsn: String(import.meta.env.VITE_SENTRY_DSN),
+  environment: String(import.meta.env.MODE),
+  integrations: [
+    Sentry.browserTracingIntegration(),
+    Sentry.consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] }),
+    Sentry.reactRouterV7BrowserTracingIntegration({
+      useEffect: React.useEffect,
+      useLocation,
+      useNavigationType,
+      createRoutesFromChildren,
+      matchRoutes,
+    }),
+  ],
+  tracesSampleRate: 1,
+  tracePropagationTargets: ['localhost', String(import.meta.env.VITE_RENDER_URL), String(import.meta.env.VITE_API_URL)],
+  enableLogs: true,
+  sendDefaultPii: true,
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

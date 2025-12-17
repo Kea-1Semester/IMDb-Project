@@ -2,11 +2,12 @@ import { useQuery } from '@apollo/client/react';
 import { useNavigate, useParams } from 'react-router';
 import { Box, Button, Card, Heading, HStack, Text } from '@chakra-ui/react';
 import QueryResult from '@/components/custom/QueryResult';
-import { RiArrowLeftLine, RiDeleteBin2Line, RiEditBoxLine } from 'react-icons/ri';
+import { RiArrowLeftLine, RiEditBoxLine } from 'react-icons/ri';
 import { MYSQL_TITLE } from '@/queries/mysqlTitle';
 import { useAuth0 } from '@auth0/auth0-react';
 import usePermissions from '@/hooks/UsePermissions';
 import { auth0Permissions } from '@/types/Auth0Permissions';
+import DeleteTitlePopup from '@/components/custom/DeleteTitlePopup';
 
 const MysqlTitleDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -75,15 +76,8 @@ const MysqlTitleDetails = () => {
                         <RiEditBoxLine /> Edit
                       </Button>
                     )}
-                    {permissions.includes(auth0Permissions.deletePermission) && (
-                      <Button
-                        variant="solid"
-                        colorPalette={'red'}
-                        fontWeight={'bold'}
-                        onClick={() => void navigate(-1)}
-                      >
-                        <RiDeleteBin2Line /> Delete
-                      </Button>
+                    {permissions.includes(auth0Permissions.deletePermission) && title && (
+                      <DeleteTitlePopup title={title} />
                     )}
                   </HStack>
                 )}

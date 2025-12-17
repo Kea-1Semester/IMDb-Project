@@ -10,7 +10,7 @@ type QueryResultProps = {
 
 const QueryResult: FC<PropsWithChildren<QueryResultProps>> = ({ loading, error, data, children }) => {
   if (error) {
-    return <Text>ERROR: {error.message}</Text>;
+    return <Text color={'red'}>ERROR: {error.message}</Text>;
   }
   if (loading) {
     return (

@@ -15,7 +15,8 @@ const LoginButton = () => {
       variant={'solid'}
       colorPalette={'teal'}
     >
-      Log In <RiLoginBoxLine />
+      Log In
+      <RiLoginBoxLine />
     </Button>
   );
 };

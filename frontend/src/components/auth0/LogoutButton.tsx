@@ -14,7 +14,8 @@ const LogoutButton = () => {
       variant={'solid'}
       colorPalette={'teal'}
     >
-      Log Out <RiLogoutBoxLine />
+      Log Out
+      <RiLogoutBoxLine />
     </Button>
   );
 };
