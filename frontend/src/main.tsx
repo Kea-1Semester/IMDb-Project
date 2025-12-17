@@ -23,7 +23,7 @@ Sentry.init({
     }),
   ],
   tracesSampleRate: 1,
-  tracePropagationTargets: [String(import.meta.env.BASE_URL), String(import.meta.env.VITE_API_URL)],
+  tracePropagationTargets: ['localhost', String(import.meta.env.VITE_RENDER_URL), String(import.meta.env.VITE_API_URL)],
   enableLogs: true,
   sendDefaultPii: true,
 });

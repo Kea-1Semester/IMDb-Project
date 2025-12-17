@@ -9,6 +9,7 @@ import AuthErrorPage from '@/pages/AuthErrorPage';
 import usePermissions from '@/hooks/UsePermissions';
 import { auth0Permissions } from '@/types/Auth0Permissions';
 import * as Sentry from '@sentry/react';
+import MysqlTitleCreate from '@/pages/MysqlTitleCreate';
 
 const RouterProviderWithAuth0 = () => {
   const { isAuthenticated } = useAuth0();
@@ -31,6 +32,13 @@ const RouterProviderWithAuth0 = () => {
               Component:
                 isAuthenticated && permissions.includes(auth0Permissions.updatePermission)
                   ? MysqlTitleEdit
+                  : AuthErrorPage,
+            },
+            {
+              path: 'create',
+              Component:
+                isAuthenticated && permissions.includes(auth0Permissions.writePermission)
+                  ? MysqlTitleCreate
                   : AuthErrorPage,
             },
           ],

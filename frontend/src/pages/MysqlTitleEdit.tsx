@@ -30,7 +30,7 @@ const MysqlTitleEdit = () => {
   const client = useApolloClient();
 
   const title = data?.mysqlTitles?.items?.at(0);
-  const [titleDto, setTitleDto] = useState<TitlesDtoInput>({
+  const [updateTitleDto, setUpdateTitleDto] = useState<TitlesDtoInput>({
     primaryTitle: title?.primaryTitle ?? '',
     originalTitle: title?.originalTitle ?? '',
     titleType: title?.titleType ?? '',
@@ -41,50 +41,50 @@ const MysqlTitleEdit = () => {
   });
 
   const handlePrimaryTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitleDto({
-      ...titleDto,
+    setUpdateTitleDto({
+      ...updateTitleDto,
       primaryTitle: e.target.value,
     });
   };
 
   const handleOriginalTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitleDto({
-      ...titleDto,
+    setUpdateTitleDto({
+      ...updateTitleDto,
       originalTitle: e.target.value,
     });
   };
 
   const handleTitleTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitleDto({
-      ...titleDto,
+    setUpdateTitleDto({
+      ...updateTitleDto,
       titleType: e.target.value,
     });
   };
 
   const handleStartYearChange = (e: NumberInputValueChangeDetails) => {
-    setTitleDto({
-      ...titleDto,
+    setUpdateTitleDto({
+      ...updateTitleDto,
       startYear: e.valueAsNumber,
     });
   };
 
   const handleEndYearChange = (e: NumberInputValueChangeDetails) => {
-    setTitleDto({
-      ...titleDto,
+    setUpdateTitleDto({
+      ...updateTitleDto,
       endYear: e.valueAsNumber,
     });
   };
 
   const handleRuntimeMinutesChange = (e: NumberInputValueChangeDetails) => {
-    setTitleDto({
-      ...titleDto,
+    setUpdateTitleDto({
+      ...updateTitleDto,
       runtimeMinutes: e.valueAsNumber,
     });
   };
 
   const handleIsAdultChange = (e: SwitchCheckedChangeDetails) => {
-    setTitleDto({
-      ...titleDto,
+    setUpdateTitleDto({
+      ...updateTitleDto,
       isAdult: e.checked,
     });
   };
@@ -94,19 +94,17 @@ const MysqlTitleEdit = () => {
     const result = await updateTitle({
       variables: {
         id: title.titleId,
-        title: titleDto,
+        title: updateTitleDto,
       },
     });
 
     const updatedTitle = result.data?.updateMysqlTitle?.titles;
 
-    if (!updatedTitle) {
-      return;
-    }
+    if (!updatedTitle) return;
 
     await client.clearStore();
 
-    await navigate(-1);
+    await navigate(`mysqltitle/${updatedTitle.titleId}`);
   };
 
   return (
@@ -127,7 +125,7 @@ const MysqlTitleEdit = () => {
               <Field.Label>PrimaryTitle</Field.Label>
               <Input
                 name={'primaryTitle'}
-                value={titleDto.primaryTitle}
+                value={updateTitleDto.primaryTitle}
                 onChange={(event) => handlePrimaryTitleChange(event)}
               />
             </Field.Root>
@@ -136,21 +134,25 @@ const MysqlTitleEdit = () => {
               <Field.Label>OriginalTitle</Field.Label>
               <Input
                 name={'originalTitle'}
-                value={titleDto.originalTitle}
+                value={updateTitleDto.originalTitle}
                 onChange={(event) => handleOriginalTitleChange(event)}
               />
             </Field.Root>
 
             <Field.Root>
               <Field.Label>TitleType</Field.Label>
-              <Input name={'titleType'} value={titleDto.titleType} onChange={(event) => handleTitleTypeChange(event)} />
+              <Input
+                name={'titleType'}
+                value={updateTitleDto.titleType}
+                onChange={(event) => handleTitleTypeChange(event)}
+              />
             </Field.Root>
 
             <Field.Root>
               <Field.Label>StartYear</Field.Label>
               <NumberInput.Root
                 name={'startYear'}
-                value={titleDto.startYear.toString()}
+                value={updateTitleDto.startYear.toString()}
                 onValueChange={(event) => handleStartYearChange(event)}
                 min={1888}
                 max={new Date().getUTCFullYear()}
@@ -163,7 +165,7 @@ const MysqlTitleEdit = () => {
               <Field.Label>EndYear</Field.Label>
               <NumberInput.Root
                 name={'endYear'}
-                value={titleDto.endYear ? titleDto.endYear.toString() : undefined}
+                value={updateTitleDto.endYear ? updateTitleDto.endYear.toString() : undefined}
                 onValueChange={(event) => handleEndYearChange(event)}
                 max={new Date().getUTCFullYear()}
               >
@@ -175,7 +177,7 @@ const MysqlTitleEdit = () => {
               <Field.Label>RuntimeMinutes</Field.Label>
               <NumberInput.Root
                 name={'runtimeMinutes'}
-                value={titleDto.runtimeMinutes ? titleDto.runtimeMinutes.toString() : undefined}
+                value={updateTitleDto.runtimeMinutes ? updateTitleDto.runtimeMinutes.toString() : undefined}
                 onValueChange={(event) => handleRuntimeMinutesChange(event)}
                 max={500}
               >
@@ -187,7 +189,7 @@ const MysqlTitleEdit = () => {
               <Field.Label>IsAdult</Field.Label>
               <Switch.Root
                 name={'isAdult'}
-                checked={titleDto.isAdult}
+                checked={updateTitleDto.isAdult}
                 onCheckedChange={(event) => handleIsAdultChange(event)}
               >
                 <Switch.HiddenInput />
@@ -198,10 +200,12 @@ const MysqlTitleEdit = () => {
           <Card.Footer>
             <HStack justify={'space-between'} w={'100%'}>
               <Button variant="outline" fontWeight={'bold'} onClick={() => void navigate(-1)}>
-                <RiArrowLeftLine /> Back
+                <RiArrowLeftLine />
+                Back
               </Button>
               <Button variant="solid" colorPalette={'teal'} fontWeight={'bold'} onClick={() => void saveChanges()}>
-                <RiSave2Line /> Save
+                <RiSave2Line />
+                Save
               </Button>
             </HStack>
           </Card.Footer>
