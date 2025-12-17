@@ -12,6 +12,9 @@ const config: CodegenConfig = {
         fragmentMasking: false,
       },
       config: {
+        scalars: {
+          UUID: 'string',
+        },
         avoidOptionals: {
           field: true,
           inputValue: false,
