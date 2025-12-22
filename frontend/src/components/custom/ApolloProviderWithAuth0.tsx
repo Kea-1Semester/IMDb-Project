@@ -12,6 +12,9 @@ import { ApolloProvider } from '@apollo/client/react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ErrorLink } from '@apollo/client/link/error';
 
+import { RetryLink } from "@apollo/client/link/retry";
+
+
 const ApolloProviderWithAuth0: FC<{ children: ReactNode }> = ({ children }) => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
@@ -78,6 +81,19 @@ const ApolloProviderWithAuth0: FC<{ children: ReactNode }> = ({ children }) => {
     [isAuthenticated, getAccessTokenSilently],
   );
 
+  const retryLink = new RetryLink({
+  attempts: {
+    max: 5, // number of retry attempts
+    retryIf: (error, _operation) => !!error,
+  },
+  delay: {
+    initial: 5000, // 5 seconds
+    max: 8000, // 8 seconds
+    jitter: true,
+  },
+});
+
+
   const httpLink = useMemo(
     () =>
       new HttpLink({
@@ -92,8 +108,9 @@ const ApolloProviderWithAuth0: FC<{ children: ReactNode }> = ({ children }) => {
   const client = useMemo(
     () =>
       new ApolloClient({
-        link: ApolloLink.from([errorLink, authLink, httpLink]),
+        link: ApolloLink.from([errorLink, authLink, retryLink, httpLink]),
         cache: new InMemoryCache(),
+
       }),
     [errorLink, authLink, httpLink],
   );

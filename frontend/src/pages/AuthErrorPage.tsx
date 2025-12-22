@@ -1,6 +1,11 @@
 import { Container, Heading, Text } from '@chakra-ui/react';
+import * as Sentry from '@sentry/react';
+import { useEffect } from 'react';
 
-const ErrorPage = () => {
+const AuthErrorPage = () => {
+  useEffect(() => {
+    Sentry.captureException(new Error('Authentication error page rendered'));
+  }, []);
   return (
     <Container textAlign="center" mt={10}>
       <Heading>Authentication Error!</Heading>
@@ -9,4 +14,4 @@ const ErrorPage = () => {
   );
 };
 
-export default ErrorPage;
+export default AuthErrorPage;
