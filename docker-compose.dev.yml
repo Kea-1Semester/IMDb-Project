@@ -45,6 +45,10 @@ services:
       MongoDbConnectionString: ${MongoDbConnectionString}
       MongoDbDatabase: ${MongoDbDatabase}
       DATA_ROOT: /mySql
+
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
     volumes:
       - ./SeedData/SeedData/mySql:/mySql
 
