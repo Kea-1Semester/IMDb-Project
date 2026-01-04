@@ -9,6 +9,7 @@ using SeedData.DbConnection;
 using SeedData.Handlers;
 using SeedData.Handlers.MongoDb;
 using SeedData.Handlers.Neo4j.Mappers;
+using System.Data;
 
 namespace SeedData;
 
@@ -90,14 +91,11 @@ internal static class Program
                 await AddAkas.AddAkasToDb(context, titleAkasPath, 50000, titleIdsDict);
 
                 Console.WriteLine("Seeded Sample Data into MySQL Database.");
-
                 foreach (var file in Directory.GetFiles(Path.Combine(mysqlFolder, "advance"), "*.sql"))
                 {
                     if (Path.GetFileName(file) == "Drop.sql")
                         continue;
-
                     Console.WriteLine($"Executing Advanced File: {file}");
-
                     await context.Database.ExecuteSqlRawAsync(await File.ReadAllTextAsync(file));
 
                 }
