@@ -3,10 +3,11 @@ using EfCoreModelsLib.DTO;
 using EfCoreModelsLib.Models.MongoDb;
 using EfCoreModelsLib.Models.MongoDb.ObjDbContext;
 using EfCoreModelsLib.Models.Mysql;
+using EfCoreModelsLib.Models.Neo4J.Neo4JModels;
 using GraphQL.Auth0;
 using GraphQL.Handler;
-using GraphQL.Repos;
 using GraphQL.Repos.GenericRepo;
+using GraphQL.Services;
 using GraphQL.Services.Interface;
 using GraphQL.Services.MySQL;
 using HotChocolate.AspNetCore;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Neo4j.Driver;
 using System.Security.Claims;
 using System.Text;
 
@@ -68,6 +70,21 @@ builder.Services.AddDbContextFactory<ImdbContextMongoDb>(options =>
 builder.Services.AddScoped<GenericRepo<TitleMongoDb, ImdbContextMongoDb>>();
 builder.Services.AddScoped<ITitlesService<TitleMongoDb, ImdbContextMongoDb>, TitlesService<TitleMongoDb, ImdbContextMongoDb>>();
 builder.Services.AddDbContextFactory<ImdbContextMongoDb>();
+
+
+// Neo4J database
+
+builder.Services.AddSingleton<IDriver>(_ =>
+    GraphDatabase.Driver(
+        Env.GetString("NEO4J_URI"),
+        AuthTokens.Basic(
+            Env.GetString("NEO4J_USER"),
+            Env.GetString("NEO4J_PASSWORD")
+        )
+    )
+);
+builder.Services.AddScoped<Neo4jTitlesService>();
+
 
 const string Auth0Domain = "Auth0Domain";
 

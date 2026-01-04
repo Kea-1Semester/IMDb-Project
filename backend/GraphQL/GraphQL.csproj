@@ -22,6 +22,7 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
     <PackageReference Include="MongoDB.Driver" Version="3.5.2" />
+    <PackageReference Include="Neo4j.Driver" Version="5.28.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.11" />
     <PackageReference Include="HotChocolate.AspNetCore.CommandLine" Version="15.1.11" />
