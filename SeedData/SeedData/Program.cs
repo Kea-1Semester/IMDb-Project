@@ -57,13 +57,16 @@ internal static class Program
 
 
                 // open file advance folder and execute all sql files except Drop.sql
-                foreach (var file in Directory.GetFiles(Path.Combine(dataRoot, "advance"), "*.sql"))
+                var sqlFiles = Directory.GetFiles(Path.Combine(dataRoot, "advance"), "*.sql")
+                    .Where(f => Path.GetFileName(f) != "Drop.sql")
+                    .OrderBy(f => f) 
+                    .ToList();
+
+                foreach (var file in sqlFiles)
                 {
-                    if (Path.GetFileName(file) == "Drop.sql")
-                        continue;
                     Console.WriteLine($"Executing Advanced File: {file}");
                     await context.Database.ExecuteSqlRawAsync(await File.ReadAllTextAsync(file));
-
+                    Console.WriteLine($"Executed Advanced File: {file}");
                 }
 
                 Console.WriteLine("Seeded Sample Data into MySQL Database.");
