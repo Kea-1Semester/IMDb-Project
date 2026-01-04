@@ -15,7 +15,7 @@ GRANT EXECUTE ON imdb.* TO 'Oliver';
 
 
 -- Revoke ALTER ROUTINE, so the user cannot modify stored routines
-REVOKE ALTER ROUTINE ON imdb.* FROM 'Oliver';
+-- REVOKE ALTER ROUTINE ON imdb.* FROM 'Oliver';
 
 
 FLUSH PRIVILEGES;
