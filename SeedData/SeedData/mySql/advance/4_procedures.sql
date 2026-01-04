@@ -1,5 +1,5 @@
-########################PROCEDURES##########################
-############################################################
+use imdb;
+
 DROP PROCEDURE IF EXISTS search_movies_by_primaryTitle_using_like_function;
 DROP PROCEDURE IF EXISTS get_top_rated_movies;
 DROP PROCEDURE IF EXISTS update_primary_title;
@@ -14,57 +14,58 @@ CREATE FULLTEXT INDEX idx_Titles_primary_title_original_title
     ON Titles (primary_title, original_title);
 
 -- Stored Procedure: Search Movies by Primary Title Keyword
-CREATE PROCEDURE IF NOT EXISTS search_movies_by_primaryTitle_using_like_function(IN p_primary_title VARCHAR(50))
-BEGIN
-    SELECT title_id,
-           title_type,
-           primary_title,
-           original_title,
-           is_adult,
-           start_year,
-           runtime_minutes
-    FROM titles_view
-    WHERE primary_title LIKE CONCAT(p_primary_title, '%')
-    ORDER BY start_year DESC
-    LIMIT 10;
-END;
+	CREATE PROCEDURE IF NOT EXISTS search_movies_by_primaryTitle_using_like_function(IN p_primary_title VARCHAR(50))
+	BEGIN
+		SELECT title_id,
+			   title_type,
+			   primary_title,
+			   original_title,
+			   is_adult,
+			   start_year,
+			   runtime_minutes
+		FROM titles_view
+		WHERE primary_title LIKE CONCAT(p_primary_title, '%')
+		ORDER BY start_year DESC
+		LIMIT 10;
+	END;
 
 -- TODO: Make PageNumber and PageSize optional with default values
 -- Stored Procedure: Search Movies Fulltext on Primary Title and Original Title using pagination
-CREATE PROCEDURE IF NOT EXISTS search_movies_fulltext_on_primary_title_and_original_title(
-    IN p_keyword VARCHAR(50),
-    IN PageNumber INT,
-    IN PageSize INT
-)
-BEGIN
-    -- Define the maximum allowed page size
-    SET @MaxPageSize = 100;
+	CREATE PROCEDURE search_movies_fulltext_on_primary_title_and_original_title(
+		IN p_keyword VARCHAR(50),
+		IN PageNumber INT,
+		IN PageSize INT
+	)
+	BEGIN
+		-- Define the maximum allowed page size
+		SET @MaxPageSize = 100;
 
-    -- Validate the Pagesize
-    IF PageSize IS NULL OR
-       PageSize > @MaxPageSize THEN
-        SET PageSize = @MaxPageSize;
-    ELSEIF PageSize <= 0 THEN
-        SET PageSize = 1;
-    END IF;
+		-- Validate the Pagesize
+		IF PageSize IS NULL OR
+		   PageSize > @MaxPageSize THEN
+			SET PageSize = @MaxPageSize;
+		ELSEIF PageSize <= 0 THEN
+			SET PageSize = 1;
+		END IF;
 
-    -- Prepare variables for the query
-    SET @keyword = p_keyword;
-    SET @Offest = (IFNULL(PageNumber, 1) - 1) * PageSize;
-    SET @Limit = PageSize;
-    -- Prepare and execute the query with pagination using fulltext Search
-    -- using symbol ? to bind the variable and prevent SQL Injection
-    SET @sql = '
-        SELECT *
-        FROM titles_view
-        WHERE MATCH(primary_title, original_title) AGAINST(? IN NATURAL LANGUAGE MODE)
-        ORDER BY start_year DESC
-        LIMIT ? OFFSET ?';
-    PREPARE stmt FROM @sql;
-    EXECUTE stmt USING @keyword, @Limit, @Offest;
-    DEALLOCATE PREPARE stmt; -- clean up the prepared statement
+		-- Prepare variables for the query
+		SET @keyword = p_keyword;
+		SET @Offest = (IFNULL(PageNumber, 1) - 1) * PageSize;
+		SET @Limit = PageSize;
+		-- Prepare and execute the query with pagination using fulltext Search
+		-- using symbol ? to bind the variable and prevent SQL Injection
+		SET @sql = '
+			SELECT *
+			FROM titles_view
+			WHERE MATCH(primary_title, original_title) AGAINST(? IN NATURAL LANGUAGE MODE)
+			ORDER BY start_year DESC
+			LIMIT ? OFFSET ?';
+		PREPARE stmt FROM @sql;
+		EXECUTE stmt USING @keyword, @Limit, @Offest;
+		DEALLOCATE PREPARE stmt; -- clean up the prepared statement
 
-END;
+	END;
+
 
 
 
@@ -84,6 +85,7 @@ END;
 
 
 -- Stored Procedure: Flexible Search for Movies with Optional Filters
+
 CREATE PROCEDURE IF NOT EXISTS search_movies_flexible(
     IN p_primary_title VARCHAR(50),
     IN p_title_type VARCHAR(50), -- e.g., 'movie', 'tvMovie'
@@ -105,6 +107,7 @@ BEGIN
     LIMIT 20;
 END;
 
+
 -- Stored Procedure: Update Primary Title
 CREATE PROCEDURE IF NOT EXISTS update_primary_title(
     IN p_title_id CHAR(36),
@@ -119,6 +122,7 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Title not found';
     END IF;
 END;
+
 
 -- Create Movie with Genre
 CREATE PROCEDURE IF NOT EXISTS create_movie_with_genre(

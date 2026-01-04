@@ -126,7 +126,7 @@ namespace unit.tests
         }
 
         [TestCase(1887)]
-        [TestCase(2026)]
+        [TestCase(2027)]
         [TestCase(0000)]
         [TestCaseSource(nameof(FutureYearBoundaryTestCases))]
         public void ThrowExceptionValidateStartYear(int endYear)
@@ -160,7 +160,7 @@ namespace unit.tests
         [TestCase(9)]
         [TestCase(99)]
         [TestCase(0000)]
-        [TestCase(2076)]
+        [TestCase(2077)]
         [TestCase(10000)]
         public void ThrowExceptionValidateEndYear(int endYear)
         {

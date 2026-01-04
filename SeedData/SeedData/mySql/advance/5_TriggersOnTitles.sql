@@ -1,10 +1,9 @@
-######################TRIGGERS##########################
-############################################################
+USE imdb;
+
 DROP TRIGGER IF EXISTS trg_after_insert_titles;
 DROP TRIGGER IF EXISTS trg_before_insert_titles_check_title_type;
 DROP TRIGGER IF EXISTS trg_before_update_titles;
 DROP TRIGGER IF EXISTS trg_after_update_titles;
-
 
 -- Trigger to log changes in the Titles table
 CREATE TRIGGER trg_after_insert_titles
@@ -85,6 +84,7 @@ BEGIN
         SIGNAL sql_state SET MESSAGE_TEXT = 'runtime_minutes must be between 0 and 1440';
     END IF;
 END;
+
 
 -- Logging changes after the update operation is complete
 CREATE TRIGGER trg_after_update_titles

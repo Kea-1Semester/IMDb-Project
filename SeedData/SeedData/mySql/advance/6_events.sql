@@ -1,3 +1,5 @@
+USE imdb;
+
 CREATE EVENT IF NOT EXISTS update_end_year_weekly
     ON SCHEDULE EVERY 1 WEEK
     DO
